@@ -3,8 +3,8 @@
 
         <div class="flex items-center gap-6">
             <a href="#" class="text-white/70 hover:text-white text-[15px] font-medium transition-colors">
-                <i class="fa-regular fa-house"></i> หน้าหลัก</a>
-            <a href="#" class="text-white/70 hover:text-white text-[15px] font-medium transition-colors">จองคิว</a>
+                <i class="fa-duotone fa-solid fa-house"></i> หน้าหลัก</a>
+            <a href="#" class="text-white/70 hover:text-white text-[15px] font-medium transition-colors"> <i class="fa-jelly-fill fa-regular fa-house"></i>จองคิว</a>
         </div>
 
         <div class="absolute left-1/2 -translate-x-1/2">

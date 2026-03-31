@@ -18,6 +18,7 @@
     :class="visible ? 'translate-y-0 opacity-100' : '-translate-y-32 opacity-0'"
     class="fixed top-6 left-1/2 -translate-x-1/2 z-50 w-[90%] max-w-4xl transition-all duration-500 ease-in-out">
 
+<<<<<<< HEAD
     <div class="bg-black/50 backdrop-blur-xl border border-white/15 rounded-full px-6 py-3 flex items-center justify-between shadow-2xl relative">
 
         <div class="flex items-center gap-4">
@@ -41,6 +42,12 @@
                 </svg>
                 เมนู
             </button>
+=======
+        <div class="flex items-center gap-6">
+            <a href="#" class="text-white/70 hover:text-white text-[15px] font-medium transition-colors">
+                <i class="fa-duotone fa-solid fa-house"></i> หน้าหลัก</a>
+            <a href="#" class="text-white/70 hover:text-white text-[15px] font-medium transition-colors"> <i class="fa-jelly-fill fa-regular fa-house"></i>จองคิว</a>
+>>>>>>> 335c1dc5796d0152ee04d63ebc677a3141d733a7
         </div>
 
         <div class="absolute left-1/2 -translate-x-1/2">

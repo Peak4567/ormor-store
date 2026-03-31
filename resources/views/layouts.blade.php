@@ -3,17 +3,19 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>kuyisas</title>
+    <title>Ormorx Topup Coins | Website</title>
 
     <!-- Favicon -->
     <link rel="icon" href="{{ asset('assets/image/logo.png') }}" type="image/png">
 
     <!-- Font Awesome CDN -->
     <link href=" {{ asset('font-awesome/css/all.min.css') }} " rel="stylesheet">
-    <link defer="" media="all" onload="this.media='all'" rel="stylesheet" href="https://site-assets.fontawesome.com/releases/v7.2.0/css/fontawesome.css">
     
     <!-- Tailwind CSS CDN -->
     <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+
+    <!-- Alpine.js CDN -->
+    <script defer src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>
 
     <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">

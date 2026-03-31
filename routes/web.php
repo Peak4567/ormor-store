@@ -9,3 +9,6 @@ Route::get('/', function () {
 Route::get('/shop', function () {
     return view('shop');
 });
+Route::get('/backend/home',function(){
+    return view('backend/home');
+});

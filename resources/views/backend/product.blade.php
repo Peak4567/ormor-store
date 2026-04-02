@@ -2,53 +2,65 @@
 @section('title', 'รายการสินค้า')
 
 @section('content')
+    <link rel="stylesheet" href="{{ asset('assets/css/style.css') }}">
     <div class="sm:pt-25 pb-10">
         <div class="container mx-auto px-4 w-full space-y-6 ">
 
-            {{-- 1. Search & Filter Section --}}
-            <div class="bg-white rounded-xl border border-gray-100 p-6">
-
-                {{-- Search Bar --}}
-                <div class="flex items-center gap-4 mb-6">
-                    <div class="relative flex-1">
-                        <i class="fa-solid fa-magnifying-glass absolute left-5 top-1/2 -translate-y-1/2 text-gray-400"></i>
-                        <input type="text" placeholder="ค้นหาสินค้าและรหัสสินค้า...."
-                            class="w-full pl-12 pr-4 py-3 bg-gray-50/50 border border-gray-100 rounded-full focus:outline-none focus:ring-2 focus:ring-green-500/20 focus:border-green-500 transition-all text-sm text-gray-600 placeholder-gray-400">
+            <form action="{{ route('backend.product') }}" method="GET">
+                <div class="bg-white rounded-xl border border-gray-100 p-6">
+                    <div class="flex items-center gap-4 mb-6">
+                        <div class="relative flex-1">
+                            <i
+                                class="fa-solid fa-magnifying-glass absolute left-5 top-1/2 -translate-y-1/2 text-gray-400"></i>
+                            <input type="text" name="search" value="{{ request('search') }}"
+                                placeholder="ค้นหาชื่อสินค้าหรือรหัสสินค้า (ID)...."
+                                class="w-full pl-12 pr-4 py-3 bg-gray-50/50 border border-gray-100 rounded-full focus:outline-none focus:ring-2 focus:ring-green-500/20 focus:border-green-500 transition-all text-sm text-gray-600 placeholder-gray-400">
+                        </div>
+                        <button type="submit"
+                            class="px-8 py-2.5 bg-green-500 text-white hover:bg-green-600 rounded-full text-sm font-bold transition-colors">
+                            ค้นหา
+                        </button>
+                        @if (request()->anyFilled(['search', 'price_sort', 'day_filter']))
+                            <a href="{{ route('backend.product') }}"
+                                class="text-xs text-gray-400 hover:text-red-500 font-bold">ล้างตัวกรอง</a>
+                        @endif
                     </div>
-                    <button type="button"
-                        class="px-8 py-2.5 bg-white border border-green-500 text-green-500 hover:bg-green-50 rounded-full text-sm font-bold transition-colors">
-                        ค้นหา
-                    </button>
+
+                    <div class="flex items-center gap-4">
+                        <span class="font-extrabold text-gray-800 text-sm">ตัวกรอง</span>
+
+                        <div class="relative">
+                            <select name="price_sort" onchange="this.form.submit()"
+                                class="appearance-none bg-white border border-gray-100 rounded-2xl px-5 py-2.5 pr-12 text-sm text-gray-600 font-medium focus:outline-none focus:ring-2 focus:ring-gray-200 cursor-pointer min-w-[160px]">
+                                <option value="">ราคาสินค้า</option>
+                                <option value="high" {{ request('price_sort') == 'high' ? 'selected' : '' }}>ราคามาก -
+                                    น้อย</option>
+                                <option value="low" {{ request('price_sort') == 'low' ? 'selected' : '' }}>ราคาน้อย - มาก
+                                </option>
+                            </select>
+                            <i
+                                class="fa-solid fa-chevron-down absolute right-5 top-1/2 -translate-y-1/2 text-gray-300 text-[10px] pointer-events-none"></i>
+                        </div>
+
+                        <div class="relative">
+                            <select name="day_filter" onchange="this.form.submit()"
+                                class="appearance-none bg-white border border-gray-100 rounded-2xl px-5 py-2.5 pr-12 text-sm text-gray-600 font-medium focus:outline-none focus:ring-2 focus:ring-gray-200 cursor-pointer min-w-[160px]">
+                                <option value="">ทุกวัน</option>
+                                @foreach (['Monday' => 'จันทร์', 'Tuesday' => 'อังคาร', 'Wednesday' => 'พุธ', 'Thursday' => 'พฤหัสบดี', 'Friday' => 'ศุกร์', 'Saturday' => 'เสาร์', 'Sunday' => 'อาทิตย์'] as $key => $label)
+                                    <option value="{{ $key }}"
+                                        {{ request('day_filter') == $key ? 'selected' : '' }}>วัน{{ $label }}
+                                    </option>
+                                @endforeach
+                            </select>
+                            <i
+                                class="fa-solid fa-chevron-down absolute right-5 top-1/2 -translate-y-1/2 text-gray-300 text-[10px] pointer-events-none"></i>
+                        </div>
+                    </div>
                 </div>
+            </form>
 
-                {{-- Filters --}}
-                <div class="flex items-center gap-4">
-                    <span class="font-extrabold text-gray-800 text-sm">ตัวกรอง</span>
-
-                    <div class="relative">
-                        <select
-                            class="appearance-none bg-white border border-gray-100 rounded-2xl px-5 py-2.5 pr-12 text-sm text-gray-400 font-medium focus:outline-none focus:ring-2 focus:ring-gray-200 cursor-pointer min-w-[160px]">
-                            <option>ราคาสินค้า</option>
-                        </select>
-                        <i
-                            class="fa-solid fa-chevron-down absolute right-5 top-1/2 -translate-y-1/2 text-gray-300 text-[10px] pointer-events-none"></i>
-                    </div>
-
-                    <div class="relative">
-                        <select
-                            class="appearance-none bg-white border border-gray-100 rounded-2xl px-5 py-2.5 pr-12 text-sm text-gray-400 font-medium focus:outline-none focus:ring-2 focus:ring-gray-200 cursor-pointer min-w-[160px]">
-                            <option>ทุกวัน</option>
-                        </select>
-                        <i
-                            class="fa-solid fa-chevron-down absolute right-5 top-1/2 -translate-y-1/2 text-gray-300 text-[10px] pointer-events-none"></i>
-                    </div>
-                </div>
-            </div>
-
-            {{-- 2. Table Section --}}
             <div class="bg-white rounded-xl border border-gray-100 p-6 flex flex-col min-h-[500px]">
 
-                {{-- Table Header & Action --}}
                 <div class="flex justify-between items-center mb-6">
                     <div>
                         <h2 class="text-xl font-extrabold text-gray-800">รายการสินค้าทั้งหมด</h2>
@@ -61,10 +73,8 @@
                     </button>
                 </div>
 
-                {{-- Main Table --}}
                 <div class="overflow-x-auto flex-1">
                     <table class="w-full text-sm text-center whitespace-nowrap">
-                        {{-- Table Head (สีเทาอ่อน ขอบมน) --}}
                         <thead class="text-gray-800 font-extrabold">
                             <tr class="bg-[#F8F9FA]">
                                 <th class="py-4 px-4 rounded-l-2xl w-16">#</th>
@@ -81,23 +91,15 @@
                             @forelse ($products as $product)
                                 <tr class="border-b border-gray-50/50 hover:bg-gray-50/30 transition-colors">
 
-                                    {{-- ลำดับ / ID --}}
                                     <td class="py-5 px-4 text-gray-800 font-bold">{{ $product->id }}</td>
 
-                                    {{-- ชื่อสินค้า --}}
                                     <td class="py-5 px-4 text-left">
                                         <div class="text-gray-800 font-bold">{{ $product->product_name }}</div>
                                         <div class="text-[11px] text-gray-400 mt-0.5">(สต็อค {{ $product->stock }} ชิ้น)
                                         </div>
                                     </td>
-
-                                    {{-- ราคาสินค้า --}}
                                     <td class="py-5 px-4">{{ number_format($product->main_price, 2) }} บาท</td>
-
-                                    {{-- ราคาตัวแทน --}}
                                     <td class="py-5 px-4">{{ number_format($product->agent_price, 2) }} บาท</td>
-
-                                    {{-- สถานะ --}}
                                     <td class="py-5 px-4 text-gray-800 font-bold">
                                         @if ($product->status == 'เปิดจอง')
                                             <div class="text-green-500">{{ $product->status }}</div>
@@ -105,7 +107,7 @@
                                             <div class="text-red-500">{{ $product->status }}</div>
                                         @endif
                                         <div class="text-[11px] text-gray-400 mt-0.5 font-medium">
-                                            (วัน{{ $product->day_name }})
+                                            ({{ $product->day_name }})
                                         </div>
 
                                     </td>
@@ -147,25 +149,17 @@
                     </table>
                 </div>
 
-                <div class="mt-8 flex justify-between items-center">
-                    <div class="text-[13px] text-[#2CB05C] font-bold">
-                        แสดง 1-10 จาก 15
+                <div
+                    class="mt-12 flex justify-between items-center bg-white p-5 rounded-2xl shadow-sm border border-gray-100">
+                    {{-- ส่วนแสดงจำนวนรายการ (อัปเดตอัตโนมัติ) --}}
+                    <div class="text-[14px] text-[#2CB05C] font-extrabold">
+                        แสดง {{ $products->firstItem() ?? 0 }}-{{ $products->lastItem() ?? 0 }} จาก
+                        {{ $products->total() }} รายการ
                     </div>
 
-                    <div class="flex items-center gap-2 font-bold text-sm">
-                        <button
-                            class="w-8 h-8 flex items-center justify-center text-gray-800 hover:text-green-500 transition-colors"><i
-                                class="fa-solid fa-chevron-left text-xs"></i></button>
-
-                        <button
-                            class="w-8 h-8 flex items-center justify-center bg-[#51CA74] text-white rounded-[10px]">1</button>
-
-                        <button
-                            class="w-8 h-8 flex items-center justify-center bg-white border-2 border-[#51CA74] text-[#51CA74] rounded-[10px] hover:bg-green-50 transition-colors">2</button>
-
-                        <button
-                            class="w-8 h-8 flex items-center justify-center text-gray-800 hover:text-green-500 transition-colors"><i
-                                class="fa-solid fa-chevron-right text-xs"></i></button>
+                    {{-- ส่วนปุ่มเปลี่ยนหน้า (Laravel links() พร้อมการตกแต่งให้เหมือนเป๊ะ) --}}
+                    <div class="custom-pagination">
+                        {{ $products->links('pagination::tailwind') }}
                     </div>
                 </div>
 

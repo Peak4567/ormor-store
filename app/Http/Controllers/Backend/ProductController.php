@@ -10,15 +10,26 @@ use Illuminate\Http\Request;
 
 class ProductController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
         $products = Product::with('timeSlots', 'saleDates')->get();
 
         foreach ($products as $product) {
-            if ($product->date) {
-                $product->day_name = Carbon::parse($product->date)->locale('th')->translatedFormat('l');
+            $upcomingDate = $product->saleDates
+                ->where('date', '>=', Carbon::today()->format('Y-m-d'))
+                ->sortBy('date')
+                ->first();
+
+            if ($upcomingDate) {
+                $product->day_name = Carbon::parse($upcomingDate->date)
+                    ->locale('th')
+                    ->translatedFormat('l');
             } else {
-                $product->day_name = 'ไม่ระบุ';
+                if ($product->saleDates->isNotEmpty()) {
+                    $product->day_name = 'หมดเวลา';
+                } else {
+                    $product->day_name = 'ไม่ระบุ';
+                }
             }
 
             if ($product->created_at) {
@@ -31,6 +42,53 @@ class ProductController extends Controller
             }
         }
 
+        $query = Product::with(['timeSlots', 'saleDates']);
+        
+
+        if ($request->filled('search')) {
+            $search = $request->search;
+            $query->where(function ($q) use ($search) {
+                $q->where('product_name', 'like', "%{$search}%")
+                    ->orWhere('id', $search);
+            });
+        }
+
+        if ($request->filled('day_filter')) {
+            $dayName = $request->day_filter;
+            $query->whereHas('saleDates', function ($q) use ($dayName) {
+                $q->whereRaw("DAYNAME(date) = ?", [$dayName]);
+            });
+        }
+
+        if ($request->price_sort == 'high') {
+            $query->orderBy('main_price', 'desc');
+        } elseif ($request->price_sort == 'low') {
+            $query->orderBy('main_price', 'asc');
+        } else {
+            $query->orderBy('created_at', 'desc');
+        }
+
+        $products = $query->get();
+
+
+        $products = $query->latest()->paginate(10)->appends($request->all());
+        
+        foreach ($products as $product) {
+            $upcomingDate = $product->saleDates
+                ->where('date', '>=', Carbon::today()->format('Y-m-d'))
+                ->sortBy('date')
+                ->first();
+
+            if ($upcomingDate) {
+                $product->day_name = Carbon::parse($upcomingDate->date)->locale('th')->translatedFormat('l');
+            } else {
+                $product->day_name = $product->saleDates->isNotEmpty() ? 'ผ่านไปแล้ว' : 'ไม่ระบุ';
+            }
+
+            $product->created_date_thai = $product->created_at
+                ? Carbon::parse($product->created_at)->addYears(543)->locale('th')->translatedFormat('j M Y')
+                : 'ไม่ระบุ';
+        }
         return view('backend.product', compact('products'));
     }
     public function store(Request $request)
@@ -45,14 +103,14 @@ class ProductController extends Controller
             'main_price' => $request->main_price,
             'agent_price'  => $request->agent_price ?: null,
             'stock' => $request->stock ?: null,
-            'status' => $request->status ?? 'เปิดจอง', 
+            'status' => $request->status ?? 'เปิดจอง',
         ]);
 
         if ($request->has('dates')) {
             foreach ($request->dates as $dateValue) {
                 if (!empty($dateValue)) {
                     $product->saleDates()->create([
-                        'date' => $dateValue 
+                        'date' => $dateValue
                     ]);
                 }
             }

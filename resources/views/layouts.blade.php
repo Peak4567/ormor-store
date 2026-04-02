@@ -26,5 +26,6 @@
     @include('components.navbar')
 
     @yield('content')
+    
 </body>
 </html>

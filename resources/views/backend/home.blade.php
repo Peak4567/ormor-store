@@ -1,8 +1,8 @@
 @extends('backend.layouts')
-@section('title', 'หลังบ้าน')
+@section('title', 'หน้าหลัก')
 @section('content')
     <div class="sm:pt-25 pb-10">
-        <div class="container mx-auto px-4 lg:px-8 space-y-6">
+        <div class="container mx-auto px-4 w-full space-y-6">
 
             <div class="bg-white rounded-[20px] shadow-sm flex flex-col md:flex-row overflow-hidden">
                 <div class="bg-[#00c365] p-6 flex items-center md:w-[60%] lg:w-[70%]">
@@ -66,7 +66,7 @@
                     </div>
                     <div class="bg-[#fef9c3] rounded-xl p-4 flex justify-between items-end">
                         <div>
-                            <h1 class="text-[#ca8a04] text-3xl font-bold">100 <span class="text-xl">คน</span></h1>
+                            <h1 class="text-[#ca8a04] text-3xl font-bold">{{ number_format($totalUser) }}<span class="text-xl">คน</span></h1>
                             <p class="text-[#ca8a04] text-sm mt-1 font-medium">เพิ่มขึ้น +20% <i
                                     class="fa-solid fa-arrow-trend-up"></i></p>
                         </div>
@@ -93,7 +93,7 @@
                     </div>
                     <div class="bg-[#ffe4e6] rounded-xl p-4 flex justify-between items-end">
                         <div>
-                            <h1 class="text-[#e11d48] text-3xl font-bold">100 <span class="text-xl">คน</span></h1>
+                            <h1 class="text-[#e11d48] text-3xl font-bold">{{ number_format($totalAgent) }} <span class="text-xl">คน</span></h1>
                             <p class="text-[#e11d48] text-sm mt-1 font-medium">เพิ่มขึ้น -20% <i
                                     class="fa-solid fa-arrow-trend-down"></i></p>
                         </div>

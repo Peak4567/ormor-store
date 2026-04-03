@@ -56,8 +56,8 @@
             </form>
         </div>
 
-        <div class="grid grid-cols-12 gap-6 items-start">
-            <div class="col-span-8 bg-white rounded-md border border-gray-100 p-6">
+        <div class="grid grid-cols-1 xl:grid-cols-12 gap-6 items-start">
+            <div class="col-span-12 xl:col-span-8 bg-white rounded-md border border-gray-100 p-6">
                 <div class="flex justify-between items-center mb-6">
                     <div>
                         <h2 class="text-xl font-extrabold text-gray-800">บัญชี รายรับ-รายจ่าย</h2>
@@ -146,7 +146,7 @@
                 </div>
             </div>
 
-            <div class="col-span-4 space-y-6">
+            <div class="col-span-12 xl:col-span-4 space-y-4 md:space-y-6">
                 <div class="bg-white rounded-md p-6 border border-gray-100">
                     <div class="flex justify-between items-center mb-5">
                         <div class="flex items-center space-x-3">

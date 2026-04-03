@@ -10,7 +10,7 @@
 
             <div class="space-y-2">
                 <div class="inline-block px-3.5 py-1 rounded-full bg-green-200/10 border border-green-200/30 hover:bg-green-200/15 hover:border-green-200/50 transition-colorsbackdrop-blur-sm">
-                    <p class="text-[12px] md:text-[14px] font-normal text-green-100">
+                    <p class="text-sm md:text-base font-normal text-white">
                         ระบบจองคิวสำหรับตัวแทน
                     </p>
                 </div>
@@ -135,7 +135,7 @@
     <div class="flex flex-col lg:flex-row gap-6">
 
         <div class="w-full lg:w-1/4 text-center sm:text-start">
-            <h2 class="text-3xl sm:text-4xl font-bold text-[#1E2A1E] leading-tight mb-4">
+            <h2 class="text-4xl font-bold text-[#1E2A1E] leading-tight mb-4">
                 ขั้นตอนการใช้งาน <br>
                 <span class="text-[#57C84D]">ORMOR</span>
             </h2>
@@ -430,7 +430,7 @@
     <div class="flex flex-col lg:flex-row gap-16 items-center">
 
         <div class="w-full lg:w-1/3 text-center sm:text-start">
-            <h2 class="text-3xl sm:text-4xl font-bold text-slate-900 mb-1.5 sm:mb-2">
+            <h2 class="text-4xl font-bold text-slate-900 mb-1.5 sm:mb-2">
                 สถานะ<span class="text-[#57C84D]">ระบบ</span>
             </h2>
             <p class="text-slate-500 text-xs sm:text-base font-medium leading-relaxed max-w-sm">
@@ -597,5 +597,4 @@
 
     </div>
 </section>
-
 @endsection

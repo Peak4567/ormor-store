@@ -31,9 +31,12 @@
     @include('backend.components.navbar')
     @include('backend.components.aside')
 
+
     <main class="md:ml-[100px] pt-24 px-4 md:px-8 pb-12 min-h-screen">
         @yield('content')
+        @include('backend.components.footer')
     </main>
+    
 </body>
 
 </html>

@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Ormorx Topup Coins | Website</title>
+    <title>Ormor Topup Coins | Website</title>
 
     <!-- Favicon -->
     <link rel="icon" href="{{ asset('assets/image/logo.png') }}" type="image/png">
@@ -28,6 +28,9 @@
     @yield('content')
 
     @include('components.footer')
+<<<<<<< HEAD
+=======
 
+>>>>>>> 085ee1a634c9a919a9ef1acd092b3f365100bc5b
 </body>
 </html>

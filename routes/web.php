@@ -12,9 +12,10 @@ Route::get('/', function () {
     return view('home');
 });
 
-Route::get('/shop', function () {
-    return view('shop');
+Route::get('/queue', function () {
+    return view('queue');
 });
+
 Route::get('/backend/home', [HomeController::class, 'index'])->name('backend.home');
 Route::get('/backend/product', [ProductController::class, 'index'])->name('backend.product');
 Route::post('/backend/product/store', [ProductController::class, 'store'])->name('backend.product.store');

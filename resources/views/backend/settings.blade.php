@@ -128,15 +128,78 @@
                                 <div class="space-y-4">
                                     <div>
                                         <label class="block mb-2 text-xs font-bold text-gray-600">ไอคอน & หัวข้อ</label>
+
+                                        @php
+                                            $shopIcons = [
+                                                'fa-solid fa-store' => 'ร้านค้าใหญ่',
+                                                'fa-solid fa-shop' => 'ร้านค้าเล็ก',
+                                                'fa-solid fa-cart-shopping' => 'รถเข็น',
+                                                'fa-solid fa-basket-shopping' => 'ตะกร้าสินค้า',
+                                                'fa-solid fa-bag-shopping' => 'ถุงช้อปปิ้ง',
+                                                'fa-solid fa-tags' => 'ป้ายราคา',
+                                                'fa-solid fa-box' => 'กล่องพัสดุ',
+                                                'fa-solid fa-box-open' => 'เปิดพัสดุ',
+                                                'fa-solid fa-truck-fast' => 'ส่งด่วน',
+                                                'fa-solid fa-wallet' => 'กระเป๋าเงิน',
+                                                'fa-solid fa-credit-card' => 'บัตรเครดิต',
+                                                'fa-solid fa-money-bill-wave' => 'เงินสด',
+                                                'fa-solid fa-coins' => 'เหรียญ',
+                                                'fa-solid fa-receipt' => 'ใบเสร็จ',
+                                                'fa-solid fa-gift' => 'ของขวัญ',
+                                                'fa-solid fa-star' => 'ดาว',
+                                                'fa-solid fa-heart' => 'ชื่นชอบ',
+                                                'fa-solid fa-percent' => 'ส่วนลด',
+                                                'fa-solid fa-bullhorn' => 'ประกาศ',
+                                                'fa-solid fa-award' => 'การันตี',
+                                                'fa-solid fa-user' => 'ผู้ใช้',
+                                            ];
+                                            $currentIcon = $setting->{'step_' . $i . '_icon'} ?: 'fa-solid fa-store';
+                                        @endphp
+
                                         <div class="flex items-center gap-2">
-                                            <input type="text" name="step_{{ $i }}_icon"
-                                                value="{{ $setting->{'step_' . $i . '_icon'} }}"
-                                                placeholder="fa-solid fa-star"
-                                                class="w-[100px] text-center px-3 py-2.5 bg-white border border-gray-100 rounded-md focus:outline-none focus:ring-2 focus:ring-green-500/20 focus:border-green-500 transition-all text-sm text-gray-600 placeholder-gray-400">
+
+                                            <div class="relative">
+                                                <input type="hidden" name="step_{{ $i }}_icon"
+                                                    id="input_icon_{{ $i }}" value="{{ $currentIcon }}">
+
+                                                <button type="button"
+                                                    onclick="document.getElementById('icon_dropdown_{{ $i }}').classList.toggle('hidden')"
+                                                    class="flex items-center justify-center w-[50px] h-[42px] bg-white border border-gray-200 rounded-md hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-green-500/20 focus:border-green-500 transition-all text-gray-600">
+                                                    <i id="display_icon_{{ $i }}"
+                                                        class="{{ $currentIcon }} text-lg"></i>
+                                                </button>
+
+                                                <div id="icon_dropdown_{{ $i }}"
+                                                    class="hidden absolute left-0 top-full mt-1 w-[260px] bg-white border border-gray-200 rounded-lg shadow-xl p-3 z-50">
+                                                    <div class="flex justify-between items-center mb-2">
+                                                        <span class="text-xs font-bold text-gray-500">เลือกไอคอน</span>
+                                                        <button type="button"
+                                                            onclick="document.getElementById('icon_dropdown_{{ $i }}').classList.add('hidden')"
+                                                            class="text-gray-400 hover:text-red-500 text-xs">
+                                                            <i class="fa-solid fa-times"></i> ปิด
+                                                        </button>
+                                                    </div>
+
+                                                    <div class="grid grid-cols-5 gap-2">
+                                                        @foreach ($shopIcons as $class => $label)
+                                                            <button type="button" title="{{ $label }}"
+                                                                onclick="
+                                document.getElementById('input_icon_{{ $i }}').value = '{{ $class }}';
+                                document.getElementById('display_icon_{{ $i }}').className = '{{ $class }} text-lg';
+                                document.getElementById('icon_dropdown_{{ $i }}').classList.add('hidden');
+                            "
+                                                                class="flex items-center justify-center p-2 rounded-md border border-gray-100 text-gray-500 bg-gray-50 hover:bg-green-50 hover:text-green-600 hover:border-green-500 transition-all">
+                                                                <i class="{{ $class }} text-base"></i>
+                                                            </button>
+                                                        @endforeach
+                                                    </div>
+                                                </div>
+                                            </div>
 
                                             <input type="text" name="step_{{ $i }}_title"
                                                 value="{{ $setting->{'step_' . $i . '_title'} }}" placeholder="หัวข้อ"
                                                 class="flex-1 px-4 py-2.5 bg-white border border-gray-100 rounded-md focus:outline-none focus:ring-2 focus:ring-green-500/20 focus:border-green-500 transition-all text-sm text-gray-600 placeholder-gray-400">
+
                                         </div>
                                     </div>
 

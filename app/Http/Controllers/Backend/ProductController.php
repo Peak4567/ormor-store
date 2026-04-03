@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Backend;
 use App\Http\Controllers\Controller;
 use App\Models\Backend\Product;
 use App\Models\Backend\Product\ProductDate;
+use Illuminate\Support\Str;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 
@@ -43,7 +44,7 @@ class ProductController extends Controller
         }
 
         $query = Product::with(['timeSlots', 'saleDates']);
-        
+
 
         if ($request->filled('search')) {
             $search = $request->search;
@@ -72,7 +73,7 @@ class ProductController extends Controller
 
 
         $products = $query->latest()->paginate(10)->appends($request->all());
-        
+
         foreach ($products as $product) {
             $upcomingDate = $product->saleDates
                 ->where('date', '>=', Carbon::today()->format('Y-m-d'))
@@ -98,7 +99,15 @@ class ProductController extends Controller
             'main_price' => 'required|numeric',
         ]);
 
+        do {
+            $prefix = 'ORMOR';
+            $randomPool = Str::random(8);
+            $productCode = $prefix . $randomPool;
+            $exists = Product::where('product_code', $productCode)->exists();
+        } while ($exists);
+
         $product = Product::create([
+            'product_code' => $productCode,
             'product_name' => $request->product_name,
             'main_price' => $request->main_price,
             'agent_price'  => $request->agent_price ?: null,
@@ -128,7 +137,7 @@ class ProductController extends Controller
             }
         }
 
-        return redirect()->back()->with('success', 'เพิ่มสินค้าสำเร็จ!');
+        return redirect()->back()->with('success', 'เพิ่มสินค้าสำเร็จ! รหัสสินค้าคือ: ' . $productCode);
     }
 
     public function update(Request $request, $id)

@@ -1,7 +1,7 @@
 <div id="addProductModal"
     class="fixed inset-0 z-50 hidden flex items-center justify-center bg-black/40 transition-opacity">
 
-    <div class="bg-white rounded-xl w-full max-w-[500px] max-h-[90vh] overflow-y-auto shadow-sm relative p-8 font-[Prompt]">
+    <div class="bg-white rounded-md w-full max-w-[500px] max-h-[90vh] overflow-y-auto shadow-sm relative p-8 font-[Prompt]">
 
         <button type="button" onclick="toggleModal()"
             class="absolute top-6 right-6 text-gray-800 hover:text-red-500 transition-colors">
@@ -127,7 +127,7 @@
                 <button type="button" onclick="toggleModal()"
                     class="w-1/2 border border-[#FF5B5B] text-[#FF5B5B] hover:bg-red-50 rounded-2xl py-3 font-bold text-sm transition-colors">ยกเลิก</button>
                 <button type="submit"
-                    class="w-1/2 bg-[#12C45A] hover:bg-green-600 text-white rounded-2xl py-3 font-bold text-sm transition-colors shadow-lg shadow-green-500/30">เพิ่มสินค้า</button>
+                    class="w-1/2 bg-[#12C45A] hover:bg-green-600 text-white rounded-2xl py-3 font-bold text-sm transition-colors ">เพิ่มสินค้า</button>
             </div>
         </form>
     </div>

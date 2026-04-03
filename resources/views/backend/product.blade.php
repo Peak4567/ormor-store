@@ -7,7 +7,7 @@
         <div class="container mx-auto px-4 w-full space-y-6 ">
 
             <form action="{{ route('backend.product') }}" method="GET">
-                <div class="bg-white rounded-xl border border-gray-100 p-6">
+                <div class="bg-white rounded-md border border-gray-100 p-6">
                     <div class="flex items-center gap-4 mb-6">
                         <div class="relative flex-1">
                             <i
@@ -59,7 +59,7 @@
                 </div>
             </form>
 
-            <div class="bg-white rounded-xl border border-gray-100 p-6 flex flex-col min-h-[500px]">
+            <div class="bg-white rounded-md border border-gray-100 p-6 flex flex-col min-h-[500px]">
 
                 <div class="flex justify-between items-center mb-6">
                     <div>
@@ -96,6 +96,10 @@
                                     <td class="py-5 px-4 text-left">
                                         <div class="text-gray-800 font-bold">{{ $product->product_name }}</div>
                                         <div class="text-[11px] text-gray-400 mt-0.5">(สต็อค {{ $product->stock }} ชิ้น)
+                                            <div
+                                                class="text-[10px] font-black text-blue-500 mb-1 uppercase bg-blue-50 px-2 py-0.5 rounded-md inline-block">
+                                                #{{ $product->product_code }}
+                                            </div>
                                         </div>
                                     </td>
                                     <td class="py-5 px-4">{{ number_format($product->main_price, 2) }} บาท</td>
@@ -149,15 +153,11 @@
                     </table>
                 </div>
 
-                <div
-                    class="mt-12 flex justify-between items-center bg-white p-5 rounded-2xl shadow-sm border border-gray-100">
-                    {{-- ส่วนแสดงจำนวนรายการ (อัปเดตอัตโนมัติ) --}}
+                <div class="mt-12 flex justify-between items-center bg-white p-5 rounded-md border border-gray-100">
                     <div class="text-[14px] text-[#2CB05C] font-extrabold">
                         แสดง {{ $products->firstItem() ?? 0 }}-{{ $products->lastItem() ?? 0 }} จาก
                         {{ $products->total() }} รายการ
                     </div>
-
-                    {{-- ส่วนปุ่มเปลี่ยนหน้า (Laravel links() พร้อมการตกแต่งให้เหมือนเป๊ะ) --}}
                     <div class="custom-pagination">
                         {{ $products->links('pagination::tailwind') }}
                     </div>

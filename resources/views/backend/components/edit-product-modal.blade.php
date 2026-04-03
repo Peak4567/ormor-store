@@ -2,7 +2,7 @@
     class="fixed inset-0 z-50 hidden flex items-center justify-center bg-black/40 transition-opacity">
 
     <div
-        class="bg-white rounded-xl w-full max-w-[500px] max-h-[90vh] overflow-y-auto shadow-sm relative p-8 font-[Prompt]">
+        class="bg-white rounded-md w-full max-w-[500px] max-h-[90vh] overflow-y-auto shadow-sm relative p-8 font-[Prompt]">
 
         <button type="button" onclick="closeEditModal()"
             class="absolute top-6 right-6 text-gray-800 hover:text-red-500 transition-colors">
@@ -26,8 +26,6 @@
                         <input type="text" name="product_name" id="edit_product_name" required
                             class="w-full border border-gray-200 rounded-xl px-4 py-2.5 focus:outline-none focus:border-green-500 text-sm">
                     </div>
-
-                    {{-- ส่วนราคาปกติ และ ปุ่มเพิ่มราคาตัวแทน --}}
                     <div class="flex gap-3 items-end">
                         <div class="flex-1">
                             <label class="block text-[13px] font-extrabold text-gray-800 mb-1.5">ราคาปกติ <span
@@ -38,8 +36,6 @@
                                     class="w-full border border-gray-200 rounded-xl pl-8 pr-4 py-2.5 focus:outline-none focus:border-green-500 text-sm">
                             </div>
                         </div>
-
-                        {{-- ปุ่มเพิ่มราคาตัวแทน --}}
                         <button type="button" id="showEditAgentPriceBtn" onclick="toggleEditAgentPrice()"
                             class="bg-[#12C45A] hover:bg-green-600 text-white font-bold rounded-xl px-6 py-2.5 flex items-center justify-center gap-2 transition-colors text-sm">
                             <i class="fa-solid fa-percent"></i> เพิ่มราคาตัวแทน
@@ -49,14 +45,11 @@
                     <div id="editAgentPriceContainer" class="hidden mt-4">
                         <label class="block text-[13px] font-extrabold text-gray-800 mb-1.5">ราคาตัวแทน</label>
                         <div class="flex gap-4 items-center">
-                            {{-- ช่องกรอกราคา: ขอบมนเท่ากับราคาปกติ --}}
                             <div class="relative flex-1">
                                 <span class="absolute left-5 top-1/2 -translate-y-1/2 text-gray-300 font-bold">฿</span>
                                 <input type="number" step="0.01" name="agent_price" id="edit_agent_price"
                                     class="w-full border border-gray-200 rounded-2xl pl-10 pr-4 py-3 focus:outline-none focus:border-green-500 text-sm font-medium transition-all">
                             </div>
-
-                            {{-- ปุ่มยกเลิก: สีเทาอ่อน ขอบมนหนา ตัวหนังสือหนา --}}
                             <button type="button" onclick="toggleEditAgentPrice()"
                                 class="bg-[#F8F9FA] hover:bg-gray-100 text-[#1e293b] font-bold rounded-2xl px-8 py-3 flex items-center justify-center gap-2 transition-all text-sm min-w-[120px]">
                                 <i class="fa-solid fa-xmark text-xs"></i> ยกเลิก

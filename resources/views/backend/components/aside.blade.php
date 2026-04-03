@@ -27,11 +27,11 @@
                     <i class="fa-solid fa-box text-2xl group-hover:-translate-y-1 transition-transform"></i>
                     <span class="text-[11px] font-medium mt-1 text-gray-500 text-center">รายการสินค้า</span>
                 </a>
-                <a href="#" class="flex flex-col items-center text-gray-400 hover:text-gray-700 transition-colors group">
-                    <i class="fa-solid fa-gears text-2xl group-hover:-translate-y-1 transition-transform"></i>
-                    <span class="text-[11px] font-medium mt-1 text-gray-500">เพิ่มสต็อก</span>
+                <a href="{{ route('backend.booking') }}" class="flex flex-col items-center text-gray-400 hover:text-gray-700 transition-colors group">
+                    <i class="fa-duotone fa-solid fa-calendar-circle-user text-2xl group-hover:-translate-y-1 transition-transform"></i>
+                    <span class="text-[11px] font-medium mt-1 text-gray-500">จอง</span>
                 </a>
-                <a href="#" class="flex flex-col items-center text-gray-400 hover:text-gray-700 transition-colors group">
+                <a href="{{ route('backend.account') }}" class="flex flex-col items-center text-gray-400 hover:text-gray-700 transition-colors group">
                     <i class="fa-solid fa-money-bill-wave text-2xl group-hover:-translate-y-1 transition-transform"></i>
                     <span class="text-[11px] font-medium mt-1 text-gray-500 text-center">บัญชีรับ-จ่าย</span>
                 </a>

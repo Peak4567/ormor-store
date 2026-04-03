@@ -5,6 +5,7 @@ use App\Http\Controllers\Backend\HomeController;
 use App\Http\Controllers\Backend\ProductController;
 use App\Http\Controllers\Backend\AccountController;
 use App\Http\Controllers\Backend\BookingController;
+use App\Http\Controllers\Backend\UserController;
 
 Route::get('/', function () {
     return view('home');
@@ -27,3 +28,7 @@ Route::delete('/backend/account/{id}', [AccountController::class, 'destroy'])->n
 Route::get('/backend/booking', [BookingController::class, 'index'])->name('backend.booking');
 Route::post('/backend/booking/update-status/{id}', [BookingController::class, 'updateStatus']);
 Route::delete('/backend/{id}', [BookingController::class, 'destroy'])->name('backend.booking.destroy');
+
+Route::get('/backend/users', [UserController::class, 'index'])->name('backend.users');
+Route::delete('/backend/users/destroy/{id}', [UserController::class, 'destroy'])->name('backend.users.destroy');
+Route::post('/backend/users/change-level/{id}', [UserController::class, 'changeLevel'])->name('backend.users.change-level');

@@ -51,15 +51,12 @@ class BookingController extends Controller
         try {
             $booking = Booking::findOrFail($id);
 
-            // 2. อัปเดตสถานะ
             $booking->status = $request->status;
             $booking->save();
 
-            // 3. ส่งคำตอบกลับไปให้ Javascript
-            return response()->json(['success' => true]);
+            return redirect()->back()->with('success', 'อัปเดตสถานะเรียบร้อยแล้ว');
         } catch (\Exception $e) {
-            // ถ้าพลาด ให้ส่ง error กลับไปดูใน Console
-            return response()->json(['success' => false, 'message' => $e->getMessage()], 500);
+            return redirect()->back()->with('error', 'เกิดข้อผิดพลาด ไม่สามารถอัปเดตสถานะได้');
         }
     }
     public function destroy($id)

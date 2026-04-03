@@ -55,7 +55,7 @@
             </div>
         </div>
 
-        <a href="" class="text-center p-2 cursor-pointer text-gray-400 hover:text-gray-600 transition-colors">
+        <a href="{{ route('backend.users') }}" class="text-center p-2 cursor-pointer text-gray-400 hover:text-gray-600 transition-colors">
             <i class="fa-regular fa-users text-xl"></i>
             <p class="text-gray-500 text-md mt-1">จัดการผู้ใช้</p>
         </a>

@@ -38,3 +38,4 @@ function confirmDelete(id, name, url) {
     })
     
 }
+

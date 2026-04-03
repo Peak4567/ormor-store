@@ -91,25 +91,25 @@
                                     <td class="py-5 px-4">
                                         <div class="relative inline-block text-left w-36">
                                             <select onchange="updateBookingStatus({{ $booking->id }}, this.value)"
-                                                class="appearance-none w-full px-3 py-1.5 rounded-xl text-xs border transition-all cursor-pointer focus:outline-none 
-    @if ($booking->status == 'สำเร็จ') bg-green-50 text-green-600 border-green-200 
-    @elseif ($booking->status == 'รอตรวจสอบ') bg-yellow-50 text-yellow-600 border-yellow-200 
-    @elseif ($booking->status == 'กำลังดำเนินการ') bg-blue-50 text-blue-600 border-blue-200 
-    @elseif ($booking->status == 'ยกเลิก') bg-red-50 text-red-600 border-red-200 @endif">
+                                                class="appearance-none w-full px-3 py-1.5 rounded-xl text-xs font-bold border transition-all cursor-pointer focus:outline-none text-center
+            @if ($booking->status == 'สำเร็จ') bg-green-50 text-green-600 border-green-200 
+            @elseif ($booking->status == 'รอตรวจสอบ') bg-yellow-50 text-yellow-600 border-yellow-200 
+            @elseif ($booking->status == 'กำลังดำเนินการ') bg-blue-50 text-blue-600 border-blue-200 
+            @elseif ($booking->status == 'ยกเลิก') bg-red-50 text-red-600 border-red-200 @endif">
 
-                                                <option value="รอตรวจสอบ"
+                                                <option value="รอตรวจสอบ" class="bg-white text-yellow-600"
                                                     {{ $booking->status == 'รอตรวจสอบ' ? 'selected' : '' }}>รอตรวจสอบ
                                                 </option>
-                                                <option value="กำลังดำเนินการ"
+                                                <option value="กำลังดำเนินการ" class="bg-white text-blue-600"
                                                     {{ $booking->status == 'กำลังดำเนินการ' ? 'selected' : '' }}>
                                                     กำลังดำเนินการ</option>
-                                                <option value="สำเร็จ"
+                                                <option value="สำเร็จ" class="bg-white text-green-600"
                                                     {{ $booking->status == 'สำเร็จ' ? 'selected' : '' }}>สำเร็จ</option>
-                                                <option value="ยกเลิก"
+                                                <option value="ยกเลิก" class="bg-white text-red-600"
                                                     {{ $booking->status == 'ยกเลิก' ? 'selected' : '' }}>ยกเลิก</option>
                                             </select>
                                             <div
-                                                class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-current opacity-50">
+                                                class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-3 text-current opacity-60">
                                                 <i class="fa-solid fa-chevron-down text-[10px]"></i>
                                             </div>
                                         </div>
@@ -167,9 +167,5 @@
 
     @include('backend.components.sweetalert-messages')
     <script src="{{ asset('assets/js/backend/sweetalert.js') }}"></script>
-    <script>
-        const UPDATE_STATUS_URL = "{{ url('backend/booking/update-status') }}";
-        const CSRF_TOKEN = "{{ csrf_token() }}";
-    </script>
     <script src="{{ asset('assets/js/backend/update-booking-status.js') }}"></script>
 @endsection

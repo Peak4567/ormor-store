@@ -6,6 +6,7 @@ use App\Http\Controllers\Backend\ProductController;
 use App\Http\Controllers\Backend\AccountController;
 use App\Http\Controllers\Backend\BookingController;
 use App\Http\Controllers\Backend\UserController;
+use App\Http\Controllers\Backend\SettingController;
 
 Route::get('/', function () {
     return view('home');
@@ -32,3 +33,6 @@ Route::delete('/backend/{id}', [BookingController::class, 'destroy'])->name('bac
 Route::get('/backend/users', [UserController::class, 'index'])->name('backend.users');
 Route::delete('/backend/users/destroy/{id}', [UserController::class, 'destroy'])->name('backend.users.destroy');
 Route::post('/backend/users/change-level/{id}', [UserController::class, 'changeLevel'])->name('backend.users.change-level');
+
+Route::get('/backend/settings', [SettingController::class, 'index'])->name('backend.settings');
+Route::post('/backend/settings/update', [SettingController::class, 'update'])->name('backend.settings.update');

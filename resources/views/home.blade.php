@@ -598,6 +598,4 @@
     </div>
 </section>
 
-@section('footer')
-
 @endsection

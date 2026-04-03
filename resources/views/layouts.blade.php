@@ -26,11 +26,8 @@
     @include('components.navbar')
 
     @yield('content')
-<<<<<<< HEAD
 
     @include('components.footer')
-=======
-    
->>>>>>> 5a9ab29eb9f637e34d4381ae6923f1cd067ad546
+
 </body>
 </html>

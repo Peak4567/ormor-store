@@ -4,5 +4,4 @@
         <img src="{{ asset('/assets/image/logo.png') }}" alt="Logo" class="w-10 h-auto object-contain">
         <h1 class="text-xl font-bold flex items-center ml-4 text-gray-800">ORMOR BACKEND</h1>
     </div>
-    
 </nav>

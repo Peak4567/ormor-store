@@ -6,22 +6,18 @@ use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
 {
-    /**
-     * Run the migrations.
-     */
     public function up()
     {
         Schema::create('account', function (Blueprint $table) {
             $table->id();
-            // สร้างคอลัมน์ income เป็นแบบ decimal เพื่อเก็บตัวเลขทศนิยม (เงิน)
             $table->decimal('income', 15, 2)->default(0.00);
+            
+            $table->decimal('expense', 15, 2)->default(0.00);
+            
             $table->timestamps();
         });
     }
 
-    /**
-     * Reverse the migrations.
-     */
     public function down(): void
     {
         Schema::dropIfExists('account');

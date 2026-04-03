@@ -1,4 +1,5 @@
-<nav x-data="{ 
+<nav
+x-data="{ 
         mobileMenuOpen: false, 
         visible: true, 
         lastScroll: 0,
@@ -60,7 +61,7 @@
             x-transition:enter="transition ease-out duration-500"
             x-transition:enter-start="opacity-0 translate-y-[-20px]"
             x-transition:enter-end="opacity-100 translate-y-0"
-            x-transition:leave="transition ease-in duration-400"
+            x-transition:leave="transition ease-in duration-300"
             x-transition:leave-start="opacity-100 translate-y-[-5px]"
             x-transition:leave-end="opacity-0 translate-y-[-10px]"
             class="absolute top-full left-0 right-0 mt-4 sm:hidden bg-black/70 backdrop-blur-2xl border border-white/15 rounded-3xl p-6 shadow-2xl z-[60]"

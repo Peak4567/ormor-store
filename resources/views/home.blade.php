@@ -2,7 +2,7 @@
 
 @section('content')
 
-<section class="bg-[#7ACB53] text-white min-h-screen flex items-center justify-center overflow-x-hidden w-full py-12 lg:py-12">
+<section class="bg-gradient-to-t from-[#7ACB53]/100 to-[#B7E65A]/90 text-white min-h-screen flex items-center justify-center overflow-x-hidden w-full py-12 lg:py-12">
 
     <div class="grid w-full max-w-screen-xl px-6 lg:px-32 mx-auto gap-12 lg:py-12 grid-cols-1 lg:grid-cols-12 items-center">
 
@@ -131,15 +131,15 @@
     </div>
 </section>
 
-<section class="max-w-screen-xl mx-auto w-full px-6 py-6">
+<section class="max-w-screen-xl mx-auto w-full px-4 py-6">
     <div class="flex flex-col lg:flex-row gap-6">
 
-        <div class="w-full lg:w-1/4">
-            <h2 class="text-3xl font-bold text-[#1E2A1E] leading-tight mb-4">
+        <div class="w-full lg:w-1/4 text-center sm:text-start">
+            <h2 class="text-3xl sm:text-4xl font-bold text-[#1E2A1E] leading-tight mb-4">
                 ขั้นตอนการใช้งาน <br>
                 <span class="text-[#57C84D]">ORMOR</span>
             </h2>
-            <p class="text-[#4B5B4B]/70 text-sm font-normal leading-relaxed">
+            <p class="text-[#4B5B4B]/70 text-xs sm:text-base font-medium leading-relaxed max-w-sm">
                 เริ่มต้นง่ายๆ เพียงไม่กี่ขั้นตอน เพื่อประสบการณ์การใช้งานที่รวดเร็วและปลอดภัยที่สุดสำหรับคุณ
             </p>
         </div>
@@ -220,49 +220,34 @@
 <section x-data="{ view: 'grid', tab: 'all', show: false }"
     x-init="setTimeout(() => show = true, 50)"
     x-cloak
-    class="max-w-screen-xl mx-auto w-full px-6 py-12">
+    class="max-w-screen-xl mx-auto w-full px-4 py-12">
 
     <div class="flex flex-col lg:flex-row lg:items-center justify-between mb-10 gap-6">
-        <div class="text-left lg:w-1/3">
-            <h2 class="text-3xl font-bold text-[#1E2A1E] tracking-tight mb-1">
+        <div class="text-center sm:text-left lg:w-1/3">
+            <h2 class="text-4xl font-bold text-[#1E2A1E] tracking-tight mb-1">
                 สถานะแพ็กเกจ<span class="text-[#57C84D]">วันนี้</span>
             </h2>
-            <p class="text-[#4B5B4B]/70 text-sm font-normal leading-relaxed">
+            <p class="text-[#4B5B4B]/70 text-xs sm:text-base font-medium leading-relaxed">
                 อัปเดตข้อมูลสินค้าและสถานะการจองแบบเรียลไทม์
             </p>
         </div>
 
-        <div class="flex justify-start lg:justify-center lg:w-1/3">
-            <div class="flex bg-slate-50/5 p-1 rounded-2xl border border-slate-100">
-                <button @click="tab = 'all'"
-                    :class="tab === 'all' ? 'bg-white text-[#57C84D] shadow-sm' : 'text-slate-400'"
-                    class="px-5 py-2 text-sm font-medium rounded-xl transition-all">ทั้งหมด</button>
-                <button @click="tab = 'recommended'"
-                    :class="tab === 'recommended' ? 'bg-white text-[#57C84D] shadow-sm' : 'text-slate-400'"
-                    class="px-5 py-2 text-sm font-medium transition-all whitespace-nowrap rounded-xl">สินค้าแนะนำ</button>
-                <button @click="tab = 'soon'"
-                    :class="tab === 'soon' ? 'bg-white text-[#57C84D] shadow-sm' : 'text-slate-400'"
-                    class="px-5 py-2 text-sm font-medium transition-all whitespace-nowrap rounded-xl">จองคิวเร็วนี้</button>
-            </div>
-        </div>
+        <div class="flex flex-row items-center justify-center sm:justify-between gap-2 lg:contents">
 
-        <div class="flex justify-start lg:justify-end lg:w-1/3">
-            <div class="flex bg-slate-50/5 p-1 rounded-xl border border-slate-100">
-                <button @click="view = 'grid'"
-                    :class="view === 'grid' ? 'bg-white text-[#57C84D] shadow-sm' : 'text-slate-400'"
-                    class="p-2 rounded-lg transition-all" title="Grid View">
-                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2">
-                        <path d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z"></path>
-                    </svg>
-                </button>
-                <button @click="view = 'list'"
-                    :class="view === 'list' ? 'bg-white text-[#57C84D] shadow-sm' : 'text-slate-400'"
-                    class="p-2 rounded-lg transition-all" title="List View">
-                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2">
-                        <path d="M4 6h16M4 12h16M4 18h16"></path>
-                    </svg>
-                </button>
+            <div class="flex justify-start lg:justify-center overflow-x-auto no-scrollbar">
+                <div class="flex text-xs sm:text-sm bg-slate-50/5 p-1 rounded-2xl border border-slate-100 whitespace-nowrap">
+                    <button @click="tab = 'all'"
+                        :class="tab === 'all' ? 'bg-white text-[#57C84D] shadow-sm' : 'text-slate-400'"
+                        class="px-4 py-2 text-sm font-medium rounded-xl transition-all">ทั้งหมด</button>
+                    <button @click="tab = 'recommended'"
+                        :class="tab === 'recommended' ? 'bg-white text-[#57C84D] shadow-sm' : 'text-slate-400'"
+                        class="px-4 py-2 text-sm font-medium transition-all rounded-xl">สินค้าแนะนำ</button>
+                    <button @click="tab = 'soon'"
+                        :class="tab === 'soon' ? 'bg-white text-[#57C84D] shadow-sm' : 'text-slate-400'"
+                        class="px-4 py-2 text-sm font-medium transition-all rounded-xl">จองคิวเร็วนี้</button>
+                </div>
             </div>
+
         </div>
     </div>
 
@@ -274,15 +259,11 @@
             x-transition:enter-start="opacity-0 translate-y-4"
             x-transition:enter-end="opacity-100 translate-y-0"
             :class="view === 'list' ? 'lg:flex lg:items-center lg:justify-between mt-4' : ''"
-            class="group relative bg-white border border-slate-200 rounded-2xl p-7 transition-all duration-300 hover:border-[#57C84D]">
+            class="group relative bg-white border-2 border-slate-200 rounded-2xl p-7 transition-all duration-300 hover:border-[#57C84D]/50 hover:-translate-y-1.5">
 
-            <div :class="view === 'list' ? 'lg:absolute lg:-top-4 lg:left-6 lg:right-auto lg:flex-row' : 'absolute top-6 right-6 flex-col items-end'" 
-                 class="flex gap-2 absolute top-6 right-6 flex-col items-end lg:flex-col">
-                <span class="text-sm font-medium text-red-500 bg-red-100/50 px-3 py-1 rounded-md whitespace-nowrap">
-                    จองคิวได้วันพรุ่งนี้
-                </span>
-                <span class="text-sm font-medium text-purple-500 bg-purple-100/50 px-3 py-1 rounded-md whitespace-nowrap">
-                    จองคิววันเสาร์นี้
+            <div :class="view === 'list' ? 'lg:absolute lg:-top-4 lg:left-6 lg:right-auto' : 'absolute top-6 right-6'" class="absolute top-6 right-6">
+                <span class="text-xs sm:text-sm font-medium text-sky-500 bg-sky-100 px-3 py-1 rounded-md">
+                    <i class="fa-duotone fa-solid fa-calendar-lines-pen"></i> จองได้เร็วๆ นี้!
                 </span>
             </div>
 
@@ -292,20 +273,37 @@
                     <h3 class="text-xl font-medium text-[#1E2A1E]">100 Line Coins</h3>
                 </div>
 
-                <div :class="view === 'list' ? 'lg:mb-0 lg:flex lg:items-center lg:gap-12 lg:flex-1 lg:justify-center' : 'mb-8'" class="mb-8">
+                <div :class="view === 'list' ? 'lg:mb-0 lg:flex lg:items-center lg:gap-12 lg:flex-1 lg:justify-start' : 'mb-8'" class="mb-8">
                     <div class="flex items-baseline gap-1">
                         <span class="text-3xl font-semibold text-[#1E2A1E]">500</span>
                         <span class="text-sm text-[#4B5B4B]">บาท</span>
                     </div>
 
-                    <div :class="view === 'list' ? 'lg:mt-0 lg:flex lg:gap-4 lg:space-y-0' : 'mt-3 space-y-2.5'" class="mt-3 space-y-2.5">
-                        <div class="flex justify-between items-center gap-2">
-                             <span class="text-sm font-medium text-slate-500 bg-slate-100 px-3 py-1 rounded-md whitespace-nowrap">คิวปัจจุบัน: 10 คน</span>
+                    <div :class="view === 'list' ? 'lg:mt-0 lg:flex lg:items-center lg:gap-6 lg:flex-1 lg:justify-between' : 'mt-3 relative'" class="mt-3">
+
+                        <div :class="view === 'list' ? 'lg:flex lg:gap-3 lg:space-y-0' : 'space-y-2.5'" class="space-y-2.5">
+                            <div class="flex justify-between items-center gap-2">
+                                <span class="text-sm font-medium text-slate-500 bg-slate-100 px-3 py-1 rounded-md whitespace-nowrap">คิวปัจจุบัน: 10 คน</span>
+                            </div>
+                            <div class="flex justify-between items-center gap-2">
+                                <span class="text-sm font-medium text-slate-500 bg-slate-100 px-3 py-1 rounded-md whitespace-nowrap">คงเหลือ: 10 ชิ้น</span>
+                            </div>
                         </div>
-                        <div class="flex justify-between items-center gap-2">
-                            <span class="text-sm font-medium text-slate-500 bg-slate-100 px-3 py-1 rounded-md whitespace-nowrap">คงเหลือ: 10 ชิ้น</span>
+
+                        <div :class="view === 'list' 
+                    ? 'lg:static lg:flex lg:flex-row lg:gap-2 lg:items-center' 
+                    : 'absolute top-0 right-0 flex flex-col items-end gap-2.5'"
+                            class="flex">
+                            <span class="text-sm font-medium text-[#F4B400] bg-[#FFF8E8] px-3 py-1 whitespace-nowrap rounded-md">
+                                <i class="fa-duotone fa-solid fa-calendar text-amber-500"></i> 4 เม.ย. 69
+                            </span>
+                            <span class="text-sm font-medium text-[#F4B400] bg-[#FFF8E8] px-3 py-1 whitespace-nowrap rounded-md">
+                                <i class="fa-duotone fa-solid fa-alarm-clock text-amber-500"></i> 18.00
+                            </span>
                         </div>
-                        <div class="flex justify-between items-center pt-2 border-t border-slate-100" :class="view === 'list' ? 'lg:border-t-0 lg:pt-0' : ''">
+
+                        <div class="flex justify-between items-center mt-2 pt-2 border-t border-slate-100"
+                            :class="view === 'list' ? 'lg:border-t-0 lg:pt-0 lg:mt-0 lg:ml-auto' : ''">
                             <span class="text-sm text-[#4B5B4B]" :class="view === 'list' ? 'lg:hidden' : ''">สถานะ</span>
                             <span class="flex items-center gap-1.5 text-sm font-medium text-[#57C84D]">
                                 <span class="w-1.5 h-1.5 bg-[#57C84D] rounded-full animate-pulse"></span>
@@ -327,10 +325,12 @@
             x-transition:enter-start="opacity-0 translate-y-4"
             x-transition:enter-end="opacity-100 translate-y-0"
             :class="view === 'list' ? 'lg:flex lg:items-center lg:justify-between mt-4' : ''"
-            class="group relative bg-white border border-slate-200 rounded-xl p-7 transition-all duration-300 hover:border-[#57C84D]">
+            class="group relative bg-white border-2 border-slate-200 rounded-xl p-7 transition-all duration-300 hover:border-[#57C84D]/50 hover:-translate-y-1.5">
 
             <div :class="view === 'list' ? 'lg:absolute lg:-top-4 lg:left-6 lg:right-auto' : 'absolute top-6 right-6'" class="absolute top-6 right-6">
-                <span class="text-sm font-medium text-amber-500 bg-amber-100/50 px-3 py-1 rounded-md">สินค้าขายดี!</span>
+                <span class="text-xs sm:text-sm font-medium text-orange-500 bg-orange-100 px-3 py-1 rounded-md">
+                    <i class="fa-duotone fa-fire"></i> สินค้าขายดี!
+                </span>
             </div>
 
             <div :class="view === 'list' ? 'lg:flex lg:items-center lg:gap-10 lg:flex-1' : ''">
@@ -338,25 +338,34 @@
                     <p class="text-sm font-medium text-[#57C84D]">แพ็กเเกจลำดับที่ 2</p>
                     <h3 class="text-xl font-medium text-[#1E2A1E]">500 Line Coins</h3>
                 </div>
-                <div :class="view === 'list' ? 'lg:mb-0 lg:flex lg:items-center lg:gap-12 lg:flex-1 lg:justify-center' : 'mb-8'" class="mb-8">
+
+                <div :class="view === 'list' ? 'lg:mb-0 lg:flex lg:items-center lg:gap-12 lg:flex-1 lg:w-full lg:justify-between' : 'mb-8'" class="mb-8">
+
                     <div class="flex items-baseline gap-1">
                         <span class="text-3xl font-semibold text-[#1E2A1E]">750</span>
                         <span class="text-sm text-[#4B5B4B]">บาท</span>
                     </div>
-                    <div :class="view === 'list' ? 'lg:mt-0 lg:flex lg:gap-4 lg:space-y-0' : 'mt-3 space-y-2.5'" class="mt-3 space-y-2.5">
-                        <div class="flex justify-between items-center gap-2">
-                             <span class="text-sm font-medium text-slate-500 bg-slate-100 px-3 py-1 rounded-md whitespace-nowrap">คิวปัจจุบัน: 10 คน</span>
+
+                    <div :class="view === 'list' ? 'lg:mt-0 lg:flex lg:items-center lg:gap-8 lg:flex-1' : 'mt-3 space-y-2.5'" class="text-xs sm:text-sm mt-3 space-y-2.5">
+
+                        <div :class="view === 'list' ? 'lg:flex lg:gap-3 lg:space-y-0' : 'space-y-2.5'" class="space-y-2.5">
+                            <div class="flex justify-between items-center gap-2">
+                                <span class="text-sm font-medium text-slate-500 bg-slate-100 px-3 py-1 rounded-md whitespace-nowrap">คิวปัจจุบัน: 10 คน</span>
+                            </div>
+                            <div class="flex justify-between items-center gap-2">
+                                <span class="text-sm font-medium text-slate-500 bg-slate-100 px-3 py-1 rounded-md whitespace-nowrap">คงเหลือ: 10 ชิ้น</span>
+                            </div>
                         </div>
-                        <div class="flex justify-between items-center gap-2">
-                            <span class="text-sm font-medium text-slate-500 bg-slate-100 px-3 py-1 rounded-md whitespace-nowrap">คงเหลือ: 10 ชิ้น</span>
-                        </div>
-                        <div class="flex justify-between items-center pt-2 border-t border-slate-100" :class="view === 'list' ? 'lg:border-t-0 lg:pt-0' : ''">
+
+                        <div class="flex justify-between items-center mt-2 pt-2 border-t border-slate-100"
+                            :class="view === 'list' ? 'lg:border-t-0 lg:pt-0 lg:mt-0 lg:ml-auto' : ''">
                             <span class="text-sm text-[#4B5B4B]" :class="view === 'list' ? 'lg:hidden' : ''">สถานะ</span>
-                            <span class="flex items-center gap-1.5 text-sm font-medium text-[#57C84D]">
+                            <span class="flex items-center gap-1.5 text-sm font-medium text-[#57C84D] whitespace-nowrap">
                                 <span class="w-1.5 h-1.5 bg-[#57C84D] rounded-full animate-pulse"></span>
                                 เปิดรับ
                             </span>
                         </div>
+
                     </div>
                 </div>
             </div>
@@ -371,32 +380,41 @@
             x-transition:enter-start="opacity-0 translate-y-4"
             x-transition:enter-end="opacity-100 translate-y-0"
             :class="view === 'list' ? 'lg:flex lg:items-center lg:justify-between' : ''"
-            class="group relative bg-rose-100/10 border border-rose-200 rounded-xl p-7 grayscale-[0.5] opacity-80">
+            class="group relative bg-rose-100/20 border-2 border-rose-200 rounded-xl p-7 transition-all duration-300 hover:-translate-y-1.5">
 
             <div :class="view === 'list' ? 'lg:flex lg:items-center lg:gap-10 lg:flex-1' : ''">
                 <div :class="view === 'list' ? 'lg:mb-0 lg:min-w-[200px]' : 'mb-6'" class="mb-6">
                     <p class="text-sm font-medium text-[#57C84D]">แพ็กเเกจลำดับที่ 3</p>
                     <h3 class="text-xl font-medium text-[#1E2A1E]">300 Line Coins</h3>
                 </div>
-                <div :class="view === 'list' ? 'lg:mb-0 lg:flex lg:items-center lg:gap-12 lg:flex-1 lg:justify-center' : 'mb-8'" class="mb-8">
+
+                <div :class="view === 'list' ? 'lg:mb-0 lg:flex lg:items-center lg:gap-12 lg:flex-1 lg:w-full lg:justify-between' : 'mb-8'" class="mb-8">
+
                     <div class="flex items-baseline gap-1">
                         <span class="text-3xl font-semibold text-[#1E2A1E]">1,450</span>
                         <span class="text-sm text-[#4B5B4B]">บาท</span>
                     </div>
-                    <div :class="view === 'list' ? 'lg:mt-0 lg:flex lg:gap-4 lg:space-y-0' : 'mt-3 space-y-2.5'" class="mt-3 space-y-2.5">
-                        <div class="flex justify-between items-center gap-2">
-                             <span class="text-sm font-medium text-slate-500 bg-slate-100 px-3 py-1 rounded-md whitespace-nowrap grayscale">คิวปัจจุบัน: 0 คน</span>
+
+                    <div :class="view === 'list' ? 'lg:mt-0 lg:flex lg:items-center lg:gap-8 lg:flex-1' : 'mt-3 space-y-2.5'" class="text-xs sm:text-sm mt-3 space-y-2.5">
+
+                        <div :class="view === 'list' ? 'lg:flex lg:gap-3 lg:space-y-0' : 'space-y-2.5'" class="space-y-2.5">
+                            <div class="flex justify-between items-center gap-2">
+                                <span class="text-sm font-medium text-slate-500 bg-slate-100 px-3 py-1 rounded-md whitespace-nowrap grayscale">คิวปัจจุบัน: 0 คน</span>
+                            </div>
+                            <div class="flex justify-between items-center gap-2">
+                                <span class="text-sm font-medium text-slate-500 bg-slate-100 px-3 py-1 rounded-md whitespace-nowrap grayscale">คงเหลือ: 0 ชิ้น</span>
+                            </div>
                         </div>
-                        <div class="flex justify-between items-center gap-2">
-                            <span class="text-sm font-medium text-slate-500 bg-slate-100 px-3 py-1 rounded-md whitespace-nowrap grayscale">คงเหลือ: 0 ชิ้น</span>
-                        </div>
-                        <div class="flex justify-between items-center pt-2 border-t border-slate-100" :class="view === 'list' ? 'lg:border-t-0 lg:pt-0' : ''">
+
+                        <div class="flex justify-between items-center mt-2 pt-2 border-t border-slate-100"
+                            :class="view === 'list' ? 'lg:border-t-0 lg:pt-0 lg:mt-0 lg:ml-auto' : ''">
                             <span class="text-sm text-[#4B5B4B]" :class="view === 'list' ? 'lg:hidden' : ''">สถานะ</span>
-                            <span class="flex items-center gap-1.5 text-sm font-medium text-red-500 grayscale">
+                            <span class="flex items-center gap-1.5 text-sm font-medium text-red-500 whitespace-nowrap grayscale">
                                 <span class="w-1.5 h-1.5 bg-red-500 rounded-full animate-pulse grayscale"></span>
                                 สินค้าหมด
                             </span>
                         </div>
+
                     </div>
                 </div>
             </div>
@@ -408,64 +426,178 @@
     </div>
 </section>
 
-<section class="max-w-screen-xl mx-auto w-full px-6 py-16">
-    <div class="mb-10 text-left lg:w-1/3">
-            <h2 class="text-3xl font-bold text-[#1E2A1E] tracking-tight mb-1">
+<section class="max-w-screen-xl mx-auto w-full px-4 py-12">
+    <div class="flex flex-col lg:flex-row gap-16 items-center">
+
+        <div class="w-full lg:w-1/3 text-center sm:text-start">
+            <h2 class="text-3xl sm:text-4xl font-bold text-slate-900 mb-1.5 sm:mb-2">
                 สถานะ<span class="text-[#57C84D]">ระบบ</span>
             </h2>
-            <p class="text-[#4B5B4B]/70 text-sm font-normal leading-relaxed">
-                อัปเดตข้อมูลสถานะปัจจุบันบนเว็ปไซต์ของเรา
+            <p class="text-slate-500 text-xs sm:text-base font-medium leading-relaxed max-w-sm">
+                เรามุ่งมั่นพัฒนาเทคโนโลยีเพื่อรองรับผู้ใช้งานจำนวนมาก ด้วยระบบที่มีเสถียรภาพและรวดเร็วที่สุดในอุตสาหกรรม
             </p>
-        </div>
-
-    <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
-
-        <div class="bg-white border border-slate-100 p-8 rounded-3xl shadow-sm hover:shadow-md transition-shadow duration-300">
-            <div class="flex items-center gap-4 mb-4">
-                <div class="w-10 h-10 rounded-xl bg-slate-50 flex items-center justify-center text-[#57C84D]">
-                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="1.5">
-                        <path d="M15 19.128a9.38 9.38 0 002.625.372 9.337 9.337 0 004.121-.952 4.125 4.125 0 00-7.533-2.493M15 19.128v-.003c0-1.113-.285-2.16-.786-3.07M15 19.128v.106A12.318 12.318 0 018.624 21c-2.331 0-4.512-.645-6.374-1.766l-.001-.109a6.375 6.375 0 0111.964-3.07M12 6.375a3.375 3.375 0 11-6.75 0 3.375 3.375 0 016.75 0zm8.25 2.25a2.625 2.625 0 11-5.25 0 2.625 2.625 0 015.25 0z" />
-                    </svg>
+            <div class="mt-10 pt-10 border-t border-slate-200 flex flex-row justify-center sm:justify-start gap-4 sm:gap-8 text-center sm:text-start">
+                <div>
+                    <p class="text-slate-900 hover:text-sky-500 transition-colors font-semibold text-2xl">99.9%</p>
+                    <p class="text-slate-400 text-xs font-medium">ระบบการทำงาน</p>
                 </div>
-                <span class="text-slate-500 font-medium">ยอดคิวปัจจุบัน</span>
-            </div>
-            <div class="flex items-baseline gap-2">
-                <span class="text-4xl font-bold text-slate-800">50</span>
-                <span class="text-slate-400 text-sm">คน</span>
+                <div>
+                    <p class="text-slate-900 hover:text-green-500 transition-colors font-semibold text-2xl">24/7</p>
+                    <p class="text-slate-400 text-xs font-medium">ระบบการติดต่อ</p>
+                </div>
             </div>
         </div>
 
-        <div class="bg-white border border-slate-100 p-8 rounded-3xl shadow-sm hover:shadow-md transition-shadow duration-300">
-            <div class="flex items-center gap-4 mb-4">
-                <div class="w-10 h-10 rounded-xl bg-slate-50 flex items-center justify-center text-[#57C84D]">
-                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="1.5">
-                        <path d="M2.25 3h1.386c.51 0 .955.343 1.087.835l.383 1.437M7.5 14.25a3 3 0 00-3 3h15.75m-12.75-3h11.218c1.121-2.3 2.1-4.684 2.924-7.138a60.114 60.114 0 00-16.536-1.84M7.5 14.25L5.106 5.272M6 20.25a.75.75 0 11-1.5 0 .75.75 0 011.5 0zm12.75 0a.75.75 0 11-1.5 0 .75.75 0 011.5 0z" />
-                    </svg>
-                </div>
-                <span class="text-slate-500 font-medium">สินค้าพร้อมขาย</span>
-            </div>
-            <div class="flex items-baseline gap-2">
-                <span class="text-4xl font-bold text-slate-800">50</span>
-                <span class="text-slate-400 text-sm">คน</span>
-            </div>
-        </div>
+        <div class="w-full lg:w-2/3">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
 
-        <div class="bg-white border border-slate-100 p-8 rounded-3xl shadow-sm hover:shadow-md transition-shadow duration-300">
-            <div class="flex items-center gap-4 mb-4">
-                <div class="w-10 h-10 rounded-xl bg-slate-50 flex items-center justify-center text-[#57C84D]">
-                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="1.5">
-                        <path d="M9 12.75L11.25 15 15 9.75M21 12c0 1.268-.63 2.39-1.593 3.068a3.745 3.745 0 01-1.043 3.296 3.745 3.745 0 01-3.296 1.043A3.745 3.745 0 0110.068 21c-1.268 0-2.39-.63-3.068-1.593a3.746 3.746 0 01-3.296-1.043 3.745 3.745 0 01-1.043-3.296A3.745 3.745 0 013 12c0-1.268.63-2.39 1.593-3.068a3.745 3.745 0 011.043-3.296 3.746 3.746 0 013.296-1.043A3.746 3.746 0 0113.932 3c1.268 0 2.39.63 3.068 1.593a3.746 3.746 0 013.296 1.043 3.746 3.746 0 011.043 3.296A3.745 3.745 0 0121 12z" />
-                    </svg>
+                <div class="group relative p-8 sm:p-10 rounded-3xl bg-white border border-slate-200 hover:-translate-y-1.5 hover:shadow-[0_40px_80px_rgba(0,0,0,0.04)] transition-all duration-700 overflow-hidden">
+                    <div class="absolute inset-0 bg-gradient-to-b from-blue-50/50 to-blue-100/50 opacity-0 group-hover:opacity-100 transition-all duration-500"></div>
+                    <div class="relative z-10 flex flex-col items-center text-center sm:items-start sm:text-left gap-4 sm:gap-8">
+                        <div class="w-14 h-14 bg-blue-50 text-blue-500 rounded-2xl flex items-center justify-center group-hover:bg-blue-100/50 group-hover:scale-110 transition-all duration-500">
+                            <i class="fa-duotone fa-solid fa-box text-2xl"></i>
+                        </div>
+                        <div>
+                            <p class="text-slate-500 font-medium text-base mb-2">ผู้สั่งซื้อสินค้า</p>
+                            <div class="relative inline-block mb-2">
+                                <h3 class="text-5xl sm:text-7xl font-semibold text-slate-900 transition-all group-hover:text-blue-600">0</h3>
+                                <span class="absolute -bottom-1 left-0 w-full h-1 bg-blue-600 origin-left scale-x-0 group-hover:scale-x-100 transition-transform duration-500"></span>
+                            </div>
+                            <p class="text-slate-500 mt-2 text-sm font-medium leading-relaxed max-w-xs mx-auto sm:mx-0">
+                                จำนวนการเข้าใช้งานและทำรายการทั้งหมดบนแพลตฟอร์มในปีนี้
+                            </p>
+                        </div>
+                    </div>
+                    <div class="absolute -bottom-16 -right-16 w-32 h-32 bg-blue-500/5 rounded-full group-hover:scale-300 transition-transform duration-500"></div>
                 </div>
-                <span class="text-slate-500 font-medium">สมาชิกที่สมัคร</span>
-            </div>
-            <div class="flex items-baseline gap-2">
-                <span class="text-4xl font-bold text-slate-800">124</span>
-                <span class="text-slate-400 text-sm">คน</span>
+
+                <div class="group relative p-8 sm:p-10 rounded-3xl bg-white border border-slate-200 hover:-translate-y-1.5 md:hover:translate-y-8 hover:shadow-[0_40px_80px_rgba(0,0,0,0.04)] transition-all duration-700 md:translate-y-10 overflow-hidden">
+                    <div class="absolute inset-0 bg-gradient-to-b from-orange-50/50 to-orange-100/50 opacity-0 group-hover:opacity-100 transition-all duration-500"></div>
+                    <div class="relative z-10 flex flex-col items-center text-center sm:items-start sm:text-left gap-4 sm:gap-8">
+                        <div class="w-14 h-14 bg-orange-50 text-orange-500 rounded-2xl flex items-center justify-center group-hover:bg-orange-100/50 group-hover:scale-110 transition-all duration-500">
+                            <i class="fa-duotone fa-solid fa-circle-nodes text-2xl"></i>
+                        </div>
+                        <div>
+                            <p class="text-slate-500 font-medium text-base mb-2">ยอดคิวปัจจุบัน</p>
+                            <div class="relative inline-block mb-2">
+                                <h3 class="text-5xl sm:text-7xl font-semibold text-slate-900 transition-all group-hover:text-orange-600">0</h3>
+                                <span class="absolute -bottom-1 left-0 w-full h-1 bg-orange-600 origin-left scale-x-0 group-hover:scale-x-100 transition-transform duration-500"></span>
+                            </div>
+                            <p class="text-slate-500 mt-2 text-sm font-medium leading-relaxed max-w-xs mx-auto sm:mx-0">
+                                รายการที่ดำเนินการสำเร็จผ่านระบบอัตโนมัติ 24 ชั่วโมง
+                            </p>
+                        </div>
+                    </div>
+                    <div class="absolute -bottom-16 -right-16 w-32 h-32 bg-orange-500/5 rounded-full group-hover:scale-300 transition-transform duration-500"></div>
+                </div>
+
+                <div class="group relative p-8 sm:p-10 rounded-3xl bg-white border border-slate-200 hover:-translate-y-1.5 hover:shadow-[0_40px_80px_rgba(0,0,0,0.04)] transition-all duration-700 overflow-hidden">
+                    <div class="absolute inset-0 bg-gradient-to-b from-emerald-50/50 to-emerald-100/50 opacity-0 group-hover:opacity-100 transition-all duration-500"></div>
+                    <div class="relative z-10 flex flex-col items-center text-center sm:items-start sm:text-left gap-4 sm:gap-8">
+                        <div class="w-14 h-14 bg-emerald-50 text-emerald-500 rounded-2xl flex items-center justify-center group-hover:bg-emerald-100/50 group-hover:scale-110 transition-all duration-500">
+                            <i class="fa-duotone fa-solid fa-badge-check text-2xl"></i>
+                        </div>
+                        <div>
+                            <p class="text-slate-500 font-medium text-base mb-2">สินค้าพร้อมขาย</p>
+                            <div class="relative inline-block mb-2">
+                                <h3 class="text-5xl sm:text-7xl font-semibold text-slate-900 transition-all group-hover:text-emerald-600">0</h3>
+                                <span class="absolute -bottom-1 left-0 w-full h-1 bg-emerald-600 origin-left scale-x-0 group-hover:scale-x-100 transition-transform duration-500"></span>
+                            </div>
+                            <p class="text-slate-500 mt-2 text-sm font-medium leading-relaxed max-w-xs mx-auto sm:mx-0">
+                                สมาชิกที่ใช้งานระบบอย่างต่อเนื่องและเชื่อมั่นในบริการของเรา
+                            </p>
+                        </div>
+                    </div>
+                    <div class="absolute -bottom-16 -right-16 w-32 h-32 bg-emerald-500/5 rounded-full group-hover:scale-300 transition-transform duration-500"></div>
+                </div>
+
+                <div class="group relative p-8 sm:p-10 rounded-3xl bg-white border border-slate-200 hover:-translate-y-1.5 md:hover:translate-y-8 hover:shadow-[0_40px_80px_rgba(0,0,0,0.04)] transition-all duration-700 md:translate-y-10 overflow-hidden">
+                    <div class="absolute inset-0 bg-gradient-to-b from-purple-50/50 to-purple-100/50 opacity-0 group-hover:opacity-100 transition-all duration-500"></div>
+                    <div class="relative z-10 flex flex-col items-center text-center sm:items-start sm:text-left gap-4 sm:gap-8">
+                        <div class="w-14 h-14 bg-purple-50 text-purple-500 rounded-2xl flex items-center justify-center group-hover:bg-purple-100/50 group-hover:scale-110 transition-all duration-500">
+                            <i class="fa-duotone fa-solid fa-users text-2xl"></i>
+                        </div>
+                        <div>
+                            <p class="text-slate-500 font-medium text-base mb-2">สมาชิกทั้งหมด</p>
+                            <div class="relative inline-block mb-2">
+                                <h3 class="text-5xl sm:text-7xl font-semibold text-slate-900 transition-all group-hover:text-purple-600">0</h3>
+                                <span class="absolute -bottom-1 left-0 w-full h-1 bg-purple-600 origin-left scale-x-0 group-hover:scale-x-100 transition-transform duration-500"></span>
+                            </div>
+                            <p class="text-slate-500 mt-2 text-sm font-medium leading-relaxed max-w-xs mx-auto sm:mx-0">
+                                ขยายขอบเขตการให้บริการครอบคลุมหลายภูมิภาคทั่วโลก
+                            </p>
+                        </div>
+                    </div>
+                    <div class="absolute -bottom-16 -right-16 w-32 h-32 bg-purple-500/5 rounded-full group-hover:scale-300 transition-transform duration-500"></div>
+                </div>
+
             </div>
         </div>
 
     </div>
 </section>
+
+<section class="max-w-screen-xl mx-auto w-full px-4 py-24">
+    <div class="relative overflow-hidden bg-gradient-to-br from-[#F6C63B] to-[#FFD95A] rounded-2xl p-10 md:p-16 flex flex-col md:flex-row items-center justify-between gap-6 sm:gap-12 shadow-[0_8px_30px_rgb(0,0,0,0.05)] border border-white/50">
+
+        <div class="absolute -top-16 -left-16 w-56 h-56 bg-[#F4B400] blur-md rounded-full rotate-[25deg] opacity-50 z-0"></div>
+        <div class="absolute top-1/2 -right-20 -translate-y-1/2 w-80 h-80 bg-[#F4B400] blur-md rounded-full opacity-50 z-0"></div>
+        <div class="absolute -bottom-24 right-1/4 w-72 h-40 bg-[#F4B400] blur-md rounded-3xl -rotate-[15deg] opacity-50 z-0"></div>
+
+        <div class="w-full md:w-3/5 text-left relative z-10">
+            <div class="inline-block bg-white/80 backdrop-blur-sm px-5 py-1.5 rounded-2xl mb-5 shadow-sm border border-white/50">
+                <h3 class="text-[#1E2A1E]/80 font-medium text-xs sm:text-sm">
+                    ติดปัญหาเหรอ? เราพร้อมช่วยคุณ!
+                </h3>
+            </div>
+
+            <h2 class="text-[#1E2A1E] text-2xl md:text-3xl font-semibold mb-3 leading-tight tracking-tight">
+                ติดขัดพร้อมช่วย 24/7!
+            </h2>
+            <p class="text-[#1E2A1E]/60 text-sm md:text-base font-medium leading-relaxed max-w-sm">
+                ทีมงานคุณภาพสามารถแก้ปัญหาของคุณได้อย่างรวดเร็วทั้งการเติม หรือการใช้งานเว็บไซต์!
+            </p>
+        </div>
+
+        <div class="w-full md:w-auto flex flex-col gap-4 min-w-[320px] relative z-10">
+            <a href="#"
+                class="group relative flex items-center justify-between bg-white/70 backdrop-blur-sm hover:bg-white transition-all duration-500 px-7 py-4 rounded-2xl shadow-[0_4px_20px_rgba(0,0,0,0.03)] hover:shadow-[0_10px_30px_rgba(120,182,143,0.2)] hover:-translate-y-1.5 hover:scale-[1.02] border border-white/50 overflow-hidden">
+
+                <div class="flex items-center gap-4">
+                    <div class="w-10 h-10 rounded-xl bg-[#57C84D]/10 flex items-center justify-center group-hover:bg-[#57C84D] transition-all duration-500">
+                        <svg class="w-5 h-5 text-[#57C84D] group-hover:text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2">
+                            <path d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"></path>
+                        </svg>
+                    </div>
+                    <span class="text-[#1E2A1E] text-md font-medium">ติดต่อผ่านทางไลน์</span>
+                </div>
+
+                <svg class="w-5 h-5 text-[#57C84D] opacity-0 -translate-x-4 group-hover:opacity-100 group-hover:translate-x-0 transition-all duration-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7l5 5m0 0l-5 5m5-5H6"></path>
+                </svg>
+            </a>
+
+            <a href="#"
+                class="group relative flex items-center justify-between bg-white/70 backdrop-blur-sm hover:bg-white transition-all duration-500 px-7 py-4 rounded-2xl shadow-[0_4px_20px_rgba(0,0,0,0.03)] hover:shadow-[0_10px_30px_rgba(120,182,143,0.2)] hover:-translate-y-1.5 hover:scale-[1.02] border border-white/50 overflow-hidden">
+
+                <div class="flex items-center gap-4">
+                    <div class="w-10 h-10 rounded-xl bg-[#57C84D]/10 flex items-center justify-center group-hover:bg-[#57C84D] transition-all duration-500">
+                        <svg class="w-5 h-5 text-[#57C84D] group-hover:text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2">
+                            <path d="M21 12a9 9 0 01-9 9m9-9a9 9 0 00-9-9m9 9H3m9 9a9 9 0 01-9-9m9 9c1.657 0 3-4.03 3-9s-1.343-9-3-9m0 18c-1.657 0-3-4.03-3-9s1.343-9 3-9m-9 9a9 9 0 019-9"></path>
+                        </svg>
+                    </div>
+                    <span class="text-[#1E2A1E] text-md font-medium">ติดต่อผ่านทางเว็บไซต์</span>
+                </div>
+
+                <svg class="w-5 h-5 text-[#57C84D] opacity-0 -translate-x-4 group-hover:opacity-100 group-hover:translate-x-0 transition-all duration-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7l5 5m0 0l-5 5m5-5H6"></path>
+                </svg>
+            </a>
+        </div>
+
+    </div>
+</section>
+
+@section('footer')
 
 @endsection

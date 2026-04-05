@@ -1,66 +1,92 @@
-<nav
-x-data="{ 
-        mobileMenuOpen: false, 
-        visible: true, 
-        lastScroll: 0,
-        handleScroll() {
-            let currentScroll = window.pageYOffset || document.documentElement.scrollTop;
-            if (currentScroll <= 0) {
-                this.visible = true;
-            } else if (currentScroll > this.lastScroll && !this.mobileMenuOpen) {
-                this.visible = false;
-            } else {
-                this.visible = true;
-            }
-            this.lastScroll = currentScroll;
+<nav x-data="{
+    mobileMenuOpen: false,
+    visible: true,
+    lastScroll: 0,
+    handleScroll() {
+        let currentScroll = window.pageYOffset || document.documentElement.scrollTop;
+        if (currentScroll <= 0) {
+            this.visible = true;
+        } else if (currentScroll > this.lastScroll && !this.mobileMenuOpen) {
+            this.visible = false;
+        } else {
+            this.visible = true;
         }
-    }"
-    x-init="window.addEventListener('scroll', () => handleScroll())"
+        this.lastScroll = currentScroll;
+    }
+}" x-init="window.addEventListener('scroll', () => handleScroll())"
     :class="visible ? 'translate-y-0 opacity-100' : '-translate-y-32 opacity-0'"
     class="fixed top-6 left-1/2 -translate-x-1/2 z-50 w-[90%] max-w-4xl transition-all duration-500 ease-in-out">
 
-    <div class="bg-black/50 backdrop-blur-xl border border-white/15 rounded-full px-6 py-3 flex items-center justify-between shadow-2xl relative">
+    <div
+        class="bg-black/50 backdrop-blur-xl border border-white/15 rounded-full px-6 py-3 flex items-center justify-between shadow-2xl relative">
 
         <div class="flex items-center gap-4">
-            <a href="/" class="hidden sm:flex items-center gap-1.5 font-bold text-white/70 hover:text-white text-[15px] font-medium transition-all duration-300">
+            <a href="{{ route('frontend.home') }}"
+                class="hidden sm:flex items-center gap-1.5 font-bold text-white/70 hover:text-white text-[15px] font-medium transition-all duration-300">
                 <svg width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                    <path d="M8 17H16M11.0177 2.764L4.23539 8.03912C3.78202 8.39175 3.55534 8.56806 3.39203 8.78886C3.24737 8.98444 3.1396 9.20478 3.07403 9.43905C3 9.70352 3 9.9907 3 10.5651V17.8C3 18.9201 3 19.4801 3.21799 19.908C3.40973 20.2843 3.71569 20.5903 4.09202 20.782C4.51984 21 5.07989 21 6.2 21H17.8C18.9201 21 19.4802 21 19.908 20.782C20.2843 20.5903 20.5903 20.2843 20.782 19.908C21 19.4801 21 18.9201 21 17.8V10.5651C21 9.9907 21 9.70352 20.926 9.43905C20.8604 9.20478 20.7526 8.98444 20.608 8.78886C20.4447 8.56806 20.218 8.39175 19.7646 8.03913L12.9823 2.764C12.631 2.49075 12.4553 2.35412 12.2613 2.3016C12.0902 2.25526 11.9098 2.25526 11.7387 2.3016C11.5447 2.35412 11.369 2.49075 11.0177 2.764Z" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"></path>
+                    <path
+                        d="M8 17H16M11.0177 2.764L4.23539 8.03912C3.78202 8.39175 3.55534 8.56806 3.39203 8.78886C3.24737 8.98444 3.1396 9.20478 3.07403 9.43905C3 9.70352 3 9.9907 3 10.5651V17.8C3 18.9201 3 19.4801 3.21799 19.908C3.40973 20.2843 3.71569 20.5903 4.09202 20.782C4.51984 21 5.07989 21 6.2 21H17.8C18.9201 21 19.4802 21 19.908 20.782C20.2843 20.5903 20.5903 20.2843 20.782 19.908C21 19.4801 21 18.9201 21 17.8V10.5651C21 9.9907 21 9.70352 20.926 9.43905C20.8604 9.20478 20.7526 8.98444 20.608 8.78886C20.4447 8.56806 20.218 8.39175 19.7646 8.03913L12.9823 2.764C12.631 2.49075 12.4553 2.35412 12.2613 2.3016C12.0902 2.25526 11.9098 2.25526 11.7387 2.3016C11.5447 2.35412 11.369 2.49075 11.0177 2.764Z"
+                        stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"></path>
                 </svg>
                 หน้าหลัก
             </a>
 
-            <a href="/queue" class="hidden sm:flex items-center gap-1.5 text-white/70 hover:text-white text-[15px] font-medium transition-all duration-300">
-                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                    <path d="M15.9996 8C15.9996 9.06087 15.5782 10.0783 14.828 10.8284C14.0779 11.5786 13.0605 12 11.9996 12C10.9387 12 9.92131 11.5786 9.17116 10.8284C8.42102 10.0783 7.99959 9.06087 7.99959 8M3.63281 7.40138L2.93281 15.8014C2.78243 17.6059 2.70724 18.5082 3.01227 19.2042C3.28027 19.8157 3.74462 20.3204 4.33177 20.6382C5.00006 21 5.90545 21 7.71623 21H16.283C18.0937 21 18.9991 21 19.6674 20.6382C20.2546 20.3204 20.7189 19.8157 20.9869 19.2042C21.2919 18.5082 21.2167 17.6059 21.0664 15.8014L20.3664 7.40138C20.237 5.84875 20.1723 5.07243 19.8285 4.48486C19.5257 3.96744 19.0748 3.5526 18.5341 3.29385C17.92 3 17.141 3 15.583 3L8.41623 3C6.85821 3 6.07921 3 5.4651 3.29384C4.92433 3.5526 4.47349 3.96744 4.17071 4.48486C3.82689 5.07243 3.76219 5.84875 3.63281 7.40138Z" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" />
+            <a href="{{ route('packages.page') }}"
+                class="hidden sm:flex items-center gap-1.5 text-white/70 hover:text-white text-[15px] font-medium transition-all duration-300">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none"
+                    xmlns="http://www.w3.org/2000/svg">
+                    <path
+                        d="M15.9996 8C15.9996 9.06087 15.5782 10.0783 14.828 10.8284C14.0779 11.5786 13.0605 12 11.9996 12C10.9387 12 9.92131 11.5786 9.17116 10.8284C8.42102 10.0783 7.99959 9.06087 7.99959 8M3.63281 7.40138L2.93281 15.8014C2.78243 17.6059 2.70724 18.5082 3.01227 19.2042C3.28027 19.8157 3.74462 20.3204 4.33177 20.6382C5.00006 21 5.90545 21 7.71623 21H16.283C18.0937 21 18.9991 21 19.6674 20.6382C20.2546 20.3204 20.7189 19.8157 20.9869 19.2042C21.2919 18.5082 21.2167 17.6059 21.0664 15.8014L20.3664 7.40138C20.237 5.84875 20.1723 5.07243 19.8285 4.48486C19.5257 3.96744 19.0748 3.5526 18.5341 3.29385C17.92 3 17.141 3 15.583 3L8.41623 3C6.85821 3 6.07921 3 5.4651 3.29384C4.92433 3.5526 4.47349 3.96744 4.17071 4.48486C3.82689 5.07243 3.76219 5.84875 3.63281 7.40138Z"
+                        stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" />
                 </svg>
                 จองคิว
             </a>
 
-            <button @click="mobileMenuOpen = !mobileMenuOpen" class="sm:hidden flex items-center gap-1.5 bg-white/10 hover:bg-white/20 text-white border border-white/20 px-5 py-2 rounded-full text-[15px] font-semibold transition-all backdrop-blur-sm">
-                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                    <path d="M3 12H21M3 6H21M3 18H21" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" />
+            <button @click="mobileMenuOpen = !mobileMenuOpen"
+                class="sm:hidden flex items-center gap-1.5 bg-white/10 hover:bg-white/20 text-white border border-white/20 px-5 py-2 rounded-full text-[15px] font-semibold transition-all backdrop-blur-sm">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none"
+                    xmlns="http://www.w3.org/2000/svg">
+                    <path d="M3 12H21M3 6H21M3 18H21" stroke="currentColor" stroke-width="3" stroke-linecap="round"
+                        stroke-linejoin="round" />
                 </svg>
                 เมนู
             </button>
         </div>
 
         <div class="absolute left-1/2 -translate-x-1/2">
-            <a href="/" class="flex items-center">
-                <img src="{{ asset('assets/image/logo.png') }}" alt="Logo" class="h-full w-16 mr-2 transition-all duration-300 hover:scale-110" />
+            <a href="" class="flex items-center">
+                <img src="{{ asset('assets/image/logo.png') }}" alt="Logo"
+                    class="h-full w-16 mr-2 transition-all duration-300 hover:scale-110" />
             </a>
         </div>
 
         <div class="flex items-center gap-4">
-            <a href="#" class="text-white/70 hover:text-white text-[15px] font-medium transition-colors hidden sm:block">สมัครสมาชิก</a>
-            <a href="/login" class="bg-white/10 hover:bg-white/20 text-white border border-white/20 px-5 py-2 rounded-full text-[15px] font-semibold transition-all backdrop-blur-sm">
-                เข้าสู่ระบบ
-            </a>
+            @guest
+                <a href="{{ route('register.page') }}"
+                    class="text-white/70 hover:text-white text-[15px] font-medium transition-colors hidden sm:block">สมัครสมาชิก</a>
+                <a href="{{ route('login.page') }}"
+                    class="bg-white/10 hover:bg-white/20 text-white border border-white/20 px-5 py-2 rounded-full text-[15px] font-semibold transition-all backdrop-blur-sm">
+                    เข้าสู่ระบบ
+                </a>
+            @endguest
+            @auth
+                <div class="flex items-center gap-3">
+                    <span class="text-white text-sm font-medium">สวัสดี, {{ auth()->user()->name }}</span>
+
+                    {{-- ปุ่มออกจากระบบ --}}
+                    <form action="{{ route('logout') }}" method="POST" class="inline">
+                        @csrf
+                        <button type="submit"
+                            class="bg-red-500/20 hover:bg-red-500/40 text-red-100 border border-red-500/30 px-4 py-1.5 rounded-full text-[13px] font-semibold transition-all backdrop-blur-sm">
+                            ออกจากระบบ
+                        </button>
+                    </form>
+                </div>
+            @endauth
         </div>
 
-        <div x-show="mobileMenuOpen"
-            x-transition:enter="transition ease-out duration-500"
-            x-transition:enter-start="opacity-0 translate-y-[-20px]"
-            x-transition:enter-end="opacity-100 translate-y-0"
+        <div x-show="mobileMenuOpen" x-transition:enter="transition ease-out duration-500"
+            x-transition:enter-start="opacity-0 translate-y-[-20px]" x-transition:enter-end="opacity-100 translate-y-0"
             x-transition:leave="transition ease-in duration-300"
             x-transition:leave-start="opacity-100 translate-y-[-5px]"
             x-transition:leave-end="opacity-0 translate-y-[-10px]"
@@ -68,9 +94,14 @@ x-data="{
             @click.away="mobileMenuOpen = false" style="display: none;">
 
             <div class="flex flex-col gap-5">
-                <a href="#" class="text-white text-lg font-medium flex items-center gap-3 border-b border-white/10 pb-3">หน้าหลัก</a>
-                <a href="#" class="text-white text-lg font-medium flex items-center gap-3 border-b border-white/10 pb-3">จองคิว</a>
-                <a href="#" class="text-white text-lg font-medium flex items-center gap-3 border-b border-white/10 pb-3">สมัครสมาชิก</a>
+                <a href="{{ route('frontend.home') }}"
+                    class="text-white text-lg font-medium flex items-center gap-3 border-b border-white/10 pb-3">หน้าหลัก</a>
+                <a href="{{ route('packages.page') }}"
+                    class="text-white text-lg font-medium flex items-center gap-3 border-b border-white/10 pb-3">จองคิว</a>
+                <a href="{{ route('register.page') }}"
+                    class="text-white text-lg font-medium flex items-center gap-3 border-b border-white/10 pb-3">สมัครสมาชิก</a>
+                <a href="{{ route('login.page') }}"
+                    class="text-white text-lg font-medium flex items-center gap-3 border-b border-white/10 pb-3">เข้าสู่ระบบ</a>
                 <div class="pt-2 text-center text-white/50 text-xs">
                     ระบบจองคิวสำหรับตัวแทน ORMOR TOPUP COINS
                 </div>

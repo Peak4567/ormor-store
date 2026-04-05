@@ -8,21 +8,38 @@ use App\Http\Controllers\Backend\AccountController as BackendAccountController;
 use App\Http\Controllers\Backend\BookingController as BackendBookingController;
 use App\Http\Controllers\Backend\UserController as BackendUserController;
 use App\Http\Controllers\Backend\SettingController as BackendSettingController;
+use App\Http\Controllers\Auth\RegisterController;
+use App\Http\Controllers\Auth\LoginController;
 
 Route::get('/home', [FrontendHomeController::class, 'index'])->name('frontend.home');
 Route::get('/', [FrontendHomeController::class, 'index'])->name('frontend.home');
 
+
 Route::get('/queue', function () {
     return view('queue');
-});
+})->name('packages.page');
 
 Route::get('/sign-in', function () {
     return view('sign-in');
-});
+})->name('register.page');
+Route::get('/register', [RegisterController::class, 'showRegistrationForm'])->name('register.page');
+Route::post('/register', [RegisterController::class, 'register'])->name('register.store');
 
-Route::get('/login', function () {
-    return view('login');
-});
+Route::get('/login', [LoginController::class, 'showLoginForm'])->name('login.page');
+Route::post('/login', [LoginController::class, 'login'])->name('login.store');
+Route::post('/logout', [LoginController::class, 'logout'])->name('logout');
+
+Route::get('/history', function () {
+    return view('history');
+})->name('transaction.page');
+
+Route::get('/policy', function () {
+    return view('policy');
+})->name('privacy_policy.page');
+
+Route::get('/terms', function () {
+    return view('terms');
+})->name('terms_conditions.page');
 
 Route::get('/backend/home', [BackendHomeController::class, 'index'])->name('backend.home');
 Route::get('/backend/product', [BackendProductController::class, 'index'])->name('backend.product');

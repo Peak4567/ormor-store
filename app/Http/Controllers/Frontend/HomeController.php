@@ -10,7 +10,10 @@ class HomeController extends Controller
 {
     public function index()
     {
-        $products = Product::withCount('bookings')->orderBy('created_at', 'desc')->get();
+        $products = Product::withCount(['bookings as success_bookings_count' => function ($query) {
+            $query->where('status', 'สำเร็จ');
+        }])
+            ->get();
         return view('frontend.home', compact('products'));
     }
 }

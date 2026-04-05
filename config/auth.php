@@ -1,6 +1,6 @@
 <?php
 
-use App\Models\User;
+use App\Models\Backend\User;
 
 return [
 
@@ -64,13 +64,8 @@ return [
     'providers' => [
         'users' => [
             'driver' => 'eloquent',
-            'model' => env('AUTH_MODEL', User::class),
+            'model' => User::class, // <--- ต้องมีคำว่า Backend เพิ่มเข้าไปตรงนี้!
         ],
-
-        // 'users' => [
-        //     'driver' => 'database',
-        //     'table' => 'users',
-        // ],
     ],
 
     /*

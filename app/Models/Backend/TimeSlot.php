@@ -13,7 +13,6 @@ class TimeSlot extends Model
         'is_available',
     ];
 
-    // สร้าง Relationship กลับไปยัง Product
     public function product()
     {
         return $this->belongsTo(Product::class);

@@ -19,4 +19,9 @@ class Booking extends Model
         'status',       
         'booking_date'
     ];
+
+    public function product()
+    {
+        return $this->belongsTo(Product::class, 'product_code', 'product_code');
+    }
 }

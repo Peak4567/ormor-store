@@ -1,16 +1,16 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\Backend\HomeController;
-use App\Http\Controllers\Backend\ProductController;
-use App\Http\Controllers\Backend\AccountController;
-use App\Http\Controllers\Backend\BookingController;
-use App\Http\Controllers\Backend\UserController;
-use App\Http\Controllers\Backend\SettingController;
+use App\Http\Controllers\Backend\HomeController as BackendHomeController;
+use App\Http\Controllers\Frontend\HomeController as FrontendHomeController;
+use App\Http\Controllers\Backend\ProductController as BackendProductController;
+use App\Http\Controllers\Backend\AccountController as BackendAccountController;
+use App\Http\Controllers\Backend\BookingController as BackendBookingController;
+use App\Http\Controllers\Backend\UserController as BackendUserController;
+use App\Http\Controllers\Backend\SettingController as BackendSettingController;
 
-Route::get('/', function () {
-    return view('home');
-});
+Route::get('/home', [FrontendHomeController::class, 'index'])->name('frontend.home');
+Route::get('/', [FrontendHomeController::class, 'index'])->name('frontend.home');
 
 Route::get('/queue', function () {
     return view('queue');
@@ -24,24 +24,24 @@ Route::get('/login', function () {
     return view('login');
 });
 
-Route::get('/backend/home', [HomeController::class, 'index'])->name('backend.home');
-Route::get('/backend/product', [ProductController::class, 'index'])->name('backend.product');
-Route::post('/backend/product/store', [ProductController::class, 'store'])->name('backend.product.store');
-Route::put('/backend/product/{id}', [ProductController::class, 'update'])->name('backend.product.update');
-Route::delete('/backend/product/{id}', [ProductController::class, 'destroy'])->name('backend.product.destroy');
+Route::get('/backend/home', [BackendHomeController::class, 'index'])->name('backend.home');
+Route::get('/backend/product', [BackendProductController::class, 'index'])->name('backend.product');
+Route::post('/backend/product/store', [BackendProductController::class, 'store'])->name('backend.product.store');
+Route::put('/backend/product/{id}', [BackendProductController::class, 'update'])->name('backend.product.update');
+Route::delete('/backend/product/{id}', [BackendProductController::class, 'destroy'])->name('backend.product.destroy');
 
-Route::get('/backend/account', [AccountController::class, 'index'])->name('backend.account');
-Route::post('/backend/account/store', [AccountController::class, 'store'])->name('backend.account.store');
-Route::put('/backend/account/{id}', [AccountController::class, 'update'])->name('backend.account.update');
-Route::delete('/backend/account/{id}', [AccountController::class, 'destroy'])->name('backend.account.destroy');
+Route::get('/backend/account', [BackendAccountController::class, 'index'])->name('backend.account');
+Route::post('/backend/account/store', [BackendAccountController::class, 'store'])->name('backend.account.store');
+Route::put('/backend/account/{id}', [BackendAccountController::class, 'update'])->name('backend.account.update');
+Route::delete('/backend/account/{id}', [BackendAccountController::class, 'destroy'])->name('backend.account.destroy');
 
-Route::get('/backend/booking', [BookingController::class, 'index'])->name('backend.booking');
-Route::post('/backend/booking/update-status/{id}', [BookingController::class, 'updateStatus']);
-Route::delete('/backend/{id}', [BookingController::class, 'destroy'])->name('backend.booking.destroy');
+Route::get('/backend/booking', [BackendBookingController::class, 'index'])->name('backend.booking');
+Route::post('/backend/booking/update-status/{id}', [BackendBookingController::class, 'updateStatus']);
+Route::delete('/backend/{id}', [BackendBookingController::class, 'destroy'])->name('backend.booking.destroy');
 
-Route::get('/backend/users', [UserController::class, 'index'])->name('backend.users');
-Route::delete('/backend/users/destroy/{id}', [UserController::class, 'destroy'])->name('backend.users.destroy');
-Route::post('/backend/users/change-level/{id}', [UserController::class, 'changeLevel'])->name('backend.users.change-level');
+Route::get('/backend/users', [BackendUserController::class, 'index'])->name('backend.users');
+Route::delete('/backend/users/destroy/{id}', [BackendUserController::class, 'destroy'])->name('backend.users.destroy');
+Route::post('/backend/users/change-level/{id}', [BackendUserController::class, 'changeLevel'])->name('backend.users.change-level');
 
-Route::get('/backend/settings', [SettingController::class, 'index'])->name('backend.settings');
-Route::post('/backend/settings/update', [SettingController::class, 'update'])->name('backend.settings.update');
+Route::get('/backend/settings', [BackendSettingController::class, 'index'])->name('backend.settings');
+Route::post('/backend/settings/update', [BackendSettingController::class, 'update'])->name('backend.settings.update');

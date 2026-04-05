@@ -1,13 +1,13 @@
 <footer class="bg-[#7ACB53] text-white py-12 px-6 sm:px-12">
     <div class="max-w-screen-xl mx-auto">
         <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6 sm:gap-10 mb-6 sm:mb-12">
-            
+
             <div class="flex flex-col items-center sm:items-start gap-1 text-center sm:text-left">
                 <h2 class="text-2xl sm:text-3xl font-bold tracking-tight">
                     ORMORX STORE
                 </h2>
                 <p class="text-white/90 text-xs sm:text-sm font-medium max-w-xs">
-                    ระบบจองคิวสำหรับตัวแทน ORMOR TOPUP COINS 
+                    ระบบจองคิวสำหรับตัวแทน ORMOR TOPUP COINS
                 </p>
             </div>
 
@@ -35,21 +35,31 @@
 
             <div class="flex justify-center sm:justify-start md:justify-end items-start">
                 <div class="bg-white p-2 px-3 rounded-xl flex items-center gap-3 shadow-lg">
-                    <a href="#" class="hover:opacity-80 transition-opacity">
-                        <img src="https://upload.wikimedia.org/wikipedia/commons/4/41/LINE_logo.svg" alt="Line" class="w-8 h-8">
-                    </a>
-                    <a href="#" class="hover:opacity-80 transition-opacity">
-                        <img src="https://upload.wikimedia.org/wikipedia/commons/0/05/Facebook_Logo_%282019%29.png" alt="Facebook" class="w-8 h-8">
-                    </a>
+
+                    @if (!empty($web_cfg->line))
+                        <a href="{{ $web_cfg->line }}" target="_blank" class="hover:opacity-80 transition-opacity">
+                            <img src="https://upload.wikimedia.org/wikipedia/commons/4/41/LINE_logo.svg" alt="Line"
+                                class="w-8 h-8">
+                        </a>
+                    @endif
+
+                    @if (!empty($web_cfg->facebook))
+                        <a href="{{ $web_cfg->facebook }}" target="_blank" class="hover:opacity-80 transition-opacity">
+                            <img src="https://upload.wikimedia.org/wikipedia/commons/0/05/Facebook_Logo_%282019%29.png"
+                                alt="Facebook" class="w-8 h-8">
+                        </a>
+                    @endif
+
                 </div>
             </div>
         </div>
 
         <div class="pt-4 sm:pt-8 border-t border-white/20 flex flex-col md:flex-row justify-between items-center gap-6">
             <div class="text-xs md:text-sm text-white font-medium text-center md:text-left">
-                <p>Copyright 2026 <span class="text-lg leading-none">©</span> NaHost (Navigate Innovations Co., Ltd.) All rights reserved.</p>
+                <p>Copyright 2026 <span class="text-lg leading-none">©</span> NaHost (Navigate Innovations Co., Ltd.)
+                    All rights reserved.</p>
             </div>
-            
+
             <div class="flex items-center gap-6 text-xs md:text-sm font-medium">
                 <a href="#" class="hover:text-white/70 transition-colors">Privacy Policy</a>
                 <a href="#" class="hover:text-white/70 transition-colors">Terms & Conditions</a>

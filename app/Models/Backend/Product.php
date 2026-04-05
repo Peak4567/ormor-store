@@ -24,4 +24,8 @@ class Product extends Model
     {
         return $this->hasMany(ProductDate::class, 'product_id');
     }
+    public function bookings()
+    {
+        return $this->hasMany(Booking::class, 'product_code', 'product_code');
+    }
 }

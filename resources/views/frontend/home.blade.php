@@ -289,7 +289,6 @@
                             'mb-8'"
                             class="mb-8">
 
-                            {{-- ส่วนแสดงราคา --}}
                             <div class="flex items-baseline gap-1">
                                 <span class="text-3xl font-semibold text-[#1E2A1E]">
                                     {{ number_format($displayPrice, 0) }}
@@ -310,7 +309,6 @@
                                 <div :class="view === 'list' ? 'lg:flex lg:gap-3 lg:space-y-0' : 'space-y-2.5'"
                                     class="space-y-2.5">
 
-                                    {{-- ยอดคิวปัจจุบัน (ดึงจาก bookings_count) --}}
                                     <div class="flex justify-between items-center gap-2">
                                         <span
                                             class="text-sm font-medium text-slate-500 bg-slate-100 px-3 py-1 rounded-md whitespace-nowrap {{ $isOutOfStock ? 'grayscale' : '' }}">
@@ -318,7 +316,6 @@
                                         </span>
                                     </div>
 
-                                    {{-- จำนวนคงเหลือ --}}
                                     <div class="flex justify-between items-center gap-2">
                                         <span
                                             class="text-sm font-medium text-slate-500 bg-slate-100 px-3 py-1 rounded-md whitespace-nowrap {{ $isOutOfStock ? 'grayscale' : '' }}">

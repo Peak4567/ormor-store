@@ -73,7 +73,6 @@
                 <div class="flex items-center gap-3">
                     <span class="text-white text-sm font-medium">สวัสดี, {{ auth()->user()->name }}</span>
 
-                    {{-- ปุ่มออกจากระบบ --}}
                     <form action="{{ route('logout') }}" method="POST" class="inline">
                         @csrf
                         <button type="submit"

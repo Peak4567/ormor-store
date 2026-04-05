@@ -15,6 +15,14 @@ Route::get('/queue', function () {
     return view('queue');
 });
 
+Route::get('/sign-in', function () {
+    return view('sign-in');
+});
+
+Route::get('/login', function () {
+    return view('login');
+});
+
 Route::get('/backend/home', [HomeController::class, 'index'])->name('backend.home');
 Route::get('/backend/product', [ProductController::class, 'index'])->name('backend.product');
 Route::post('/backend/product/store', [ProductController::class, 'store'])->name('backend.product.store');

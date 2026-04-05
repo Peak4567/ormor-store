@@ -28,9 +28,5 @@
     @yield('content')
 
     @include('components.footer')
-<<<<<<< HEAD
-=======
-
->>>>>>> 085ee1a634c9a919a9ef1acd092b3f365100bc5b
 </body>
 </html>

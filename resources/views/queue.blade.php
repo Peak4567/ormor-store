@@ -836,7 +836,7 @@
     </div>
 </section>
 
-<section class="max-w-screen-xl mx-auto w-full px-4 py-8">
+<section class="max-w-screen-xl mx-auto w-full px-4 py-24">
     <div class="relative overflow-hidden bg-gradient-to-br from-[#F6C63B] to-[#FFD95A] rounded-2xl p-10 md:p-16 flex flex-col md:flex-row items-center justify-between gap-6 sm:gap-12 shadow-[0_8px_30px_rgb(0,0,0,0.05)] border border-white/50">
 
         <div class="absolute -top-16 -left-16 w-56 h-56 bg-[#F4B400] blur-md rounded-full rotate-[25deg] opacity-50 z-0"></div>

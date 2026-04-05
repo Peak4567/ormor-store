@@ -10,19 +10,31 @@ use App\Http\Controllers\Backend\SettingController;
 
 Route::get('/', function () {
     return view('home');
-});
+})->name('home.page');
 
 Route::get('/queue', function () {
     return view('queue');
-});
+})->name('packages.page');
 
 Route::get('/sign-in', function () {
     return view('sign-in');
-});
+})->name('register.page');
 
 Route::get('/login', function () {
     return view('login');
-});
+})->name('login.page');
+
+Route::get('/history', function () {
+    return view('history');
+})->name('transaction.page');
+
+Route::get('/policy', function () {
+    return view('policy');
+})->name('privacy_policy.page');
+
+Route::get('/terms', function () {
+    return view('terms');
+})->name('terms_conditions.page');
 
 Route::get('/backend/home', [HomeController::class, 'index'])->name('backend.home');
 Route::get('/backend/product', [ProductController::class, 'index'])->name('backend.product');

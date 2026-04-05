@@ -16,10 +16,9 @@
                     เมนูเพื่อความสะดวก
                 </h3>
                 <nav class="flex flex-col items-center sm:items-start gap-1 sm:gap-2 text-white/80">
-                    <a href="#" class="hover:text-white transition-colors text-sm font-normal">หน้าหลัก</a>
-                    <a href="#" class="hover:text-white transition-colors text-sm font-normal">ระบบจอง</a>
-                    <a href="#" class="hover:text-white transition-colors text-sm font-normal">ตะกร้า</a>
-                    <a href="#" class="hover:text-white transition-colors text-sm font-normal">ประวัติการจอง</a>
+                    <a href="{{ route('home.page') }}" class="hover:text-white transition-colors text-sm font-normal">หน้าหลัก</a>
+                    <a href="{{ route('packages.page') }}" class="hover:text-white transition-colors text-sm font-normal">ระบบจอง</a>
+                    <a href="{{ route('transaction.page') }}" class="hover:text-white transition-colors text-sm font-normal">ประวัติการจอง</a>
                 </nav>
             </div>
 
@@ -28,8 +27,8 @@
                     เมนูการใช้งาน
                 </h3>
                 <nav class="flex flex-col items-center sm:items-start gap-1 sm:gap-2 text-white/80">
-                    <a href="#" class="hover:text-white transition-colors text-sm font-normal">สมัครสมาชิก</a>
-                    <a href="#" class="hover:text-white transition-colors text-sm font-normal">เข้าสู่ระบบ</a>
+                    <a href="{{ route('register.page') }}" class="hover:text-white transition-colors text-sm font-normal">สมัครสมาชิก</a>
+                    <a href="{{ route('login.page') }}" class="hover:text-white transition-colors text-sm font-normal">เข้าสู่ระบบ</a>
                 </nav>
             </div>
 
@@ -51,8 +50,8 @@
             </div>
             
             <div class="flex items-center gap-6 text-xs md:text-sm font-medium">
-                <a href="#" class="hover:text-white/70 transition-colors">Privacy Policy</a>
-                <a href="#" class="hover:text-white/70 transition-colors">Terms & Conditions</a>
+                <a href="{{ route('privacy_policy.page') }}" class="hover:text-white/70 transition-colors">Privacy Policy</a>
+                <a href="{{ route('terms_conditions.page') }}" class="hover:text-white/70 transition-colors">Terms & Conditions</a>
             </div>
         </div>
     </div>

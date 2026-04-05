@@ -1,5 +1,7 @@
 @extends('layouts')
 
+@section('title', 'Ormor Topup Coins | Home')
+
 @section('content')
 
 <section class="bg-gradient-to-t from-[#7ACB53]/100 to-[#B7E65A]/90 text-white min-h-screen flex items-center justify-center overflow-x-hidden w-full py-12 lg:py-12">

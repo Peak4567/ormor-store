@@ -187,7 +187,7 @@
 
                                 <div
                                     class="flex-shrink-0 w-12 h-12 bg-slate-100/50 text-slate-400 group-hover:bg-[#EAF9E3] group-hover:text-[#57C84D] rounded-xl flex items-center justify-center transition-colors duration-500">
-                                    <i class="{{ $web_cfg->{'step_' . $i . '_icon'} }} text-2xl"></i>
+                                    <i class="{{ $web_cfg['step_' . $i . '_icon'] }} text-2xl"></i>
                                 </div>
 
                                 <div class="text-left">

@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Backend\HomeController as BackendHomeController;
 use App\Http\Controllers\Frontend\HomeController as FrontendHomeController;
+use App\Http\Controllers\Frontend\QueueController as FrontendQueueController;
 use App\Http\Controllers\Backend\ProductController as BackendProductController;
 use App\Http\Controllers\Backend\AccountController as BackendAccountController;
 use App\Http\Controllers\Backend\BookingController as BackendBookingController;
@@ -15,9 +16,7 @@ Route::get('/home', [FrontendHomeController::class, 'index'])->name('frontend.ho
 Route::get('/', [FrontendHomeController::class, 'index'])->name('frontend.home');
 
 
-Route::get('/queue', function () {
-    return view('queue');
-})->name('packages.page');
+Route::get('/queue', [FrontendQueueController::class, 'index'])->name('frontend.queue');
 
 Route::get('/sign-in', function () {
     return view('sign-in');

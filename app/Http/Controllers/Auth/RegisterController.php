@@ -26,6 +26,7 @@ class RegisterController extends Controller
         $latestUser = User::latest('id')->first();
         $nextNumber = $latestUser ? $latestUser->id + 1 : 1;
         $usersCode = 'U' . str_pad($nextNumber, 5, '0', STR_PAD_LEFT);
+        
         $user = User::create([
             'users_code' => $usersCode,
             'name'       => $request->name,
@@ -33,9 +34,6 @@ class RegisterController extends Controller
             'password'   => Hash::make($request->password),
             'level'      => 'member',
         ]);
-
-        Auth::login($user);
-        
-        return redirect()->route('frontend.home')->with('success', 'สมัครสมาชิกสำเร็จ! ยินดีต้อนรับครับ');
+        return redirect()->route('login.page')->with('success', 'สมัครสมาชิกสำเร็จ! กรุณาเข้าสู่ระบบเพื่อใช้งานครับ');
     }
 }

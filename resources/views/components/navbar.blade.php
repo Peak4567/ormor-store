@@ -31,7 +31,7 @@
                 หน้าหลัก
             </a>
 
-            <a href="{{ route('packages.page') }}"
+            <a href="{{ route('frontend.queue') }}"
                 class="hidden sm:flex items-center gap-1.5 text-white/70 hover:text-white text-[15px] font-medium transition-all duration-300">
                 <svg width="18" height="18" viewBox="0 0 24 24" fill="none"
                     xmlns="http://www.w3.org/2000/svg">
@@ -62,25 +62,61 @@
 
         <div class="flex items-center gap-4">
             @guest
-                <a href="{{ route('register.page') }}"
-                    class="text-white/70 hover:text-white text-[15px] font-medium transition-colors hidden sm:block">สมัครสมาชิก</a>
-                <a href="{{ route('login.page') }}"
-                    class="bg-white/10 hover:bg-white/20 text-white border border-white/20 px-5 py-2 rounded-full text-[15px] font-semibold transition-all backdrop-blur-sm">
-                    เข้าสู่ระบบ
-                </a>
+            <a href="{{ route('register.page') }}"
+                class="text-white/70 hover:text-white text-[15px] font-medium transition-colors hidden sm:block">สมัครสมาชิก</a>
+            <a href="{{ route('login.page') }}"
+                class="bg-white/10 hover:bg-white/20 text-white border border-white/20 px-5 py-2 rounded-full text-[15px] font-semibold transition-all backdrop-blur-sm">
+                เข้าสู่ระบบ
+            </a>
             @endguest
             @auth
-                <div class="flex items-center gap-3">
-                    <span class="text-white text-sm font-medium">สวัสดี, {{ auth()->user()->name }}</span>
+            <div class="flex items-center gap-4">
+                <div class="relative" x-data="{ profileOpen: false }">
 
-                    <form action="{{ route('logout') }}" method="POST" class="inline">
-                        @csrf
-                        <button type="submit"
-                            class="bg-red-500/20 hover:bg-red-500/40 text-red-100 border border-red-500/30 px-4 py-1.5 rounded-full text-[13px] font-semibold transition-all backdrop-blur-sm">
-                            ออกจากระบบ
-                        </button>
-                    </form>
+                    <button @click="profileOpen = !profileOpen" class="flex items-center gap-2 focus:outline-none">
+                        <div class="w-10 h-10 rounded-full bg-[#57C84D]/20 hover:bg-[#57C84D]/40 text-red-100 border border-[#57C84D]/30 flex items-center justify-center text-white border-2 border-white/20">
+                            <i class="fa-duotone fa-solid fa-user"></i>
+                        </div>
+                        <i class="fa-solid fa-chevron-down text-white text-[10px] transition-transform" :class="profileOpen ? 'rotate-180' : ''"></i>
+                    </button>
+
+                    <div x-show="profileOpen"
+                        x-transition:enter="transition ease-out duration-200"
+                        x-transition:enter-start="opacity-0 scale-95 translate-y-[-10px]"
+                        x-transition:enter-end="opacity-100 scale-100 translate-y-0"
+                        x-transition:leave="transition ease-in duration-150"
+                        x-transition:leave-start="opacity-100 scale-100 translate-y-0"
+                        x-transition:leave-end="opacity-0 scale-95 translate-y-[-10px]"
+
+                        class="absolute right-0 mt-3 w-64 bg-black/70 backdrop-blur-2xl border border-white/15 rounded-3xl p-4 shadow-2xl z-[100] origin-top-right"
+
+                        @click.away="profileOpen = false"
+                        style="display: none;">
+
+                        <div class="flex flex-col gap-1">
+                            <div class="px-4 py-3 mb-2 border-b border-white/10">
+                                <p class="text-white/50 text-xs font-medium">บัญชีผู้ใช้</p>
+                                <p class="text-white font-semibold truncate">{{ auth()->user()->name }}</p>
+                            </div>
+
+                            <a href="{{ route('transaction.page') }}"
+                                class="text-white/80 hover:text-white hover:bg-white/10 px-4 py-2 rounded-2xl text-sm font-medium flex items-center gap-3 transition-all duration-200">
+                                <i class="fa-duotone fa-solid fa-clock-rotate-left text-[#57C84D]"></i> ประวัติการสั่งซื้อ
+                            </a>
+
+                            <hr class="my-2 border-white/10">
+
+                            <form action="{{ route('logout') }}" method="POST" class="inline">
+                                @csrf
+                                <button type="submit"
+                                    class="w-full bg-red-500/20 hover:bg-red-500/40 text-red-100 border border-red-500/30 px-5 py-2 rounded-full text-sm font-semibold transition-all backdrop-blur-sm">
+                                    <i class="fa-light fa-right-from-bracket"></i> ออกจากระบบ
+                                </button>
+                            </form>
+                        </div>
+                    </div>
                 </div>
+            </div>
             @endauth
         </div>
 
@@ -95,7 +131,7 @@
             <div class="flex flex-col gap-5">
                 <a href="{{ route('frontend.home') }}"
                     class="text-white text-lg font-medium flex items-center gap-3 border-b border-white/10 pb-3">หน้าหลัก</a>
-                <a href="{{ route('packages.page') }}"
+                <a href="{{ route('frontend.queue') }}"
                     class="text-white text-lg font-medium flex items-center gap-3 border-b border-white/10 pb-3">จองคิว</a>
                 <a href="{{ route('register.page') }}"
                     class="text-white text-lg font-medium flex items-center gap-3 border-b border-white/10 pb-3">สมัครสมาชิก</a>

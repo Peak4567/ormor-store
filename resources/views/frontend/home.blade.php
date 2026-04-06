@@ -228,76 +228,72 @@
                         class="flex text-xs sm:text-sm bg-slate-50/5 p-1 rounded-2xl border border-slate-100 whitespace-nowrap">
                         <button @click="tab = 'all'"
                             :class="tab === 'all' ? 'bg-white text-[#57C84D] shadow-sm' : 'text-slate-400'"
-                            class="px-4 py-2 text-sm font-medium rounded-xl transition-all">ทั้งหมด</button>
+                            class="px-4 py-2 text-sm font-medium rounded-xl transition-all">ยอดนิยม</button>
                         <button @click="tab = 'recommended'"
                             :class="tab === 'recommended' ? 'bg-white text-[#57C84D] shadow-sm' : 'text-slate-400'"
                             class="px-4 py-2 text-sm font-medium transition-all rounded-xl">สินค้าแนะนำ</button>
-                        <button @click="tab = 'soon'"
-                            :class="tab === 'soon' ? 'bg-white text-[#57C84D] shadow-sm' : 'text-slate-400'"
-                            class="px-4 py-2 text-sm font-medium transition-all rounded-xl">จองคิวเร็วนี้</button>
                     </div>
                 </div>
             </div>
         </div>
 
+        @php
+            $hasRecommended = $products->sum('success_bookings_count') > 0;
+        @endphp
+
         <div :class="view === 'grid' ? 'grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6' : 'flex flex-col gap-4'"
             class="transition-all duration-500">
 
-            {{-- เริ่มดึงข้อมูลจาก SQL --}}
-            @forelse ($products as $product)
-                @php
-                    // 1. เช็คว่าสินค้าหมดหรือไม่
-                    $isOutOfStock = $product->stock <= 0 || $product->status != 'เปิดจอง';
-
-                    // 2. เงื่อนไขการแสดงผล Tab
-                    $tabCondition = "tab === 'all'";
-                    if ($product->status == 'เปิดจอง') {
-                        $tabCondition .= " || tab === 'soon'";
-                    }
-
-                    // 3. ระบบเช็คราคาตาม Level (Member/Agent)
-                    $displayPrice = $product->main_price;
-                    if (auth()->check() && auth()->user()->level === 'agent') {
-                        $displayPrice = $product->agent_price;
-                    }
-                @endphp
-
-                <div x-show="show && ({{ $tabCondition }})" x-transition:enter="transition ease-out duration-300"
+            @forelse ($products->sortByDesc('success_bookings_count') as $product)
+                <div x-show="show && ({{ $product->tabCondition }})" x-transition:enter="transition ease-out duration-300"
                     x-transition:enter-start="opacity-0 translate-y-4" x-transition:enter-end="opacity-100 translate-y-0"
                     :class="view === 'list' ? 'lg:flex lg:items-center lg:justify-between mt-4' : ''"
-                    class="group relative border-2 rounded-xl p-7 transition-all duration-300 hover:-translate-y-1.5
-            {{ $isOutOfStock ? 'bg-rose-100/20 border-rose-200 hover:border-rose-300' : 'bg-white border-slate-200 hover:border-[#57C84D]/50' }}">
+                    class="group relative border-2 rounded-2xl p-7 transition-all duration-300 
+        {{ $product->isOutOfStock ? 'bg-slate-50/50 border-slate-200 grayscale-[0.3]' : 'bg-white border-slate-200 hover:border-[#57C84D]/50 hover:-translate-y-1.5' }}">
 
-                    {{-- ป้าย Tag มุมขวาบน --}}
-                    @if (!$isOutOfStock)
-                        <div :class="view === 'list' ? 'lg:absolute lg:-top-4 lg:left-6 lg:right-auto' :
-                            'absolute top-6 right-6'"
-                            class="absolute top-6 right-6">
-                            <span class="text-xs sm:text-sm font-medium text-sky-500 bg-sky-100 px-3 py-1 rounded-md">
+                    <div :class="view === 'list' ? 'lg:absolute lg:-top-4 lg:left-6 lg:right-auto' : 'absolute top-6 right-6'"
+                        class="absolute top-6 right-6 z-10">
+                        @if ($product->canBook)
+                            <span
+                                class="inline-flex items-center gap-1.5 text-xs sm:text-sm font-bold text-[#57C84D] bg-[#57C84D]/10 px-3 py-1 rounded-md border border-[#57C84D]/20 animate-pulse">
+                                <i class="fa-solid fa-bolt"></i> เปิดจองวันนี้!
+                            </span>
+                        @elseif ($product->isOpenToday && $product->isWaitingForTime)
+                            <span
+                                class="inline-flex items-center gap-1.5 text-xs sm:text-sm font-bold text-orange-500 bg-orange-50 px-3 py-1 rounded-md border border-orange-200">
+                                <i class="fa-solid fa-clock fa-spin fa-spin-reverse"
+                                    style="--fa-animation-duration: 3s;"></i> เปิดจองเร็วๆ นี้!
+                            </span>
+                        @else
+                            <span
+                                class="inline-flex items-center gap-1.5 text-xs sm:text-sm font-medium text-sky-500 bg-sky-100 px-3 py-1 rounded-md border border-sky-200">
                                 <i class="fa-duotone fa-solid fa-calendar-lines-pen"></i> จองได้เร็วๆ นี้!
                             </span>
-                        </div>
-                    @endif
+                        @endif
+                    </div>
 
                     <div :class="view === 'list' ? 'lg:flex lg:items-center lg:gap-10 lg:flex-1' : ''">
                         <div :class="view === 'list' ? 'lg:mb-0 lg:min-w-[200px]' : 'mb-6'" class="mb-6">
-                            <p class="text-sm font-medium text-[#57C84D]">แพ็กเเกจที่ {{ $loop->iteration }}</p>
-                            <h3 class="text-xl font-medium text-[#1E2A1E]">{{ $product->product_name }}</h3>
+                            <p class="text-sm font-medium text-[#57C84D]">อันดับที่ {{ $loop->iteration }}</p>
+
+                            <div class="text-xl font-medium inline-block mt-1">
+                                <h3 class="text-[#1E2A1E]">
+                                    <i class="fa-duotone fa-solid fa-coin-front text-amber-500"></i>
+                                    {{ $product->product_name }}
+                                </h3>
+                            </div>
                         </div>
 
                         <div :class="view === 'list' ? 'lg:mb-0 lg:flex lg:items-center lg:gap-12 lg:flex-1 lg:justify-start' :
                             'mb-8'"
                             class="mb-8">
-
-                            <div class="flex items-baseline gap-1">
-                                <span class="text-3xl font-semibold text-[#1E2A1E]">
-                                    {{ number_format($displayPrice, 0) }}
-                                </span>
-                                <span class="text-sm text-[#4B5B4B]">บาท</span>
-
+                            <div class="flex items-baseline gap-1.5">
+                                <span
+                                    class="text-3xl font-semibold text-[#57C84D]">{{ number_format($product->displayPrice, 0) }}</span>
+                                <span class="text-sm text-[#4B5B4B] font-bold">บาท</span>
                                 @if (auth()->check() && auth()->user()->level === 'agent')
                                     <span
-                                        class="ml-2 text-[10px] font-bold text-orange-500 bg-orange-100 px-2 py-0.5 rounded-full">ราคาตัวแทน</span>
+                                        class="ml-2 text-[10px] font-bold text-orange-500 bg-orange-100 px-2 py-0.5 rounded-md">ราคาตัวแทน</span>
                                 @endif
                             </div>
 
@@ -308,38 +304,52 @@
 
                                 <div :class="view === 'list' ? 'lg:flex lg:gap-3 lg:space-y-0' : 'space-y-2.5'"
                                     class="space-y-2.5">
-
                                     <div class="flex justify-between items-center gap-2">
                                         <span
-                                            class="text-sm font-medium text-slate-500 bg-slate-100 px-3 py-1 rounded-md whitespace-nowrap {{ $isOutOfStock ? 'grayscale' : '' }}">
-                                            คิวปัจจุบัน: {{ number_format($product->bookings_count ?? 0) }} คน
-                                        </span>
+                                            class="text-sm font-medium text-slate-500 bg-slate-100 px-3 py-1 rounded-md whitespace-nowrap">คิวปัจจุบัน:
+                                            {{ number_format($product->success_bookings_count ?? 0) }} คน</span>
                                     </div>
-
                                     <div class="flex justify-between items-center gap-2">
                                         <span
-                                            class="text-sm font-medium text-slate-500 bg-slate-100 px-3 py-1 rounded-md whitespace-nowrap {{ $isOutOfStock ? 'grayscale' : '' }}">
-                                            คงเหลือ: {{ number_format($product->stock) }} ชิ้น
-                                        </span>
+                                            class="text-sm font-medium text-slate-500 bg-slate-100 px-3 py-1 rounded-md whitespace-nowrap">คงเหลือ:
+                                            {{ number_format($product->stock) }} ชิ้น</span>
                                     </div>
                                 </div>
 
-                                <div class="flex justify-between items-center mt-2 pt-2 border-t border-slate-100"
+                                <div :class="view === 'list' ? 'lg:static lg:flex lg:flex-row lg:gap-2 lg:items-center' :
+                                    'absolute top-0 right-0 flex flex-col items-end gap-2.5'"
+                                    class="flex">
+                                    <span
+                                        class="text-sm font-medium text-[#F4B400] bg-[#FFF8E8] px-3 py-1 whitespace-nowrap rounded-md border border-[#FFE8C4]">
+                                        <i class="fa-duotone fa-solid fa-calendar text-amber-500"></i>
+                                        {{ $product->displayDate }}
+                                    </span>
+                                    <span
+                                        class="text-sm font-medium text-[#F4B400] bg-[#FFF8E8] px-3 py-1 whitespace-nowrap rounded-md border border-[#FFE8C4]">
+                                        <i class="fa-duotone fa-solid fa-alarm-clock text-amber-500"></i>
+                                        {{ $product->displayTime }}
+                                    </span>
+                                </div>
+
+                                <div class="flex justify-between items-center mt-3 pt-3 border-t border-slate-100"
                                     :class="view === 'list' ? 'lg:border-t-0 lg:pt-0 lg:mt-0 lg:ml-auto' : ''">
-                                    <span class="text-sm text-[#4B5B4B]"
+                                    <span class="text-sm text-[#4B5B4B] font-bold"
                                         :class="view === 'list' ? 'lg:hidden' : ''">สถานะ</span>
 
-                                    @if ($isOutOfStock)
-                                        <span
-                                            class="flex items-center gap-1.5 text-sm font-medium text-red-500 whitespace-nowrap grayscale">
-                                            <span
-                                                class="w-1.5 h-1.5 bg-red-500 rounded-full animate-pulse grayscale"></span>
-                                            สินค้าหมด
-                                        </span>
-                                    @else
+                                    @if ($product->canBook)
                                         <span class="flex items-center gap-1.5 text-sm font-medium text-[#57C84D]">
                                             <span class="w-1.5 h-1.5 bg-[#57C84D] rounded-full animate-pulse"></span>
                                             เปิดรับ
+                                        </span>
+                                    @elseif ($product->isOpenToday && $product->isWaitingForTime)
+                                        <span class="flex items-center gap-1.5 text-sm font-medium text-orange-500">
+                                            <span class="w-1.5 h-1.5 bg-orange-500 rounded-full animate-pulse"></span>
+                                            รอเปิดรับ
+                                        </span>
+                                    @else
+                                        <span class="flex items-center gap-1.5 text-sm font-medium text-slate-400">
+                                            <span class="w-1.5 h-1.5 bg-slate-300 rounded-full"></span>
+                                            ปิดรับ
                                         </span>
                                     @endif
                                 </div>
@@ -347,30 +357,44 @@
                         </div>
                     </div>
 
-                    {{-- ปุ่มกด --}}
-                    @if ($isOutOfStock)
+                    @if ($product->canBook)
+                        <a href="#" :class="view === 'list' ? 'lg:w-auto lg:px-8 lg:ml-6' : 'w-full'"
+                            class="block text-center w-full py-3.5 rounded-xl bg-[#F0FDF4] text-[#22C55E] text-[15px] font-bold hover:bg-[#22C55E] hover:text-white transition-all duration-300">
+                            จองสินค้าเลย!
+                        </a>
+                    @elseif ($product->isOpenToday && $product->isWaitingForTime)
                         <button disabled :class="view === 'list' ? 'lg:w-auto lg:px-8 lg:ml-6' : 'w-full'"
-                            class="w-full py-3 rounded-xl bg-red-100 text-red-400/50 text-sm font-semibold cursor-not-allowed grayscale">
-                            สินค้าหมด
+                            class="w-full py-3.5 rounded-xl bg-orange-50 text-orange-400 text-[15px] font-bold cursor-not-allowed border border-orange-100">
+                            ยังไม่ถึงเวลาจอง
                         </button>
                     @else
-                        <button :class="view === 'list' ? 'lg:w-auto lg:px-8 lg:ml-6' : 'w-full'"
-                            class="w-full py-3 rounded-xl bg-[#57C84D]/10 text-[#57C84D] text-sm font-semibold hover:bg-[#57C84D] hover:text-white transition-all duration-300">
-                            ดูข้อมูลเพิ่มเติม
+                        <button disabled :class="view === 'list' ? 'lg:w-auto lg:px-8 lg:ml-6' : 'w-full'"
+                            class="w-full py-3.5 rounded-xl bg-slate-50 text-slate-400 text-[15px] font-bold cursor-not-allowed border border-slate-100">
+                            ไม่อยู่ในช่วงเวลาจอง
                         </button>
                     @endif
 
                 </div>
             @empty
-                {{-- กรณีไม่มีสินค้า --}}
                 <div class="col-span-full py-16 text-center bg-white border border-dashed border-slate-300 rounded-2xl">
                     <div class="inline-flex items-center justify-center w-20 h-20 rounded-full bg-slate-50 mb-4">
                         <i class="fa-solid fa-box-open text-4xl text-slate-300"></i>
                     </div>
                     <h3 class="text-xl font-bold text-slate-700 mb-2">ยังไม่มีรายการแพ็กเกจ</h3>
-                    <p class="text-slate-500">ขณะนี้ยังไม่มีแพ็กเกจเปิดให้บริการ กรุณาติดตามการอัปเดตเร็วๆ นี้</p>
+                    <p class="text-slate-500">ขณะนี้ยังไม่มีแพ็กเกจเปิดให้บริการ</p>
                 </div>
             @endforelse
+
+            @if (!$hasRecommended && $products->isNotEmpty())
+                <div x-show="show && tab === 'recommended'" x-cloak
+                    class="col-span-full py-16 text-center bg-white border border-dashed border-slate-300 rounded-2xl">
+                    <div class="inline-flex items-center justify-center w-20 h-20 rounded-full bg-amber-50 mb-4">
+                        <i class="fa-solid fa-star text-4xl text-amber-400"></i>
+                    </div>
+                    <h3 class="text-xl font-bold text-slate-700 mb-2">ยังไม่มีสินค้าแนะนำ</h3>
+                    <p class="text-slate-500">ขณะนี้ยังไม่มีแพ็กเกจที่มียอดการจองในระบบ</p>
+                </div>
+            @endif
 
         </div>
     </section>

@@ -4,10 +4,10 @@
 
             <div class="flex flex-col items-center sm:items-start gap-1 text-center sm:text-left">
                 <h2 class="text-2xl sm:text-3xl font-bold tracking-tight">
-                    ORMORX STORE
+                    {{ $web_cfg->site_name }}
                 </h2>
                 <p class="text-white/90 text-xs sm:text-sm font-medium max-w-xs">
-                    ระบบจองคิวสำหรับตัวแทน ORMOR TOPUP COINS
+                    {{ $web_cfg->description }}
                 </p>
             </div>
 
@@ -17,7 +17,7 @@
                 </h3>
                 <nav class="flex flex-col items-center sm:items-start gap-1 sm:gap-2 text-white/80">
                     <a href="{{ route('frontend.home') }}" class="hover:text-white transition-colors text-sm font-normal">หน้าหลัก</a>
-                    <a href="{{ route('packages.page') }}" class="hover:text-white transition-colors text-sm font-normal">ระบบจอง</a>
+                    <a href="{{ route('frontend.queue') }}" class="hover:text-white transition-colors text-sm font-normal">ระบบจอง</a>
                     <a href="{{ route('transaction.page') }}" class="hover:text-white transition-colors text-sm font-normal">ประวัติการจอง</a>
                 </nav>
             </div>

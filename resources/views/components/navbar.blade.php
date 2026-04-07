@@ -31,7 +31,7 @@
                 หน้าหลัก
             </a>
 
-            <a href="{{ route('packages.page') }}"
+            <a href="{{ route('frontend.queue') }}"
                 class="hidden sm:flex items-center gap-1.5 text-white/70 hover:text-white text-[15px] font-medium transition-all duration-300">
                 <svg width="18" height="18" viewBox="0 0 24 24" fill="none"
                     xmlns="http://www.w3.org/2000/svg">
@@ -131,7 +131,7 @@
             <div class="flex flex-col gap-5">
                 <a href="{{ route('frontend.home') }}"
                     class="text-white text-lg font-medium flex items-center gap-3 border-b border-white/10 pb-3">หน้าหลัก</a>
-                <a href="{{ route('packages.page') }}"
+                <a href="{{ route('frontend.queue') }}"
                     class="text-white text-lg font-medium flex items-center gap-3 border-b border-white/10 pb-3">จองคิว</a>
                 <a href="{{ route('register.page') }}"
                     class="text-white text-lg font-medium flex items-center gap-3 border-b border-white/10 pb-3">สมัครสมาชิก</a>

@@ -6,8 +6,9 @@ use App\Http\Controllers\Controller;
 use App\Models\Backend\Product;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Carbon\Carbon;
 
-class HomeController extends Controller
+class QueueController extends Controller
 {
     public function index()
     {
@@ -24,27 +25,25 @@ class HomeController extends Controller
         $currentTime = $now->format('H:i:s');
         $thaiMonths = ['', 'ม.ค.', 'ก.พ.', 'มี.ค.', 'เม.ย.', 'พ.ค.', 'มิ.ย.', 'ก.ค.', 'ส.ค.', 'ก.ย.', 'ต.ค.', 'พ.ย.', 'ธ.ค.'];
 
-        $products->map(function ($product) use ($todayDate, $currentTime, $thaiMonths) {
+        $products->transform(function ($product) use ($todayDate, $currentTime, $thaiMonths) {
 
             $product->isOpenToday = $product->saleDates ? $product->saleDates->contains('date', $todayDate) : false;
             $product->isOpenTime = false;
             $product->isWaitingForTime = false;
-            
-            $targetSlot = null; 
+            $targetSlot = null;
 
             if ($product->isOpenToday) {
                 $activeSlots = $product->timeSlots ? $product->timeSlots->where('is_available', 1)->sortBy('start_time') : collect();
-                
+
                 if ($activeSlots->isEmpty()) {
                     $product->isOpenTime = true;
                 } else {
                     foreach ($activeSlots as $slot) {
                         if ($currentTime >= $slot->start_time && $currentTime <= $slot->end_time) {
                             $product->isOpenTime = true;
-                            $targetSlot = $slot; 
+                            $targetSlot = $slot;
                             break;
-                        }
-                        elseif ($currentTime < $slot->start_time) {
+                        } elseif ($currentTime < $slot->start_time) {
                             $product->isWaitingForTime = true;
                             if (!$targetSlot) {
                                 $targetSlot = $slot;
@@ -75,15 +74,15 @@ class HomeController extends Controller
 
             $firstDate = $product->saleDates ? $product->saleDates->first() : null;
             if ($firstDate) {
-                $parsedDate = \Carbon\Carbon::parse($firstDate->date);
+                $parsedDate = Carbon::parse($firstDate->date);
                 $product->displayDate = $parsedDate->day . ' ' . $thaiMonths[$parsedDate->month] . ' ' . (($parsedDate->year + 543) % 100);
             } else {
                 $product->displayDate = 'ยังไม่กำหนด';
             }
 
             if ($targetSlot) {
-                $startTime = \Carbon\Carbon::parse($targetSlot->start_time)->format('H.i');
-                $endTime = \Carbon\Carbon::parse($targetSlot->end_time)->format('H.i');
+                $startTime = Carbon::parse($targetSlot->start_time)->format('H.i');
+                $endTime = Carbon::parse($targetSlot->end_time)->format('H.i');
                 $product->displayTime = $startTime . ' - ' . $endTime;
             } else {
                 $product->displayTime = '-';
@@ -92,6 +91,6 @@ class HomeController extends Controller
             return $product;
         });
 
-        return view('frontend.home', compact('products'));
+        return view('frontend.queue', compact('products'));
     }
 }

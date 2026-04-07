@@ -18,7 +18,7 @@ class Product extends Model
     ];
     public function timeSlots()
     {
-        return $this->hasMany(TimeSlot::class);
+        return $this->hasMany(TimeSlot::class, 'product_id');
     }
     public function saleDates()
     {

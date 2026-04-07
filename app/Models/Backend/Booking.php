@@ -10,14 +10,17 @@ class Booking extends Model
     use HasFactory;
 
     protected $table = 'bookings';
+    
     protected $fillable = [
         'booking_code',  
         'username', 
         'product_code',
         'product_name', 
         'price', 
+        'content',
         'status',       
-        'booking_date'
+        'booking_date',
+        'booking_time'
     ];
 
     public function product()

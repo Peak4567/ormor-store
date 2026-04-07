@@ -3,13 +3,18 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
-use App\Models\Backend\User; 
+use App\Models\Backend\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Auth;
 
 class RegisterController extends Controller
 {
+
+    public function showRegistrationForm()
+    {
+        return view('auth.register');
+    }
     public function register(Request $request)
     {
         $request->validate([
@@ -26,7 +31,7 @@ class RegisterController extends Controller
         $latestUser = User::latest('id')->first();
         $nextNumber = $latestUser ? $latestUser->id + 1 : 1;
         $usersCode = 'U' . str_pad($nextNumber, 5, '0', STR_PAD_LEFT);
-        
+
         $user = User::create([
             'users_code' => $usersCode,
             'name'       => $request->name,

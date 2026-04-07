@@ -54,7 +54,7 @@
         </div>
 
         <div class="absolute left-1/2 -translate-x-1/2">
-            <a href="" class="flex items-center">
+            <a href="{{ route('frontend.home') }}" class="flex items-center">
                 <img src="{{ asset('assets/image/logo.png') }}" alt="Logo"
                     class="h-full w-16 mr-2 transition-all duration-300 hover:scale-110" />
             </a>
@@ -62,61 +62,69 @@
 
         <div class="flex items-center gap-4">
             @guest
-            <a href="{{ route('register.page') }}"
-                class="text-white/70 hover:text-white text-[15px] font-medium transition-colors hidden sm:block">สมัครสมาชิก</a>
-            <a href="{{ route('login.page') }}"
-                class="bg-white/10 hover:bg-white/20 text-white border border-white/20 px-5 py-2 rounded-full text-[15px] font-semibold transition-all backdrop-blur-sm">
-                เข้าสู่ระบบ
-            </a>
+                <a href="{{ route('register.page') }}"
+                    class="text-white/70 hover:text-white text-[15px] font-medium transition-colors hidden sm:block">สมัครสมาชิก</a>
+                <a href="{{ route('login.page') }}"
+                    class="bg-white/10 hover:bg-white/20 text-white border border-white/20 px-5 py-2 rounded-full text-[15px] font-semibold transition-all backdrop-blur-sm">
+                    เข้าสู่ระบบ
+                </a>
             @endguest
             @auth
-            <div class="flex items-center gap-4">
-                <div class="relative" x-data="{ profileOpen: false }">
+                <div class="flex items-center gap-4">
+                    <div class="relative" x-data="{ profileOpen: false }">
 
-                    <button @click="profileOpen = !profileOpen" class="flex items-center gap-2 focus:outline-none">
-                        <div class="w-10 h-10 rounded-full bg-[#57C84D]/20 hover:bg-[#57C84D]/40 text-red-100 border border-[#57C84D]/30 flex items-center justify-center text-white border-2 border-white/20">
-                            <i class="fa-duotone fa-solid fa-user"></i>
-                        </div>
-                        <i class="fa-solid fa-chevron-down text-white text-[10px] transition-transform" :class="profileOpen ? 'rotate-180' : ''"></i>
-                    </button>
-
-                    <div x-show="profileOpen"
-                        x-transition:enter="transition ease-out duration-200"
-                        x-transition:enter-start="opacity-0 scale-95 translate-y-[-10px]"
-                        x-transition:enter-end="opacity-100 scale-100 translate-y-0"
-                        x-transition:leave="transition ease-in duration-150"
-                        x-transition:leave-start="opacity-100 scale-100 translate-y-0"
-                        x-transition:leave-end="opacity-0 scale-95 translate-y-[-10px]"
-
-                        class="absolute right-0 mt-3 w-64 bg-black/70 backdrop-blur-2xl border border-white/15 rounded-3xl p-4 shadow-2xl z-[100] origin-top-right"
-
-                        @click.away="profileOpen = false"
-                        style="display: none;">
-
-                        <div class="flex flex-col gap-1">
-                            <div class="px-4 py-3 mb-2 border-b border-white/10">
-                                <p class="text-white/50 text-xs font-medium">บัญชีผู้ใช้</p>
-                                <p class="text-white font-semibold truncate">{{ auth()->user()->name }}</p>
+                        <button @click="profileOpen = !profileOpen" class="flex items-center gap-2 focus:outline-none">
+                            <div
+                                class="w-10 h-10 rounded-full bg-[#57C84D]/20 hover:bg-[#57C84D]/40 text-red-100 border border-[#57C84D]/30 flex items-center justify-center text-white border-2 border-white/20">
+                                <i class="fa-duotone fa-solid fa-user"></i>
                             </div>
+                            <i class="fa-solid fa-chevron-down text-white text-[10px] transition-transform"
+                                :class="profileOpen ? 'rotate-180' : ''"></i>
+                        </button>
 
-                            <a href="{{ route('transaction.page') }}"
-                                class="text-white/80 hover:text-white hover:bg-white/10 px-4 py-2 rounded-2xl text-sm font-medium flex items-center gap-3 transition-all duration-200">
-                                <i class="fa-duotone fa-solid fa-clock-rotate-left text-[#57C84D]"></i> ประวัติการสั่งซื้อ
-                            </a>
+                        <div x-show="profileOpen" x-transition:enter="transition ease-out duration-200"
+                            x-transition:enter-start="opacity-0 scale-95 translate-y-[-10px]"
+                            x-transition:enter-end="opacity-100 scale-100 translate-y-0"
+                            x-transition:leave="transition ease-in duration-150"
+                            x-transition:leave-start="opacity-100 scale-100 translate-y-0"
+                            x-transition:leave-end="opacity-0 scale-95 translate-y-[-10px]"
+                            class="absolute right-0 mt-3 w-64 bg-black/70 backdrop-blur-2xl border border-white/15 rounded-3xl p-4 shadow-2xl z-[100] origin-top-right"
+                            @click.away="profileOpen = false" style="display: none;">
 
-                            <hr class="my-2 border-white/10">
+                            <div class="flex flex-col gap-1">
+                                <div class="px-4 py-3 mb-2 border-b border-white/10">
+                                    <p class="text-white/50 text-xs font-medium">บัญชีผู้ใช้ ({{ auth()->user()->level }})
+                                    </p>
+                                    <p class="text-white font-semibold truncate">{{ auth()->user()->name }}</p>
+                                </div>
 
-                            <form action="{{ route('logout') }}" method="POST" class="inline">
-                                @csrf
-                                <button type="submit"
-                                    class="w-full bg-red-500/20 hover:bg-red-500/40 text-red-100 border border-red-500/30 px-5 py-2 rounded-full text-sm font-semibold transition-all backdrop-blur-sm">
-                                    <i class="fa-light fa-right-from-bracket"></i> ออกจากระบบ
-                                </button>
-                            </form>
+                                @if (auth()->user()->level === 'admin')
+                                    <a href="{{ route('backend.home') }}"
+                                        class="text-white/80 hover:text-white hover:bg-[#57C84D]/20 px-4 py-2 rounded-2xl text-sm font-medium flex items-center gap-3 transition-all duration-200">
+                                        <i class="fa-duotone fa-solid fa-gauge-high text-[#57C84D]"></i> จัดการหลังบ้าน
+                                    </a>
+                                    <hr class="my-1 border-white/5">
+                                @endif
+
+                                <a href="{{ route('frontend.history') }}"
+                                    class="text-white/80 hover:text-white hover:bg-white/10 px-4 py-2 rounded-2xl text-sm font-medium flex items-center gap-3 transition-all duration-200">
+                                    <i class="fa-duotone fa-solid fa-clock-rotate-left text-[#57C84D]"></i>
+                                    ประวัติการสั่งซื้อ
+                                </a>
+
+                                <hr class="my-2 border-white/10">
+
+                                <form action="{{ route('logout') }}" method="POST" class="inline">
+                                    @csrf
+                                    <button type="submit"
+                                        class="w-full bg-red-500/20 hover:bg-red-500/40 text-red-100 border border-red-500/30 px-5 py-2 rounded-full text-sm font-semibold transition-all backdrop-blur-sm">
+                                        <i class="fa-light fa-right-from-bracket"></i> ออกจากระบบ
+                                    </button>
+                                </form>
+                            </div>
                         </div>
                     </div>
                 </div>
-            </div>
             @endauth
         </div>
 
@@ -133,10 +141,23 @@
                     class="text-white text-lg font-medium flex items-center gap-3 border-b border-white/10 pb-3">หน้าหลัก</a>
                 <a href="{{ route('frontend.queue') }}"
                     class="text-white text-lg font-medium flex items-center gap-3 border-b border-white/10 pb-3">จองคิว</a>
-                <a href="{{ route('register.page') }}"
-                    class="text-white text-lg font-medium flex items-center gap-3 border-b border-white/10 pb-3">สมัครสมาชิก</a>
-                <a href="{{ route('login.page') }}"
-                    class="text-white text-lg font-medium flex items-center gap-3 border-b border-white/10 pb-3">เข้าสู่ระบบ</a>
+
+                @guest
+                    <a href="{{ route('register.page') }}"
+                        class="text-white text-lg font-medium flex items-center gap-3 border-b border-white/10 pb-3">สมัครสมาชิก</a>
+                    <a href="{{ route('login.page') }}"
+                        class="text-white text-lg font-medium flex items-center gap-3 border-b border-white/10 pb-3">เข้าสู่ระบบ</a>
+                @endguest
+
+                @auth
+                    @if (auth()->user()->level === 'admin')
+                        <a href="{{ route('backend.home') }}"
+                            class="text-[#57C84D] text-lg font-medium flex items-center gap-3 border-b border-white/10 pb-3">จัดการหลังบ้าน</a>
+                    @endif
+                    <a href="{{ route('frontend.history') }}"
+                        class="text-white text-lg font-medium flex items-center gap-3 border-b border-white/10 pb-3">ประวัติการสั่งซื้อ</a>
+                @endauth
+
                 <div class="pt-2 text-center text-white/50 text-xs">
                     ระบบจองคิวสำหรับตัวแทน ORMOR TOPUP COINS
                 </div>

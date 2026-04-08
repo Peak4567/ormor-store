@@ -4,8 +4,10 @@ namespace App\Http\Controllers\Frontend;
 
 use App\Http\Controllers\Controller;
 use App\Models\Backend\Product;
+use App\Models\Backend\Booking;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use Carbon\Carbon;
 
 class QueueController extends Controller
@@ -14,7 +16,9 @@ class QueueController extends Controller
     {
         $products = Product::with(['saleDates' => function ($query) {
             $query->orderBy('date', 'asc');
-        }, 'timeSlots'])
+        }, 'timeSlots' => function ($query) {
+            $query->where('is_available', 1)->orderBy('start_time', 'asc');
+        }])
             ->withCount(['bookings as success_bookings_count' => function ($query) {
                 $query->where('status', 'สำเร็จ');
             }])
@@ -26,6 +30,8 @@ class QueueController extends Controller
         $thaiMonths = ['', 'ม.ค.', 'ก.พ.', 'มี.ค.', 'เม.ย.', 'พ.ค.', 'มิ.ย.', 'ก.ค.', 'ส.ค.', 'ก.ย.', 'ต.ค.', 'พ.ย.', 'ธ.ค.'];
 
         $products->transform(function ($product) use ($todayDate, $currentTime, $thaiMonths) {
+
+            $product->availableDatesArray = $product->saleDates ? $product->saleDates->pluck('date')->toArray() : [];
 
             $product->isOpenToday = $product->saleDates ? $product->saleDates->contains('date', $todayDate) : false;
             $product->isOpenTime = false;
@@ -91,6 +97,72 @@ class QueueController extends Controller
             return $product;
         });
 
-        return view('frontend.queue', compact('products'));
+        $defaultProduct = $products->sortByDesc('success_bookings_count')->first();
+
+        return view('frontend.queue', compact('products', 'defaultProduct'));
+    }
+
+    public function store(Request $request)
+    {
+        $request->validate([
+            'product_code' => 'required',
+            'product_name' => 'required',
+            'booking_date' => 'required|date',
+        ]);
+
+        try {
+            // 1. ค้นหาสินค้าจาก product_code เพื่อเช็คสต็อกก่อน
+            $product = Product::where('product_code', $request->product_code)->first();
+
+            if (!$product) {
+                return response()->json([
+                    'status' => 'error',
+                    'message' => 'ไม่พบข้อมูลสินค้า'
+                ], 404);
+            }
+
+            // 2. ตรวจสอบว่าสินค้ามีสต็อกเหลือพอไหม
+            if ($product->stock <= 0) {
+                return response()->json([
+                    'status' => 'error',
+                    'message' => 'ขออภัยครับ สินค้าชิ้นนี้หมดแล้ว'
+                ], 400);
+            }
+
+            return DB::transaction(function () use ($request, $product) {
+
+                $booking = new Booking();
+                $booking->booking_code = 'BKG-' . date('Ymd') . '-' . rand(1000, 9999);
+                $booking->product_code = $request->product_code;
+                $booking->product_name = $request->product_name;
+
+                if (Auth::check()) {
+                    $booking->username = Auth::user()->username ?? Auth::user()->name ?? 'Unknown';
+                } else {
+                    $booking->username = 'Guest';
+                }
+
+                $booking->price = $request->price ?? 0;
+                $booking->status = 'รอตรวจสอบ';
+                $booking->booking_date = $request->booking_date;
+                $booking->booking_time = $request->booking_time;
+                $booking->content = $request->note;
+                $booking->save();
+
+                $product->decrement('stock');
+
+                return response()->json([
+                    'status' => 'success',
+                    'message' => 'จองคิวสำเร็จ และตัดสต็อกเรียบร้อยแล้ว',
+                    'booking_code' => $booking->booking_code,
+                    'remaining_stock' => $product->stock
+                ], 200);
+            });
+        } catch (\Exception $e) {
+            return response()->json([
+                'status' => 'error',
+                'message' => 'เกิดข้อผิดพลาด: ' . $e->getMessage()
+            ], 500);
+        }
     }
 }

@@ -358,7 +358,7 @@
                     </div>
 
                     @if ($product->canBook)
-                        <a href="#" :class="view === 'list' ? 'lg:w-auto lg:px-8 lg:ml-6' : 'w-full'"
+                        <a href="{{ route('frontend.queue') }}" :class="view === 'list' ? 'lg:w-auto lg:px-8 lg:ml-6' : 'w-full'"
                             class="block text-center w-full py-3.5 rounded-xl bg-[#F0FDF4] text-[#22C55E] text-[15px] font-bold hover:bg-[#22C55E] hover:text-white transition-all duration-300">
                             จองสินค้าเลย!
                         </a>

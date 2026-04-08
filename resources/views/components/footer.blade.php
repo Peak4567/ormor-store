@@ -18,7 +18,7 @@
                 <nav class="flex flex-col items-center sm:items-start gap-1 sm:gap-2 text-white/80">
                     <a href="{{ route('frontend.home') }}" class="hover:text-white transition-colors text-sm font-normal">หน้าหลัก</a>
                     <a href="{{ route('frontend.queue') }}" class="hover:text-white transition-colors text-sm font-normal">ระบบจอง</a>
-                    <a href="{{ route('transaction.page') }}" class="hover:text-white transition-colors text-sm font-normal">ประวัติการจอง</a>
+                    <a href="{{ route('frontend.history') }}" class="hover:text-white transition-colors text-sm font-normal">ประวัติการจอง</a>
                 </nav>
             </div>
 

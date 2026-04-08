@@ -102,12 +102,15 @@
 
                     <h3
                         class="bg-gradient-to-tr from-[#2F8F3A] via-[#57C84D] to-[#7ED957] bg-clip-text text-transparent text-2xl md:text-3xl font-bold leading-tight italic mb-6">
-                        "ระบบจัดการที่ช่วยให้การจองเหรียญของคุณเป็นเรื่องง่าย และรวดเร็วที่สุด"
+                        "ระบบจัดการที่ช่วยให้การจองเหรียญไลน์ของคุณเป็นเรื่องง่าย และรวดเร็วที่สุด"
                     </h3>
 
                     <div>
-                        <p class="font-semibold text-[#1E2A1E] text-lg">จิราวุฒิ - Ormor Topup Coins</p>
-                        <p class="text-sm text-[#57C84D] font-bold uppercase">Founder</p>
+                        <p class="font-semibold text-[#2a1e24] text-lg"><span class="text-[#b12576]">ตัวแทน</span><span>-
+                                สมัครสมาชิกโดยใช้ (ชื่อผู้ใช้งาน )ในกลุ่มโอเพนแชทที่คุณตั้งไว้ได้เลย</span> <br><br>
+                            <span class="text-[#25b14f]">ลูกค้าทั่วไป</span> - สมัครสมาชิกได้ตามปกติ และถ้าสนใจเป็นตัวแทน
+                            กรุณากดเข้ากลุ่มไลน์(เมนู)เพื่อรับรหัสตัวแทน และใช้ราคาพิเศษที่ถูกลงกว่าเดิม
+                        </p>
                     </div>
                 </div>
             </div>

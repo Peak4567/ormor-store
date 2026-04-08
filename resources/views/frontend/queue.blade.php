@@ -463,7 +463,7 @@
             </div>
 
             <div class="w-full md:w-auto flex flex-col gap-4 min-w-[320px] relative z-10">
-                <a href="{{ $web_cfg->line ?? '#' }}" target="_blank"
+                <a href="https://lin.ee/60NndJX" target="_blank"
                     class="group relative flex items-center justify-between bg-white/70 backdrop-blur-sm hover:bg-white transition-all duration-500 px-7 py-4 rounded-2xl shadow-[0_4px_20px_rgba(0,0,0,0.03)] hover:shadow-[0_10px_30px_rgba(120,182,143,0.2)] hover:-translate-y-1.5 hover:scale-[1.02] border border-white/50 overflow-hidden">
                     <div class="flex items-center gap-4">
                         <div

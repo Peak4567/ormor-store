@@ -137,7 +137,7 @@ class QueueController extends Controller
 
                 $booking = new Booking();
 
-                $booking->booking_code = $prefix . 'BKG-' . date('Ymd') . '-' . rand(1000, 9999);
+                $booking->booking_code = $prefix . 'ORMOR-' . date('Ymd') . '-' . rand(1000, 9999);
 
                 $booking->product_code = $request->product_code;
                 $booking->product_name = $request->product_name;

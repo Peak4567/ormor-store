@@ -14,17 +14,16 @@
                     <div
                         class="inline-block px-3.5 py-1 rounded-full bg-green-200/10 border border-green-200/30 hover:bg-green-200/15 hover:border-green-200/50 transition-colorsbackdrop-blur-sm">
                         <p class="text-sm md:text-base font-normal text-white">
-                            ระบบจองคิวสำหรับตัวแทน
+                            ระบบจองคิวเติม Coinsline (เหรียญไลน์) รองรับตัวแทน & ลูกค้าทั่วไป
                         </p>
                     </div>
 
                     <h1 class="max-w-3xl text-5xl font-bold md:text-7xl lg:text-7xl text-white">
-                        ORMOR <br>TOPUP COINS
+                        {{ $web_cfg->site_name ?? '#' }}
                     </h1>
 
                     <p class="max-w-xl font-normal md:text-lg lg:text-md leading-relaxed mx-auto lg:mx-0 text-white/90">
-                        ร้านเติมเงินออนไลน์ที่ให้บริการจองคิวสำหรับตัวแทนจำหน่ายของเราอย่างสะดวกและรวดเร็ว เพียงแค่สแกน QR
-                        Code เพื่อจองคิวของคุณ และรอการยืนยันจากเจ้าหน้าที่ของเรา
+                        {{ $web_cfg->description ?? '#' }}
                     </p>
                 </div>
 
@@ -35,19 +34,20 @@
                         class="bg-white px-2 py-2 rounded-2xl shadow-sm w-full max-w-sm sm:w-fit flex-shrink-0 self-stretch flex items-center mx-auto text-left lg:mx-0">
                         <div
                             class="p-2 bg-slate-100/50 flex flex-col items-center justify-center text-slate-400 rounded-2xl border-2 border-dashed border-slate-200 w-full">
-                            <img src="{{ asset('assets/image/IMG_7753.jpg') }}" alt="QR Code"
+                            <img src="{{ $web_cfg->qr_code ?? '#' }}" alt="QR Code"
                                 class="w-36 h-36 sm:w-36 sm:h-36 object-cover rounded-lg">
                         </div>
                         <div
                             class="sm:hidden flex p-6 text-slate-800 text-sm flex flex-col justify-between relative min-h-[144px] w-full">
                             <p class="text-[#1E2A1E] font-medium">
-                                โปรดแสกน QR Code เพื่อจองคิวของคุณ และรอการยืนยันจากเจ้าหน้าที่ของเรา
+                                โปรดสแกน QR Code เพื่อเข้ากลุ่ม LINE ของเรา เพื่อรับข่าวสาร โปรโมชัน และอัปเดตต่าง ๆ
+                                ได้ก่อนใคร
                             </p>
 
                             <a href="{{ $web_cfg->line ?? '#' }}"
                                 class="flex gap-2 text-[#F4B400] font-bold flex items-center gap-2 hover:translate-x-1 transition-transform mt-2">
-                                ตรวจสอบเพิ่มเติม <svg width="18" height="18" viewBox="0 0 24 24" fill="none"
-                                    xmlns="http://www.w3.org/2000/svg">
+                                คลิกที่นี่ เพื่อเข้ากลุ่ม <svg width="18" height="18" viewBox="0 0 24 24"
+                                    fill="none" xmlns="http://www.w3.org/2000/svg">
                                     <path d="M5 12H19M19 12L12 5M19 12L12 19" stroke="currentColor" stroke-width="3"
                                         stroke-linecap="round" stroke-linejoin="round" />
                                 </svg>
@@ -94,33 +94,60 @@
                         class="absolute inset-0 bg-white/20 opacity-0 group-hover:opacity-100 blur-[60px] transition-all duration-700 rounded-full scale-50 group-hover:scale-100">
                     </div>
 
-                    <img src="{{ asset('assets/image/logo.png') }}" alt="Hero Logo"
+                    <img src="{{ $web_cfg->logo ?? '#' }}" alt="Hero Logo"
                         class="w-full h-auto relative z-10 scale-110 lg:scale-125 -translate-y-4 rotate-[2deg] drop-shadow-[0_30px_50px_rgba(0,0,0,0.3)] transition-transform duration-500 group-hover:rotate-0 object-contain">
 
                     <div class="absolute -bottom-4 w-1/2 h-4 bg-black/10 blur-xl rounded-[100%]"></div>
                 </div>
 
-                <div
-                    class="hidden lg:flex items-center gap-3 w-full max-w-[320px] py-3.5 px-4 rounded-2xl bg-white/10 border border-white/20 backdrop-blur-lg shadow-sm overflow-hidden flex-shrink-0">
+                <a href="https://linevoom.line.me/post/1175001267066672713" target="_blank" x-data="{
+                    reviews: [
+                        '+1 ค่ะ  แอดมินตอบกลับไวมากค่ะ',
+                        '+1 อธิบายเพิ่มเติมได้เข้าใจดีคับ เติมเหรียญไวมากคับ ',
+                        '+10000 เติมเหรียญไลน์เร็ว  มีใบเสร็จค่ะ',
+                        '+1 คับ เร็วมากค่ะะะ'
+                    ],
+                    currentIndex: 0,
+                    init() {
+                        setInterval(() => {
+                            this.currentIndex = (this.currentIndex + 1) % this.reviews.length;
+                        }, 3000);
+                    }
+                }"
+                    class="hidden lg:flex items-center gap-3 w-full max-w-[320px] py-3.5 px-4 rounded-2xl bg-white/10 border border-white/20 backdrop-blur-lg shadow-sm overflow-hidden flex-shrink-0 cursor-pointer hover:bg-white/20 transition-all duration-300">
+
                     <div class="flex items-center -space-x-3 flex-shrink-0">
-                        <img src="https://i.pravatar.cc/100?u=4"
-                            class="w-10 h-10 rounded-full border-2 border-white/30 object-cover" alt="User 1">
-                        <img src="https://i.pravatar.cc/100?u=5"
-                            class="w-10 h-10 rounded-full border-2 border-white/30 object-cover" alt="User 2">
-                        <img src="https://i.pravatar.cc/100?u=6"
-                            class="w-10 h-10 rounded-full border-2 border-white/30 object-cover" alt="User 3">
+                        <img src="{{ asset('assets/image/profile/p1.jpg') }}"
+                            class="w-10 h-10 rounded-full border-2 border-white/30 object-cover" alt="Reviewer 1">
+                        <img src="{{ asset('assets/image/profile/p2.jpg') }}"
+                            class="w-10 h-10 rounded-full border-2 border-white/30 object-cover" alt="Reviewer 2">
+                        <img src="{{ asset('assets/image/profile/p3.jpg') }}"
+                            class="w-10 h-10 rounded-full border-2 border-white/30 object-cover" alt="Reviewer 3">
+
                         <div
                             class="w-10 h-10 rounded-full bg-white/20 backdrop-blur-md flex items-center justify-center text-[10px] text-white font-bold border-2 border-white/30">
-                            +10M
+                            +99
                         </div>
                     </div>
 
-                    <div class="flex flex-col items-start leading-tight min-w-0">
+                    <div class="flex flex-col items-start leading-tight min-w-0 h-[40px] justify-center">
                         <p class="text-[15px] font-semibold text-white truncate w-full">รีวิวจากผู้ใช้จริง</p>
-                        <p class="text-[13px] text-white/70 font-normal line-clamp-1 w-full opacity-80">"บริการเร็ว
-                            มั่นใจได้ 100%"</p>
+
+                        <div class="relative w-full overflow-hidden h-[20px]">
+                            <template x-for="(review, index) in reviews" :key="index">
+                                <p x-show="currentIndex === index" x-transition:enter="transition ease-out duration-500"
+                                    x-transition:enter-start="opacity-0 translate-y-4"
+                                    x-transition:enter-end="opacity-100 translate-y-0"
+                                    x-transition:leave="transition ease-in duration-300 absolute top-0"
+                                    x-transition:leave-start="opacity-100 translate-y-0"
+                                    x-transition:leave-end="opacity-0 -translate-y-4"
+                                    class="text-[13px] text-white/80 font-normal truncate w-full"
+                                    x-text="`&quot;${review}&quot;`">
+                                </p>
+                            </template>
+                        </div>
                     </div>
-                </div>
+                </a>
             </div>
 
         </div>
@@ -585,7 +612,7 @@
             </div>
 
             <div class="w-full md:w-auto flex flex-col gap-4 min-w-[320px] relative z-10">
-                <a href="{{ $web_cfg->line ?? '#' }}" target="_blank"
+                <a href="https://lin.ee/60NndJX" target="_blank"
                     class="group relative flex items-center justify-between bg-white/70 backdrop-blur-sm hover:bg-white transition-all duration-500 px-7 py-4 rounded-2xl shadow-[0_4px_20px_rgba(0,0,0,0.03)] hover:shadow-[0_10px_30px_rgba(120,182,143,0.2)] hover:-translate-y-1.5 hover:scale-[1.02] border border-white/50 overflow-hidden">
                     <div class="flex items-center gap-4">
                         <div

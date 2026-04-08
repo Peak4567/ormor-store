@@ -62,9 +62,28 @@
                 <template x-for="item in paginatedBookings" :key="item.id">
                     <div class="bg-white rounded-[2rem] border border-slate-200 transition-all duration-300 overflow-hidden">
                         <div class="flex flex-wrap items-center justify-between gap-4 px-6 py-4 bg-slate-50/50 border-b border-slate-100">
-                            <div class="flex items-center gap-3">
+                            
+                            <div class="flex items-center gap-2">
                                 <span class="font-semibold text-[#1E2A1E]" x-text="'#' + item.booking_code"></span>
-                                <span class="hidden sm:inline-block w-1.5 h-1.5 bg-slate-300 rounded-full"></span>
+                                
+                                <button @click="
+                                        navigator.clipboard.writeText(item.booking_code);
+                                        Swal.fire({
+                                            toast: true,
+                                            position: 'top-end',
+                                            icon: 'success',
+                                            title: 'คัดลอกรหัส ' + item.booking_code + ' แล้ว',
+                                            showConfirmButton: false,
+                                            timer: 1500,
+                                            customClass: { popup: 'font-[Prompt] rounded-xl' }
+                                        });
+                                    " 
+                                    class="text-slate-400 hover:text-[#57C84D] hover:bg-[#57C84D]/10 transition-all duration-300 w-7 h-7 flex items-center justify-center rounded-lg"
+                                    title="คัดลอกรหัสการจอง">
+                                    <i class="fa-regular fa-copy"></i>
+                                </button>
+
+                                <span class="hidden sm:inline-block w-1.5 h-1.5 bg-slate-300 rounded-full ml-1"></span>
                                 <span class="text-sm text-slate-500 flex items-center gap-1.5">
                                     <i class="fa-regular fa-calendar"></i>
                                     <span x-text="new Date(item.created_at).toLocaleString('th-TH')"></span>
@@ -160,8 +179,7 @@
                 </nav>
             </div>
         </div>
-    </div>
-</section>
+    </section>
 
 <script src="{{ asset('assets/js/frontend/sweetalert.js') }}"></script>
 <script src="{{ asset('assets/js/frontend/history.js') }}"></script>

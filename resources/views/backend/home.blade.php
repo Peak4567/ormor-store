@@ -146,43 +146,51 @@
 
             <div class="bg-white shadow-sm rounded-md p-6 lg:col-span-2 flex flex-col">
                 <h3 class="font-bold text-xl text-gray-800">ภาพรวมรายได้</h3>
-                <p class="text-gray-400 text-sm mb-6">รายได้ทั้งหมด</p>
+                <p class="text-gray-400 text-sm mb-6">รายได้ทั้งหมดในปีนี้</p>
 
-                <div class="flex-grow w-full h-[250px] relative">
-                    <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/c/c5/Line_chart_example.svg/800px-Line_chart_example.svg.png"
-                        class="w-full h-full object-contain opacity-30" alt="Chart Placeholder">
+                <div class="flex-grow w-full relative" style="height: 250px;">
+                    <canvas id="revenueChart" data-chart='{!! json_encode($chartData ?? array_fill(0, 12, 0)) !!}'>
+                    </canvas>
                 </div>
             </div>
 
             <div class="bg-white shadow-sm rounded-md p-6">
                 <div class="flex justify-between items-center mb-6">
                     <h3 class="font-bold text-lg text-gray-800">การจองล่าสุด</h3>
-                    <a href="#" class="text-sm font-bold text-gray-800 hover:underline">ดูทั้งหมด</a>
+                    <a href="{{ route('backend.booking') }}"
+                        class="text-sm font-bold text-gray-800 hover:underline">ดูทั้งหมด</a>
                 </div>
 
                 <div class="space-y-4">
-                    @for ($i = 1; $i <= 6; $i++)
+                    @forelse ($latestBookings as $booking)
                         <div class="flex items-center justify-between">
                             <div class="flex items-center space-x-3">
                                 <div
                                     class="w-8 h-8 rounded-full bg-[#00c365] text-white flex items-center justify-center font-bold text-sm">
-                                    {{ $i }}
+                                    {{ $loop->iteration }}
                                 </div>
                                 <div class="leading-tight">
-                                    <h4 class="text-sm font-bold text-gray-800">xPintoKung_Z</h4>
-                                    <p class="text-[11px] text-gray-400"><i class="fa-solid fa-receipt mr-1"></i>1
-                                        ออเดอร์</p>
+                                    <h4 class="text-sm font-bold text-gray-800">{{ $booking->username }}</h4>
+                                    <p class="text-[11px] text-gray-400">
+                                        <i class="fa-solid fa-receipt mr-1"></i>
+                                        {{ $booking->product_name }}
+                                    </p>
                                 </div>
                             </div>
-                            <button
+                            <a href="{{ route('backend.booking', ['search' => $booking->booking_code]) }}"
                                 class="border border-gray-300 rounded-full px-4 py-1.5 text-xs font-medium text-gray-700 hover:bg-gray-50">
                                 ข้อมูล
-                            </button>
+                            </a>
                         </div>
-                    @endfor
+                    @empty
+                        <div class="text-center py-4 text-gray-400 text-sm">
+                            ยังไม่มีข้อมูลการจอง
+                        </div>
+                    @endforelse
                 </div>
             </div>
         </div>
+    </div>
 
     </div>
 @endsection

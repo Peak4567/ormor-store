@@ -17,13 +17,14 @@
                         </svg>
                     </div>
                 </div>
-                <div class="flex flex-col sm:flex-row sm:items-center gap-1 sm:gap-2">
-                    <span class="text-red-500 font-medium text-base">คำเตือน</span>
-                    <p class="text-slate-600 font-medium text-base sm:text-base">
-                        หากกดจองแล้วไม่รับสินค้า <span class="decoration-2 underline decoration-red-400">มีค่าปรับ 10
-                            เท่า</span>
-                    </p>
-                </div>
+                @if (!empty($web_cfg->warning_text))
+                    <div class="flex flex-col sm:flex-row sm:items-center gap-1 sm:gap-2">
+                        <span class="text-red-500 font-medium text-base">คำเตือน</span>
+                        <p class="text-slate-600 font-medium text-base sm:text-base">
+                            {{ $web_cfg->warning_text }}
+                        </p>
+                    </div>
+                @endif
             </div>
             <div class="hidden md:block pr-2">
                 <svg class="w-4 h-4 text-slate-300 group-hover:text-rose-400 group-hover:translate-x-1 transition-all"

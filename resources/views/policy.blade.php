@@ -16,7 +16,7 @@
                     <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-violet-400 opacity-75"></span>
                     <span class="relative inline-flex rounded-full h-2 w-2 bg-violet-500"></span>
                 </span>
-                อัปเดตล่าสุด: 1 พฤษภาคม 2024
+                อัปเดตล่าสุด: 7 เมษายน 2569 (Navigate Innovations Co., Ltd.)
             </div>
             <h1 class="text-5xl sm:text-7xl lg:text-8xl font-medium tracking-tight text-slate-900 mb-6 leading-tight">
                 นโยบายความ<span class="bg-gradient-to-tr from-violet-800 to-purple-500 bg-clip-text text-transparent">เป็นส่วนตัว</span>
@@ -56,7 +56,7 @@
                 <div class="sticky top-12 pt-4">
                     <h4 class="text-lg font-medium text-slate-500 mb-4">สารบัญ</h4>
                     <nav class="flex flex-col border-l border-slate-200">
-                        <a href="#collect" class="group px-4 py-3 text-sm text-p-500 hover:text-slate-900 hover:bg-violet-50 border-l-2 border-transparent hover:border-purple-600 transition-all">
+                        <a href="#collect" class="group px-4 py-3 text-sm text-purple-600 hover:text-slate-900 hover:bg-violet-50 border-l-2 border-purple-500 hover:border-purple-600 transition-all">
                             <i class="fa-light fa-database mr-2 text-xs"></i> 01. ข้อมูลที่เราจัดเก็บ
                         </a>
                         <a href="#usage" class="group px-4 py-3 text-sm text-slate-500 hover:text-slate-900 hover:bg-violet-50 border-l-2 border-transparent hover:border-purple-600 transition-all">

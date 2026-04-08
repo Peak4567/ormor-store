@@ -7,7 +7,6 @@
     <meta name="description" content="@yield('description', 'ORMOR TOPUP COINS ระบบจองคิวเติม Coinsline (เหรียญไลน์) รองรับตัวแทน & ลูกค้าทั่วไป')">
     <meta name="keywords" content="เติมเหรียญราคาถูก, เติม coins, Ormor Topup, เติมเหรียญไลน์, เติมเกม">
     <meta name="robots" content="index, follow">
-
     <meta property="og:type" content="website">
     <meta property="og:url" content="{{ url()->current() }}">
     <meta property="og:title" content="@yield('title', 'Ormor Topup Coins | บริการเติมเหรียญราคาถูก มั่นใจ 100%')">

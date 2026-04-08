@@ -1,5 +1,7 @@
 @extends('layouts')
+
 @section('title', 'Ormor Topup Coins | Packages')
+
 @section('content')
 
     <section class="max-w-screen-lg mx-auto mt-32 py-12 px-4 space-y-10">
@@ -17,14 +19,13 @@
                         </svg>
                     </div>
                 </div>
-                @if (!empty($web_cfg->warning_text))
-                    <div class="flex flex-col sm:flex-row sm:items-center gap-1 sm:gap-2">
-                        <span class="text-red-500 font-medium text-base">คำเตือน</span>
-                        <p class="text-slate-600 font-medium text-base sm:text-base">
-                            {{ $web_cfg->warning_text }}
-                        </p>
-                    </div>
-                @endif
+                <div class="flex flex-col sm:flex-row sm:items-center gap-1 sm:gap-2">
+                    <span class="text-red-500 font-medium text-base">คำเตือน</span>
+                    <p class="text-slate-600 font-medium text-base sm:text-base">
+                        หากกดจองแล้วไม่รับสินค้า <span class="decoration-2 underline decoration-red-400">มีค่าปรับ 10
+                            เท่า</span>
+                    </p>
+                </div>
             </div>
             <div class="hidden md:block pr-2">
                 <svg class="w-4 h-4 text-slate-300 group-hover:text-rose-400 group-hover:translate-x-1 transition-all"
@@ -278,11 +279,7 @@
         </section>
 
         <section id="booking-section" class="bg-white border-2 border-slate-100 p-8 scroll-mt-24">
-            <div class="max-w-screen-xl mx-auto px-4" x-data="bookingWidget(
-                {{ $products->toJson() }},
-                '{{ $defaultProduct->id ?? '' }}',
-                '{{ auth()->check() ? auth()->user()->level : 'member' }}'
-            )"
+            <div class="max-w-screen-xl mx-auto px-4" x-data="bookingWidget(@js($products), '{{ $defaultProduct->id ?? '' }}')"
                 @select-product-for-booking.window="selectedProductId = $event.detail.id">
 
                 <div class="text-center sm:text-left my-8">
@@ -382,17 +379,14 @@
                                         :class="@guest true @else false @endguest ?
                                             'bg-slate-100 cursor-not-allowed opacity-70' : 'bg-white cursor-pointer'"
                                         class="w-full px-5 py-4 border-2 border-slate-200 rounded-2xl text-slate-600 font-medium focus:border-[#57C84D]/50 focus:ring-0 transition-all appearance-none">
-
                                         @guest
-                                            <option value="" disabled selected hidden>-- กรุณาเข้าสู่ระบบก่อน --</option>
+                                            <option value="">-- กรุณาเข้าสู่ระบบก่อน --</option>
                                         @else
-                                            <option value="" disabled selected hidden>-- กรุณาเลือกแพ็กเกจ --</option>
-
+                                            <option value="">-- กรุณาเลือกแพ็กเกจ --</option>
                                             @foreach ($products as $product)
                                                 <option value="{{ $product->id }}">{{ $product->product_name }}</option>
                                             @endforeach
                                         @endguest
-
                                     </select>
                                     <div
                                         class="absolute inset-y-0 right-0 flex items-center pr-4 pointer-events-none text-slate-400">
@@ -402,9 +396,10 @@
                             </div>
                             <div class="space-y-3">
                                 <label class="block text-lg font-semibold text-[#1E2A1E]">ราคา</label>
-                                <input type="text" readonly placeholder="ราคาจะแสดงอัตโนมัติ"
-                                    :value="displayPrice ? new Intl.NumberFormat().format(displayPrice) + ' บาท' :
-                                        'ราคาจะแสดงอัตโนมัติ'"
+                                <input type="text" readonly
+                                    :placeholder="@guest 'กรุณาเข้าสู่ระบบก่อน' @else 'ราคาจะแสดงอัตโนมัติ' @endguest"
+                                    :value="selectedProduct ? new Intl.NumberFormat().format(selectedProduct.main_price) +
+                                        ' บาท' : ''"
                                     class="w-full px-5 py-4 bg-slate-50 border-2 border-slate-200/50 rounded-2xl text-slate-500 font-medium focus:outline-none cursor-default">
                             </div>
                         </div>
@@ -467,7 +462,7 @@
             </div>
 
             <div class="w-full md:w-auto flex flex-col gap-4 min-w-[320px] relative z-10">
-                <a href="https://lin.ee/60NndJX" target="_blank"
+                <a href="#"
                     class="group relative flex items-center justify-between bg-white/70 backdrop-blur-sm hover:bg-white transition-all duration-500 px-7 py-4 rounded-2xl shadow-[0_4px_20px_rgba(0,0,0,0.03)] hover:shadow-[0_10px_30px_rgba(120,182,143,0.2)] hover:-translate-y-1.5 hover:scale-[1.02] border border-white/50 overflow-hidden">
                     <div class="flex items-center gap-4">
                         <div
@@ -487,7 +482,7 @@
                             d="M13 7l5 5m0 0l-5 5m5-5H6"></path>
                     </svg>
                 </a>
-                <a href="{{ $web_cfg->website_url ?? '#' }}" target="_blank"
+                <a href="#"
                     class="group relative flex items-center justify-between bg-white/70 backdrop-blur-sm hover:bg-white transition-all duration-500 px-7 py-4 rounded-2xl shadow-[0_4px_20px_rgba(0,0,0,0.03)] hover:shadow-[0_10px_30px_rgba(120,182,143,0.2)] hover:-translate-y-1.5 hover:scale-[1.02] border border-white/50 overflow-hidden">
                     <div class="flex items-center gap-4">
                         <div

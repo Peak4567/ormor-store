@@ -16,9 +16,12 @@
                     เมนูเพื่อความสะดวก
                 </h3>
                 <nav class="flex flex-col items-center sm:items-start gap-1 sm:gap-2 text-white/80">
-                    <a href="{{ route('frontend.home') }}" class="hover:text-white transition-colors text-sm font-normal">หน้าหลัก</a>
-                    <a href="{{ route('frontend.queue') }}" class="hover:text-white transition-colors text-sm font-normal">ระบบจอง</a>
-                    <a href="{{ route('frontend.history') }}" class="hover:text-white transition-colors text-sm font-normal">ประวัติการจอง</a>
+                    <a href="{{ route('frontend.home') }}"
+                        class="hover:text-white transition-colors text-sm font-normal">หน้าหลัก</a>
+                    <a href="{{ route('frontend.queue') }}"
+                        class="hover:text-white transition-colors text-sm font-normal">ระบบจอง</a>
+                    <a href="{{ route('frontend.history') }}"
+                        class="hover:text-white transition-colors text-sm font-normal">ประวัติการจอง</a>
                 </nav>
             </div>
 
@@ -27,8 +30,10 @@
                     เมนูการใช้งาน
                 </h3>
                 <nav class="flex flex-col items-center sm:items-start gap-1 sm:gap-2 text-white/80">
-                    <a href="{{ route('register.page') }}" class="hover:text-white transition-colors text-sm font-normal">สมัครสมาชิก</a>
-                    <a href="{{ route('login.page') }}" class="hover:text-white transition-colors text-sm font-normal">เข้าสู่ระบบ</a>
+                    <a href="{{ route('register.page') }}"
+                        class="hover:text-white transition-colors text-sm font-normal">สมัครสมาชิก</a>
+                    <a href="{{ route('login.page') }}"
+                        class="hover:text-white transition-colors text-sm font-normal">เข้าสู่ระบบ</a>
                 </nav>
             </div>
 
@@ -55,13 +60,20 @@
 
         <div class="pt-4 sm:pt-8 border-t border-white/20 flex flex-col md:flex-row justify-between items-center gap-6">
             <div class="text-xs md:text-sm text-white font-medium text-center md:text-left">
-                <p>Copyright 2026 <span class="text-lg leading-none">©</span> NaHost (Navigate Innovations Co., Ltd.)
-                    All rights reserved.</p>
+                <p>Copyright 2026 <span class="text-lg leading-none">©</span>
+                    <a href="https://nahost.in.th" target="_blank"
+                        class="hover:text-white/70 transition-colors duration-200 underline underline-offset-4">
+                        NaHost (Navigate Innovations Co., Ltd.)
+                    </a>
+                    All rights reserved.
+                </p>
             </div>
 
             <div class="flex items-center gap-6 text-xs md:text-sm font-medium">
-                <a href="{{ route('privacy_policy.page') }}" class="hover:text-white/70 transition-colors">Privacy Policy</a>
-                <a href="{{ route('terms_conditions.page') }}" class="hover:text-white/70 transition-colors">Terms & Conditions</a>
+                <a href="{{ route('privacy_policy.page') }}" class="hover:text-white/70 transition-colors">Privacy
+                    Policy</a>
+                <a href="{{ route('terms_conditions.page') }}" class="hover:text-white/70 transition-colors">Terms &
+                    Conditions</a>
             </div>
         </div>
     </div>

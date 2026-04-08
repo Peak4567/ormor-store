@@ -4,7 +4,17 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="@yield('description', 'ORMOR TOPUP COINS ระบบจองคิวเติม Coinsline (เหรียญไลน์) รองรับตัวแทน & ลูกค้าทั่วไป')">
+    <meta name="keywords" content="เติมเหรียญราคาถูก, เติม coins, Ormor Topup, เติมเหรียญไลน์, เติมเกม">
+    <meta name="robots" content="index, follow">
+
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="{{ url()->current() }}">
+    <meta property="og:title" content="@yield('title', 'Ormor Topup Coins | บริการเติมเหรียญราคาถูก มั่นใจ 100%')">
+    <meta property="og:description" content="@yield('meta_description', 'เติมเหรียญสะดวก รวดเร็ว ปลอดภัย ตรวจสอบสถานะได้ตลอด 24 ชม.')">
     <meta name="csrf-token" content="{{ csrf_token() }}">
+
+    <link rel="canonical" href="{{ url()->current() }}">
     <title>Ormor Topup Coins | Website</title>
 
     <!-- Favicon -->

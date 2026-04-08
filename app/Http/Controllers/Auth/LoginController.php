@@ -32,7 +32,7 @@ class LoginController extends Controller
         }
 
         return back()->withErrors([
-            'login' => 'ชื่อผู้ใช้หรือรหัสผ่านไม่ถูกต้องครับพีค ลองเช็คดูอีกทีนะ',
+            'login' => 'ชื่อผู้ใช้หรือรหัสผ่านไม่ถูกต้องครับ ลองเช็คดูอีกทีนะ',
         ])->onlyInput('login');
     }
 

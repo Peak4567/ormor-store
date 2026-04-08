@@ -15,7 +15,6 @@ class BookingController extends Controller
 
         if ($request->filled('search')) {
             $search = $request->search;
-
             $query->where(function ($q) use ($search) {
                 if (str_starts_with($search, '#')) {
                     $cleanCode = ltrim($search, '#');
@@ -37,9 +36,10 @@ class BookingController extends Controller
         $bookings->getCollection()->transform(function ($item) {
             $date = Carbon::parse($item->booking_date);
 
-            $item->thai_date = $date->addYears(543)->locale('th')->translatedFormat('j M Y');
-            $item->day_name = $date->parse($item->booking_date)->locale('th')->translatedFormat('(วันl)');
-            $item->booking_time = $date->format('H:i') . ' น.';
+            $item->thai_date = $date->copy()->addYears(543)->locale('th')->translatedFormat('j M Y');
+            $item->day_name = $date->copy()->locale('th')->translatedFormat('(วันl)');
+
+            $item->display_time = $item->booking_time ? $item->booking_time . ' น.' : 'ไม่ได้ระบุเวลา';
 
             return $item;
         });

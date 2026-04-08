@@ -111,7 +111,6 @@ class QueueController extends Controller
         ]);
 
         try {
-            // 1. ค้นหาสินค้าจาก product_code เพื่อเช็คสต็อกก่อน
             $product = Product::where('product_code', $request->product_code)->first();
 
             if (!$product) {
@@ -121,7 +120,6 @@ class QueueController extends Controller
                 ], 404);
             }
 
-            // 2. ตรวจสอบว่าสินค้ามีสต็อกเหลือพอไหม
             if ($product->stock <= 0) {
                 return response()->json([
                     'status' => 'error',
@@ -131,8 +129,16 @@ class QueueController extends Controller
 
             return DB::transaction(function () use ($request, $product) {
 
+                $prefix = 'G-';
+
+                if (Auth::check()) {
+                    $prefix = (Auth::user()->level === 'agent') ? 'A-' : 'M-';
+                }
+
                 $booking = new Booking();
-                $booking->booking_code = 'BKG-' . date('Ymd') . '-' . rand(1000, 9999);
+
+                $booking->booking_code = $prefix . 'BKG-' . date('Ymd') . '-' . rand(1000, 9999);
+
                 $booking->product_code = $request->product_code;
                 $booking->product_name = $request->product_name;
 
@@ -142,7 +148,10 @@ class QueueController extends Controller
                     $booking->username = 'Guest';
                 }
 
-                $booking->price = $request->price ?? 0;
+                $booking->price = (Auth::check() && Auth::user()->level === 'agent')
+                    ? $product->agent_price
+                    : $product->main_price;
+
                 $booking->status = 'รอตรวจสอบ';
                 $booking->booking_date = $request->booking_date;
                 $booking->booking_time = $request->booking_time;

@@ -1,7 +1,5 @@
 @extends('layouts')
-
 @section('title', 'Ormor Topup Coins | Packages')
-
 @section('content')
 
     <section class="max-w-screen-lg mx-auto mt-32 py-12 px-4 space-y-10">
@@ -279,7 +277,11 @@
         </section>
 
         <section id="booking-section" class="bg-white border-2 border-slate-100 p-8 scroll-mt-24">
-            <div class="max-w-screen-xl mx-auto px-4" x-data="bookingWidget(@js($products), '{{ $defaultProduct->id ?? '' }}')"
+            <div class="max-w-screen-xl mx-auto px-4" x-data="bookingWidget(
+                {{ $products->toJson() }},
+                '{{ $defaultProduct->id ?? '' }}',
+                '{{ auth()->check() ? auth()->user()->level : 'member' }}'
+            )"
                 @select-product-for-booking.window="selectedProductId = $event.detail.id">
 
                 <div class="text-center sm:text-left my-8">
@@ -396,10 +398,9 @@
                             </div>
                             <div class="space-y-3">
                                 <label class="block text-lg font-semibold text-[#1E2A1E]">ราคา</label>
-                                <input type="text" readonly
-                                    :placeholder="@guest 'กรุณาเข้าสู่ระบบก่อน' @else 'ราคาจะแสดงอัตโนมัติ' @endguest"
-                                    :value="selectedProduct ? new Intl.NumberFormat().format(selectedProduct.main_price) +
-                                        ' บาท' : ''"
+                                <input type="text" readonly placeholder="ราคาจะแสดงอัตโนมัติ"
+                                    :value="displayPrice ? new Intl.NumberFormat().format(displayPrice) + ' บาท' :
+                                        'ราคาจะแสดงอัตโนมัติ'"
                                     class="w-full px-5 py-4 bg-slate-50 border-2 border-slate-200/50 rounded-2xl text-slate-500 font-medium focus:outline-none cursor-default">
                             </div>
                         </div>
@@ -462,7 +463,7 @@
             </div>
 
             <div class="w-full md:w-auto flex flex-col gap-4 min-w-[320px] relative z-10">
-                <a href="#"
+                <a href="{{ $web_cfg->line ?? '#' }}" target="_blank"
                     class="group relative flex items-center justify-between bg-white/70 backdrop-blur-sm hover:bg-white transition-all duration-500 px-7 py-4 rounded-2xl shadow-[0_4px_20px_rgba(0,0,0,0.03)] hover:shadow-[0_10px_30px_rgba(120,182,143,0.2)] hover:-translate-y-1.5 hover:scale-[1.02] border border-white/50 overflow-hidden">
                     <div class="flex items-center gap-4">
                         <div
@@ -482,7 +483,7 @@
                             d="M13 7l5 5m0 0l-5 5m5-5H6"></path>
                     </svg>
                 </a>
-                <a href="#"
+                <a href="{{ $web_cfg->website_url ?? '#' }}" target="_blank"
                     class="group relative flex items-center justify-between bg-white/70 backdrop-blur-sm hover:bg-white transition-all duration-500 px-7 py-4 rounded-2xl shadow-[0_4px_20px_rgba(0,0,0,0.03)] hover:shadow-[0_10px_30px_rgba(120,182,143,0.2)] hover:-translate-y-1.5 hover:scale-[1.02] border border-white/50 overflow-hidden">
                     <div class="flex items-center gap-4">
                         <div

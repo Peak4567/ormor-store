@@ -238,43 +238,57 @@
         </div>
 
         @php
-            $hasRecommended = $products->sum('success_bookings_count') > 0;
+            $popularProducts = $products->sortByDesc('bookings_count')->take(3);
+            $hasPopular = $popularProducts->isNotEmpty();
+
+            $recommendedProducts = $products
+                ->where('success_bookings_count', '>', 0)
+                ->sortByDesc('success_bookings_count')
+                ->take(3);
+            $hasRecommended = $recommendedProducts->isNotEmpty();
         @endphp
 
         <div :class="view === 'grid' ? 'grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6' : 'flex flex-col gap-4'"
             class="transition-all duration-500">
 
-            @forelse ($products->sortByDesc('success_bookings_count') as $product)
-                <div x-show="show && ({{ $product->tabCondition }})" x-transition:enter="transition ease-out duration-300"
+            @foreach ($products as $product)
+                @php
+                    $isPopular = $popularProducts->contains('id', $product->id);
+                    $isRec = $recommendedProducts->contains('id', $product->id);
+                @endphp
+
+                <div x-show="show && ((tab === 'all' && @js($isPopular)) || (tab === 'recommended' && @js($isRec)))"
+                    x-transition:enter="transition ease-out duration-300"
                     x-transition:enter-start="opacity-0 translate-y-4" x-transition:enter-end="opacity-100 translate-y-0"
                     :class="view === 'list' ? 'lg:flex lg:items-center lg:justify-between mt-4' : ''"
                     class="group relative border-2 rounded-2xl p-7 transition-all duration-300 
-        {{ $product->isOutOfStock ? 'bg-slate-50/50 border-slate-200 grayscale-[0.3]' : 'bg-white border-slate-200 hover:border-[#57C84D]/50 hover:-translate-y-1.5' }}">
+    {{ $product->isOutOfStock ? 'bg-slate-50/50 border-slate-200 grayscale-[0.3]' : 'bg-white border-slate-200 hover:border-[#57C84D]/50 hover:-translate-y-1.5' }}">
 
                     <div :class="view === 'list' ? 'lg:absolute lg:-top-4 lg:left-6 lg:right-auto' : 'absolute top-6 right-6'"
                         class="absolute top-6 right-6 z-10">
-                        @if ($product->canBook)
+                        <template x-if="tab === 'all'">
                             <span
-                                class="inline-flex items-center gap-1.5 text-xs sm:text-sm font-bold text-[#57C84D] bg-[#57C84D]/10 px-3 py-1 rounded-md border border-[#57C84D]/20 animate-pulse">
-                                <i class="fa-solid fa-bolt"></i> เปิดจองวันนี้!
+                                class="inline-flex items-center gap-1.5 text-xs font-bold text-sky-500 bg-sky-50 px-3 py-1 rounded-md border border-sky-100">
+                                ยอดนิยมอันดับ {{ $popularProducts->search(fn($p) => $p->id === $product->id) + 1 }}
                             </span>
-                        @elseif ($product->isOpenToday && $product->isWaitingForTime)
+                        </template>
+                        <template x-if="tab === 'recommended'">
                             <span
-                                class="inline-flex items-center gap-1.5 text-xs sm:text-sm font-bold text-orange-500 bg-orange-50 px-3 py-1 rounded-md border border-orange-200">
-                                <i class="fa-solid fa-clock fa-spin fa-spin-reverse"
-                                    style="--fa-animation-duration: 3s;"></i> เปิดจองเร็วๆ นี้!
+                                class="inline-flex items-center gap-1.5 text-xs font-bold text-amber-500 bg-amber-50 px-3 py-1 rounded-md border border-amber-100">
+                                แนะนำอันดับ
+                                {{ $recommendedProducts->values()->search(fn($p) => $p->id === $product->id) + 1 }}
                             </span>
-                        @else
-                            <span
-                                class="inline-flex items-center gap-1.5 text-xs sm:text-sm font-medium text-sky-500 bg-sky-100 px-3 py-1 rounded-md border border-sky-200">
-                                <i class="fa-duotone fa-solid fa-calendar-lines-pen"></i> จองได้เร็วๆ นี้!
-                            </span>
-                        @endif
+                        </template>
                     </div>
 
                     <div :class="view === 'list' ? 'lg:flex lg:items-center lg:gap-10 lg:flex-1' : ''">
                         <div :class="view === 'list' ? 'lg:mb-0 lg:min-w-[200px]' : 'mb-6'" class="mb-6">
-                            <p class="text-sm font-medium text-[#57C84D]">อันดับที่ {{ $loop->iteration }}</p>
+                            <p class="text-sm font-medium text-[#57C84D]">
+                                @if ($product->canBook)
+                                    <i class="fa-solid fa-bolt animate-pulse"></i>
+                                @endif
+                                สินค้าคุณภาพ
+                            </p>
 
                             <div class="text-xl font-medium inline-block mt-1">
                                 <h3 class="text-[#1E2A1E]">
@@ -291,23 +305,18 @@
                                 <span
                                     class="text-3xl font-semibold text-[#57C84D]">{{ number_format($product->displayPrice, 0) }}</span>
                                 <span class="text-sm text-[#4B5B4B] font-bold">บาท</span>
-                                @if (auth()->check() && auth()->user()->level === 'agent')
-                                    <span
-                                        class="ml-2 text-[10px] font-bold text-orange-500 bg-orange-100 px-2 py-0.5 rounded-md">ราคาตัวแทน</span>
-                                @endif
                             </div>
 
                             <div :class="view === 'list' ?
                                 'lg:mt-0 lg:flex lg:items-center lg:gap-6 lg:flex-1 lg:justify-between' :
                                 'mt-3 relative'"
                                 class="mt-3">
-
                                 <div :class="view === 'list' ? 'lg:flex lg:gap-3 lg:space-y-0' : 'space-y-2.5'"
                                     class="space-y-2.5">
                                     <div class="flex justify-between items-center gap-2">
                                         <span
-                                            class="text-sm font-medium text-slate-500 bg-slate-100 px-3 py-1 rounded-md whitespace-nowrap">คิวปัจจุบัน:
-                                            {{ number_format($product->success_bookings_count ?? 0) }} คน</span>
+                                            class="text-sm font-medium text-slate-500 bg-slate-100 px-3 py-1 rounded-md whitespace-nowrap">สำเร็จแล้ว:
+                                            {{ number_format($product->success_bookings_count ?? 0) }} ครั้ง</span>
                                     </div>
                                     <div class="flex justify-between items-center gap-2">
                                         <span
@@ -335,7 +344,6 @@
                                     :class="view === 'list' ? 'lg:border-t-0 lg:pt-0 lg:mt-0 lg:ml-auto' : ''">
                                     <span class="text-sm text-[#4B5B4B] font-bold"
                                         :class="view === 'list' ? 'lg:hidden' : ''">สถานะ</span>
-
                                     @if ($product->canBook)
                                         <span class="flex items-center gap-1.5 text-sm font-medium text-[#57C84D]">
                                             <span class="w-1.5 h-1.5 bg-[#57C84D] rounded-full animate-pulse"></span>
@@ -344,12 +352,11 @@
                                     @elseif ($product->isOpenToday && $product->isWaitingForTime)
                                         <span class="flex items-center gap-1.5 text-sm font-medium text-orange-500">
                                             <span class="w-1.5 h-1.5 bg-orange-500 rounded-full animate-pulse"></span>
-                                            รอเปิดรับ
+                                            รอเปิด
                                         </span>
                                     @else
                                         <span class="flex items-center gap-1.5 text-sm font-medium text-slate-400">
-                                            <span class="w-1.5 h-1.5 bg-slate-300 rounded-full"></span>
-                                            ปิดรับ
+                                            <span class="w-1.5 h-1.5 bg-slate-300 rounded-full"></span> ปิดรับ
                                         </span>
                                     @endif
                                 </div>
@@ -358,43 +365,33 @@
                     </div>
 
                     @if ($product->canBook)
-                        <a href="{{ route('frontend.queue') }}" :class="view === 'list' ? 'lg:w-auto lg:px-8 lg:ml-6' : 'w-full'"
+                        <a href="{{ route('frontend.queue') }}"
+                            :class="view === 'list' ? 'lg:w-auto lg:px-8 lg:ml-6' : 'w-full'"
                             class="block text-center w-full py-3.5 rounded-xl bg-[#F0FDF4] text-[#22C55E] text-[15px] font-bold hover:bg-[#22C55E] hover:text-white transition-all duration-300">
                             จองสินค้าเลย!
                         </a>
-                    @elseif ($product->isOpenToday && $product->isWaitingForTime)
-                        <button disabled :class="view === 'list' ? 'lg:w-auto lg:px-8 lg:ml-6' : 'w-full'"
-                            class="w-full py-3.5 rounded-xl bg-orange-50 text-orange-400 text-[15px] font-bold cursor-not-allowed border border-orange-100">
-                            ยังไม่ถึงเวลาจอง
-                        </button>
                     @else
                         <button disabled :class="view === 'list' ? 'lg:w-auto lg:px-8 lg:ml-6' : 'w-full'"
                             class="w-full py-3.5 rounded-xl bg-slate-50 text-slate-400 text-[15px] font-bold cursor-not-allowed border border-slate-100">
-                            ไม่อยู่ในช่วงเวลาจอง
+                            ไม่สามารถจองได้
                         </button>
                     @endif
+                </div>
+            @endforeach
 
-                </div>
-            @empty
-                <div class="col-span-full py-16 text-center bg-white border border-dashed border-slate-300 rounded-2xl">
-                    <div class="inline-flex items-center justify-center w-20 h-20 rounded-full bg-slate-50 mb-4">
-                        <i class="fa-solid fa-box-open text-4xl text-slate-300"></i>
-                    </div>
-                    <h3 class="text-xl font-bold text-slate-700 mb-2">ยังไม่มีรายการแพ็กเกจ</h3>
-                    <p class="text-slate-500">ขณะนี้ยังไม่มีแพ็กเกจเปิดให้บริการ</p>
-                </div>
-            @endforelse
+            <div x-show="tab === 'all' && !@js($hasPopular)" x-cloak
+                class="col-span-full py-16 text-center bg-white border border-dashed border-slate-300 rounded-2xl">
+                <i class="fa-solid fa-fire text-5xl text-slate-200 mb-4"></i>
+                <h3 class="text-xl font-bold text-slate-700">ยังไม่มีสินค้ายอดนิยม</h3>
+                <p class="text-slate-500">รออัปเดตรายการสินค้ายอดฮิตเร็วๆ นี้</p>
+            </div>
 
-            @if (!$hasRecommended && $products->isNotEmpty())
-                <div x-show="show && tab === 'recommended'" x-cloak
-                    class="col-span-full py-16 text-center bg-white border border-dashed border-slate-300 rounded-2xl">
-                    <div class="inline-flex items-center justify-center w-20 h-20 rounded-full bg-amber-50 mb-4">
-                        <i class="fa-solid fa-star text-4xl text-amber-400"></i>
-                    </div>
-                    <h3 class="text-xl font-bold text-slate-700 mb-2">ยังไม่มีสินค้าแนะนำ</h3>
-                    <p class="text-slate-500">ขณะนี้ยังไม่มีแพ็กเกจที่มียอดการจองในระบบ</p>
-                </div>
-            @endif
+            <div x-show="tab === 'recommended' && !@js($hasRecommended)" x-cloak
+                class="col-span-full py-16 text-center bg-white border border-dashed border-slate-300 rounded-2xl">
+                <i class="fa-duotone fa-solid fa-thumbs-up text-5xl text-slate-200 mb-4"></i>
+                <h3 class="text-xl font-bold text-slate-700">ยังไม่มีสินค้าแนะนำ</h3>
+                <p class="text-slate-500">รออัปเดตรายการที่ทำรายการสำเร็จสูงสุดเร็วๆ นี้</p>
+            </div>
 
         </div>
     </section>
@@ -441,13 +438,14 @@
                                 <div class="relative inline-block mb-2">
                                     <h3
                                         class="text-5xl sm:text-7xl font-semibold text-slate-900 transition-all group-hover:text-blue-600">
-                                        0</h3>
+                                        {{ number_format($totalSuccessBookings) }}
+                                    </h3>
                                     <span
                                         class="absolute -bottom-1 left-0 w-full h-1 bg-blue-600 origin-left scale-x-0 group-hover:scale-x-100 transition-transform duration-500"></span>
                                 </div>
                                 <p
                                     class="text-slate-500 mt-2 text-sm font-medium leading-relaxed max-w-xs mx-auto sm:mx-0">
-                                    จำนวนการเข้าใช้งานและทำรายการทั้งหมดบนแพลตฟอร์มในปีนี้
+                                    จำนวนรายการทั้งหมดที่ดำเนินการสำเร็จบนแพลตฟอร์ม
                                 </p>
                             </div>
                         </div>
@@ -472,13 +470,14 @@
                                 <div class="relative inline-block mb-2">
                                     <h3
                                         class="text-5xl sm:text-7xl font-semibold text-slate-900 transition-all group-hover:text-orange-600">
-                                        0</h3>
+                                        {{ number_format($currentQueue) }}
+                                    </h3>
                                     <span
                                         class="absolute -bottom-1 left-0 w-full h-1 bg-orange-600 origin-left scale-x-0 group-hover:scale-x-100 transition-transform duration-500"></span>
                                 </div>
                                 <p
                                     class="text-slate-500 mt-2 text-sm font-medium leading-relaxed max-w-xs mx-auto sm:mx-0">
-                                    รายการที่ดำเนินการสำเร็จผ่านระบบอัตโนมัติ 24 ชั่วโมง
+                                    รายการที่กำลังดำเนินการผ่านระบบอัตโนมัติในขณะนี้
                                 </p>
                             </div>
                         </div>
@@ -486,7 +485,6 @@
                             class="absolute -bottom-16 -right-16 w-32 h-32 bg-orange-500/5 rounded-full group-hover:scale-300 transition-transform duration-500">
                         </div>
                     </div>
-
                     <div
                         class="group relative p-8 sm:p-10 rounded-3xl bg-white border border-slate-200 hover:-translate-y-1.5 hover:shadow-[0_40px_80px_rgba(0,0,0,0.04)] transition-all duration-700 overflow-hidden">
                         <div
@@ -503,13 +501,14 @@
                                 <div class="relative inline-block mb-2">
                                     <h3
                                         class="text-5xl sm:text-7xl font-semibold text-slate-900 transition-all group-hover:text-emerald-600">
-                                        0</h3>
+                                        {{ number_format($totalStock) }}
+                                    </h3>
                                     <span
                                         class="absolute -bottom-1 left-0 w-full h-1 bg-emerald-600 origin-left scale-x-0 group-hover:scale-x-100 transition-transform duration-500"></span>
                                 </div>
                                 <p
                                     class="text-slate-500 mt-2 text-sm font-medium leading-relaxed max-w-xs mx-auto sm:mx-0">
-                                    สมาชิกที่ใช้งานระบบอย่างต่อเนื่องและเชื่อมั่นในบริการของเรา
+                                    จำนวนสต็อกเหรียญและแพ็กเกจทั้งหมดที่พร้อมให้บริการ
                                 </p>
                             </div>
                         </div>
@@ -517,7 +516,6 @@
                             class="absolute -bottom-16 -right-16 w-32 h-32 bg-emerald-500/5 rounded-full group-hover:scale-300 transition-transform duration-500">
                         </div>
                     </div>
-
                     <div
                         class="group relative p-8 sm:p-10 rounded-3xl bg-white border border-slate-200 hover:-translate-y-1.5 md:hover:translate-y-8 hover:shadow-[0_40px_80px_rgba(0,0,0,0.04)] transition-all duration-700 md:translate-y-10 overflow-hidden">
                         <div
@@ -534,13 +532,14 @@
                                 <div class="relative inline-block mb-2">
                                     <h3
                                         class="text-5xl sm:text-7xl font-semibold text-slate-900 transition-all group-hover:text-purple-600">
-                                        0</h3>
+                                        {{ number_format($totalUsers) }}
+                                    </h3>
                                     <span
                                         class="absolute -bottom-1 left-0 w-full h-1 bg-purple-600 origin-left scale-x-0 group-hover:scale-x-100 transition-transform duration-500"></span>
                                 </div>
                                 <p
                                     class="text-slate-500 mt-2 text-sm font-medium leading-relaxed max-w-xs mx-auto sm:mx-0">
-                                    ขยายขอบเขตการให้บริการครอบคลุมหลายภูมิภาคทั่วโลก
+                                    จำนวนสมาชิกที่ไว้วางใจใช้บริการระบบเติมเหรียญของเรา
                                 </p>
                             </div>
                         </div>
@@ -586,9 +585,8 @@
             </div>
 
             <div class="w-full md:w-auto flex flex-col gap-4 min-w-[320px] relative z-10">
-                <a href="#"
+                <a href="{{ $web_cfg->line ?? '#' }}" target="_blank"
                     class="group relative flex items-center justify-between bg-white/70 backdrop-blur-sm hover:bg-white transition-all duration-500 px-7 py-4 rounded-2xl shadow-[0_4px_20px_rgba(0,0,0,0.03)] hover:shadow-[0_10px_30px_rgba(120,182,143,0.2)] hover:-translate-y-1.5 hover:scale-[1.02] border border-white/50 overflow-hidden">
-
                     <div class="flex items-center gap-4">
                         <div
                             class="w-10 h-10 rounded-xl bg-[#57C84D]/10 flex items-center justify-center group-hover:bg-[#57C84D] transition-all duration-500">
@@ -601,17 +599,14 @@
                         </div>
                         <span class="text-[#1E2A1E] text-md font-medium">ติดต่อผ่านทางไลน์</span>
                     </div>
-
                     <svg class="w-5 h-5 text-[#57C84D] opacity-0 -translate-x-4 group-hover:opacity-100 group-hover:translate-x-0 transition-all duration-500"
                         fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                             d="M13 7l5 5m0 0l-5 5m5-5H6"></path>
                     </svg>
                 </a>
-
-                <a href="#"
+                <a href="{{ $web_cfg->website_url ?? '#' }}" target="_blank"
                     class="group relative flex items-center justify-between bg-white/70 backdrop-blur-sm hover:bg-white transition-all duration-500 px-7 py-4 rounded-2xl shadow-[0_4px_20px_rgba(0,0,0,0.03)] hover:shadow-[0_10px_30px_rgba(120,182,143,0.2)] hover:-translate-y-1.5 hover:scale-[1.02] border border-white/50 overflow-hidden">
-
                     <div class="flex items-center gap-4">
                         <div
                             class="w-10 h-10 rounded-xl bg-[#57C84D]/10 flex items-center justify-center group-hover:bg-[#57C84D] transition-all duration-500">
@@ -624,7 +619,6 @@
                         </div>
                         <span class="text-[#1E2A1E] text-md font-medium">ติดต่อผ่านทางเว็บไซต์</span>
                     </div>
-
                     <svg class="w-5 h-5 text-[#57C84D] opacity-0 -translate-x-4 group-hover:opacity-100 group-hover:translate-x-0 transition-all duration-500"
                         fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"

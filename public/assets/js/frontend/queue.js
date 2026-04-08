@@ -1,14 +1,20 @@
 document.addEventListener("alpine:init", () => {
-    Alpine.data("bookingWidget", (initialProducts, defaultId) => ({
+    Alpine.data("bookingWidget", (initialProducts, defaultId, userRole = 'member') => ({
         bookingDate: "",
         bookingTime: "",
         note: "",
         products: initialProducts,
         selectedProductId: "",
+        userRole: userRole,
 
         get selectedProduct() {
             if (!this.selectedProductId) return null;
             return this.products.find((p) => p.id == this.selectedProductId);
+        },
+
+        get displayPrice() {
+            if (!this.selectedProduct) return null;
+            return this.userRole === 'agent' ? this.selectedProduct.agent_price : this.selectedProduct.main_price;
         },
 
         formatThaiDate(date) {
@@ -114,6 +120,7 @@ document.addEventListener("alpine:init", () => {
                 title: 'ยืนยันการจองคิว?',
                 html: `<div class="text-left mt-4 text-sm bg-slate-50 p-5 rounded-2xl border border-slate-100">
                            <p class="mb-2"><b>แพ็กเกจ:</b> <span class="font-medium">${this.selectedProduct.product_name}</span></p>
+                           <p class="mb-2"><b>ราคา:</b> <span class="text-[#57C84D] font-medium">${new Intl.NumberFormat().format(this.displayPrice)} บาท</span></p>
                            <p class="mb-2"><b>วันที่:</b> <span class="text-[#57C84D] font-medium">${this.formatThaiDate(this.bookingDate)}</span></p>
                            <p><b>เวลา:</b> <span class="text-[#57C84D] font-medium">${this.bookingTime}</span> น.</p>
                        </div>`,
@@ -148,7 +155,7 @@ document.addEventListener("alpine:init", () => {
                     body: JSON.stringify({
                         product_code: this.selectedProduct.product_code,
                         product_name: this.selectedProduct.product_name,
-                        price: this.selectedProduct.main_price,
+                        price: this.displayPrice, 
                         booking_date: this.bookingDate,
                         booking_time: this.bookingTime,
                         note: this.note,

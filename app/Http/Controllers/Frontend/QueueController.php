@@ -14,7 +14,7 @@ class QueueController extends Controller
 {
     public function index()
     {
-        $allProducts = Product::with(['saleDates' => function ($query) {
+        $products = Product::with(['saleDates' => function ($query) {
             $query->orderBy('date', 'asc');
         }, 'timeSlots' => function ($query) {
             $query->where('is_available', 1)->orderBy('start_time', 'asc');
@@ -29,14 +29,13 @@ class QueueController extends Controller
         $currentTime = $now->format('H:i:s');
         $thaiMonths = ['', 'ม.ค.', 'ก.พ.', 'มี.ค.', 'เม.ย.', 'พ.ค.', 'มิ.ย.', 'ก.ค.', 'ส.ค.', 'ก.ย.', 'ต.ค.', 'พ.ย.', 'ธ.ค.'];
 
-        $products = $allProducts->transform(function ($product) use ($todayDate, $currentTime, $thaiMonths) {
+        $products->transform(function ($product) use ($todayDate, $currentTime, $thaiMonths) {
 
             $product->availableDatesArray = $product->saleDates ? $product->saleDates->pluck('date')->toArray() : [];
-            $product->isOpenToday = $product->saleDates ? $product->saleDates->contains('date', $todayDate) : false;
 
+            $product->isOpenToday = $product->saleDates ? $product->saleDates->contains('date', $todayDate) : false;
             $product->isOpenTime = false;
             $product->isWaitingForTime = false;
-            $product->hasFutureSlotToday = false;
             $targetSlot = null;
 
             if ($product->isOpenToday) {
@@ -46,10 +45,6 @@ class QueueController extends Controller
                     $product->isOpenTime = true;
                 } else {
                     foreach ($activeSlots as $slot) {
-                        if ($currentTime <= $slot->end_time) {
-                            $product->hasFutureSlotToday = true;
-                        }
-
                         if ($currentTime >= $slot->start_time && $currentTime <= $slot->end_time) {
                             $product->isOpenTime = true;
                             $targetSlot = $slot;
@@ -73,8 +68,12 @@ class QueueController extends Controller
             $product->isOutOfStock = !$product->canBook && !$product->isWaitingForTime;
 
             $tabCondition = "tab === 'all'";
-            if ($product->success_bookings_count > 0) $tabCondition .= " || tab === 'recommended'";
-            if ($product->canBook || $product->isWaitingForTime) $tabCondition .= " || tab === 'soon'";
+            if ($product->success_bookings_count > 0) {
+                $tabCondition .= " || tab === 'recommended'";
+            }
+            if ($product->canBook || $product->isWaitingForTime) {
+                $tabCondition .= " || tab === 'soon'";
+            }
             $product->tabCondition = $tabCondition;
 
             $product->displayPrice = (Auth::check() && Auth::user()->level === 'agent') ? $product->agent_price : $product->main_price;
@@ -96,13 +95,7 @@ class QueueController extends Controller
             }
 
             return $product;
-        })
-            ->filter(function ($product) {
-                if ($product->isOpenToday) {
-                    return $product->hasFutureSlotToday;
-                }
-                return true;
-            });
+        });
 
         $defaultProduct = $products->sortByDesc('success_bookings_count')->first();
 
@@ -121,21 +114,34 @@ class QueueController extends Controller
             $product = Product::where('product_code', $request->product_code)->first();
 
             if (!$product) {
-                return response()->json(['status' => 'error', 'message' => 'ไม่พบข้อมูลสินค้า'], 404);
+                return response()->json([
+                    'status' => 'error',
+                    'message' => 'ไม่พบข้อมูลสินค้า'
+                ], 404);
             }
 
             if ($product->stock <= 0) {
-                return response()->json(['status' => 'error', 'message' => 'ขออภัยครับ สินค้าชิ้นนี้หมดแล้ว'], 400);
+                return response()->json([
+                    'status' => 'error',
+                    'message' => 'ขออภัยครับ สินค้าชิ้นนี้หมดแล้ว'
+                ], 400);
             }
 
             return DB::transaction(function () use ($request, $product) {
-                $prefix = 'G-';
-                if (Auth::check()) {
-                    $prefix = (Auth::user()->level === 'agent') ? 'A-' : 'M-';
-                }
 
                 $booking = new Booking();
-                $booking->booking_code = $prefix . 'ORMOR-' . date('Ymd') . '-' . rand(1000, 9999);
+                
+                $prefix = 'M-';
+                if (Auth::check()) {
+                    if (Auth::user()->level === 'agent') {
+                        $prefix = 'A-';
+                    } elseif (Auth::user()->level === 'admin') {
+                        $prefix = 'ADM-';
+                    }
+                }
+
+                $booking->booking_code = $prefix . date('Ymd') . '-' . rand(1000, 9999);
+                
                 $booking->product_code = $request->product_code;
                 $booking->product_name = $request->product_name;
 
@@ -145,7 +151,7 @@ class QueueController extends Controller
                     $booking->username = 'Guest';
                 }
 
-                $booking->price = (Auth::check() && Auth::user()->level === 'agent') ? $product->agent_price : $product->main_price;
+                $booking->price = $request->price ?? 0;
                 $booking->status = 'รอตรวจสอบ';
                 $booking->booking_date = $request->booking_date;
                 $booking->booking_time = $request->booking_time;
@@ -162,7 +168,10 @@ class QueueController extends Controller
                 ], 200);
             });
         } catch (\Exception $e) {
-            return response()->json(['status' => 'error', 'message' => 'เกิดข้อผิดพลาด: ' . $e->getMessage()], 500);
+            return response()->json([
+                'status' => 'error',
+                'message' => 'เกิดข้อผิดพลาด: ' . $e->getMessage()
+            ], 500);
         }
     }
 }

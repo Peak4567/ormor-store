@@ -381,14 +381,17 @@
                                         :class="@guest true @else false @endguest ?
                                             'bg-slate-100 cursor-not-allowed opacity-70' : 'bg-white cursor-pointer'"
                                         class="w-full px-5 py-4 border-2 border-slate-200 rounded-2xl text-slate-600 font-medium focus:border-[#57C84D]/50 focus:ring-0 transition-all appearance-none">
+
                                         @guest
-                                            <option value="">-- กรุณาเข้าสู่ระบบก่อน --</option>
+                                            <option value="" disabled selected hidden>-- กรุณาเข้าสู่ระบบก่อน --</option>
                                         @else
-                                            <option value="">-- กรุณาเลือกแพ็กเกจ --</option>
+                                            <option value="" disabled selected hidden>-- กรุณาเลือกแพ็กเกจ --</option>
+
                                             @foreach ($products as $product)
                                                 <option value="{{ $product->id }}">{{ $product->product_name }}</option>
                                             @endforeach
                                         @endguest
+
                                     </select>
                                     <div
                                         class="absolute inset-y-0 right-0 flex items-center pr-4 pointer-events-none text-slate-400">

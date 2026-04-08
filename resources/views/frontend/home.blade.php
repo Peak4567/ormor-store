@@ -44,7 +44,7 @@
                                 โปรดแสกน QR Code เพื่อจองคิวของคุณ และรอการยืนยันจากเจ้าหน้าที่ของเรา
                             </p>
 
-                            <a href="#"
+                            <a href="{{ $web_cfg->line ?? '#' }}"
                                 class="flex gap-2 text-[#F4B400] font-bold flex items-center gap-2 hover:translate-x-1 transition-transform mt-2">
                                 ตรวจสอบเพิ่มเติม <svg width="18" height="18" viewBox="0 0 24 24" fill="none"
                                     xmlns="http://www.w3.org/2000/svg">
@@ -72,7 +72,7 @@
                                     โปรดแสกน QR Code เพื่อจองคิวของคุณ และรอการยืนยันจากเจ้าหน้าที่ของเรา
                                 </p>
 
-                                <a href="#"
+                                <a href="{{ $web_cfg->line ?? '#' }}"
                                     class="text-[#F4B400] font-bold flex items-center gap-2 hover:translate-x-1 transition-transform mt-2">
                                     ตรวจสอบเพิ่มเติม <svg width="18" height="18" viewBox="0 0 24 24" fill="none"
                                         xmlns="http://www.w3.org/2000/svg">

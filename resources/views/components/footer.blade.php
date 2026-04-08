@@ -63,9 +63,9 @@
                 <p>Copyright 2026 <span class="text-lg leading-none">©</span>
                     <a href="https://nahost.in.th" target="_blank"
                         class="hover:text-white/70 transition-colors duration-200 underline underline-offset-4">
-                        NaHost (Navigate Innovations Co., Ltd.)
+                        NaHost 
                     </a>
-                    All rights reserved.
+                    (Navigate Innovations Co., Ltd.) All rights reserved.
                 </p>
             </div>
 

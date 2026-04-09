@@ -379,19 +379,35 @@
                             <div class="space-y-3">
                                 <label class="block text-lg font-semibold text-[#1E2A1E]">เลือกแพ็กเกจที่ต้องการ</label>
                                 <div class="relative group">
-                                    <select x-model="selectedProductId" :disabled="@guest true @else false @endguest"
-                                        :class="@guest true @else false @endguest ?
-                                            'bg-slate-100 cursor-not-allowed opacity-70' : 'bg-white cursor-pointer'"
+                                    @php
+                                        $availableProducts = $products->filter(
+                                            fn($p) => $p->canBook || $p->isWaitingForTime,
+                                        );
+                                    @endphp
+
+                                    <select x-model="selectedProductId"
+                                        :disabled="@guest true @else {{ $availableProducts->isEmpty() ? 'true' : 'false' }} @endguest"
+                                        :class="(
+                                            @guest true @else {{ $availableProducts->isEmpty() ? 'true' : 'false' }} @endguest) ?
+                                        'bg-slate-100 cursor-not-allowed opacity-70' : 'bg-white cursor-pointer'"
                                         class="w-full px-5 py-4 border-2 border-slate-200 rounded-2xl text-slate-600 font-medium focus:border-[#57C84D]/50 focus:ring-0 transition-all appearance-none">
+
                                         @guest
                                             <option value="" disabled selected hidden>-- กรุณาเข้าสู่ระบบก่อน --</option>
                                         @else
-                                            <option value="" disabled selected hidden>-- กรุณาเลือกแพ็กเกจ --</option>
-                                            @foreach ($products as $product)
-                                                <option value="{{ $product->id }}">{{ $product->product_name }}</option>
-                                            @endforeach
+                                            @if ($availableProducts->isEmpty())
+                                                <option value="" disabled selected hidden>-- ขณะนี้ไม่มีสินค้าเปิดจอง --
+                                                </option>
+                                            @else
+                                                <option value="" disabled selected hidden>-- กรุณาเลือกแพ็กเกจ --
+                                                </option>
+                                                @foreach ($availableProducts as $product)
+                                                    <option value="{{ $product->id }}">{{ $product->product_name }}</option>
+                                                @endforeach
+                                            @endif
                                         @endguest
                                     </select>
+
                                     <div
                                         class="absolute inset-y-0 right-0 flex items-center pr-4 pointer-events-none text-slate-400">
                                         <i class="fa-solid fa-chevron-down text-sm"></i>

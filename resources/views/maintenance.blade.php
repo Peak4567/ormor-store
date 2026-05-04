@@ -68,11 +68,6 @@
                     </a>
                 @endif
             @else
-                <a href="{{ route('login') }}"
-                    class="w-full sm:w-auto flex items-center justify-center gap-2 bg-white hover:bg-slate-100 text-slate-500 px-8 py-4 rounded-xl font-bold border border-slate-200 transition-all active:scale-95">
-                    <i class="fa-solid fa-lock"></i>
-                    Admin Login
-                </a>
             @endauth
         </div>
 

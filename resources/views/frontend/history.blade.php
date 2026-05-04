@@ -2,10 +2,8 @@
 @section('title', 'ประวัติการสั่งซื้อ | Ormor Topup Coins')
 @section('content')
 
-    <section class="min-h-screen mt-16 sm:mt-32 py-12 px-4" 
-             x-data="historyWidget(@js($bookings))" 
-             x-cloak>
-             
+    <section class="min-h-screen mt-16 sm:mt-32 py-12 px-4" x-data="historyWidget(@js($bookings))" x-cloak>
+
         <div class="max-w-screen-lg mx-auto">
 
             <div class="flex flex-col lg:flex-row lg:items-center justify-between mb-10 gap-6">
@@ -35,14 +33,16 @@
                                     <option value="desc">ล่าสุด</option>
                                     <option value="asc">เก่าสุด</option>
                                 </select>
-                                <div class="absolute inset-y-0 right-0 pr-4 flex items-center pointer-events-none text-slate-400 text-[10px]">
+                                <div
+                                    class="absolute inset-y-0 right-0 pr-4 flex items-center pointer-events-none text-slate-400 text-[10px]">
                                     <i class="fa-solid fa-chevron-down"></i>
                                 </div>
                             </div>
                         </div>
 
                         <div class="w-full sm:w-auto">
-                            <div class="flex text-xs sm:text-sm bg-slate-50/50 p-1 rounded-2xl border border-slate-100 whitespace-nowrap">
+                            <div
+                                class="flex text-xs sm:text-sm bg-slate-50/50 p-1 rounded-2xl border border-slate-100 whitespace-nowrap">
                                 <button @click="tab = 'all'; resetPage()"
                                     :class="tab === 'all' ? 'bg-white text-[#57C84D] shadow-sm' : 'text-slate-400'"
                                     class="px-4 py-2 text-sm font-medium rounded-xl transition-all">ทั้งหมด</button>
@@ -60,13 +60,16 @@
 
             <div class="grid grid-cols-1 gap-6">
                 <template x-for="item in paginatedBookings" :key="item.id">
-                    <div class="bg-white rounded-[2rem] border border-slate-200 transition-all duration-300 overflow-hidden">
-                        <div class="flex flex-wrap items-center justify-between gap-4 px-6 py-4 bg-slate-50/50 border-b border-slate-100">
-                            
+                    <div
+                        class="bg-white rounded-[2rem] border border-slate-200 transition-all duration-300 overflow-hidden">
+                        <div
+                            class="flex flex-wrap items-center justify-between gap-4 px-6 py-4 bg-slate-50/50 border-b border-slate-100">
+
                             <div class="flex items-center gap-2">
                                 <span class="font-semibold text-[#1E2A1E]" x-text="'#' + item.booking_code"></span>
-                                
-                                <button @click="
+
+                                <button
+                                    @click="
                                         navigator.clipboard.writeText(item.booking_code);
                                         Swal.fire({
                                             toast: true,
@@ -77,7 +80,7 @@
                                             timer: 1500,
                                             customClass: { popup: 'font-[Prompt] rounded-xl' }
                                         });
-                                    " 
+                                    "
                                     class="text-slate-400 hover:text-[#57C84D] hover:bg-[#57C84D]/10 transition-all duration-300 w-7 h-7 flex items-center justify-center rounded-lg"
                                     title="คัดลอกรหัสการจอง">
                                     <i class="fa-regular fa-copy"></i>
@@ -90,13 +93,15 @@
                                 </span>
                             </div>
 
-                            <span :class="{
+                            <span
+                                :class="{
                                     'text-[#57C84D] bg-[#57C84D]/10': item.status === 'สำเร็จ',
                                     'text-orange-600 bg-orange-100': item.status === 'รอตรวจสอบ',
                                     'text-red-600 bg-red-100': item.status === 'ยกเลิก'
                                 }"
                                 class="text-xs sm:text-sm font-medium px-3 py-1 rounded-md">
-                                <i :class="item.status === 'สำเร็จ' ? 'fa-solid fa-circle-check' : 'fa-solid fa-clock-rotate-left'"
+                                <i :class="item.status === 'สำเร็จ' ? 'fa-solid fa-circle-check' :
+                                    'fa-solid fa-clock-rotate-left'"
                                     class="fa-duotone"></i>
                                 <span x-text="item.status === 'สำเร็จ' ? 'สำเร็จแล้ว!' : item.status"></span>
                             </span>
@@ -105,14 +110,18 @@
                         <div class="p-6">
                             <div class="flex flex-col md:flex-row md:items-start justify-between gap-6">
                                 <div class="flex items-start gap-5">
-                                    <div class="h-16 w-16 shrink-0 flex items-center justify-center bg-[#57C84D]/10 rounded-2xl text-[#57C84D]">
+                                    <div
+                                        class="h-16 w-16 shrink-0 flex items-center justify-center bg-[#57C84D]/10 rounded-2xl text-[#57C84D]">
                                         <i class="fa-duotone fa-solid fa-coins text-3xl"></i>
                                     </div>
                                     <div>
-                                        <h4 class="font-semibold text-[#1E2A1E] text-lg sm:text-xl mb-1" x-text="item.product_name"></h4>
-                                        <p class="text-sm font-medium flex items-center gap-1" :class="item.status === 'สำเร็จ' ? 'text-green-500' : 'text-orange-500'">
+                                        <h4 class="font-semibold text-[#1E2A1E] text-lg sm:text-xl mb-1"
+                                            x-text="item.product_name"></h4>
+                                        <p class="text-sm font-medium flex items-center gap-1"
+                                            :class="item.status === 'สำเร็จ' ? 'text-green-500' : 'text-orange-500'">
                                             <i class="fa-duotone fa-solid fa-stopwatch"></i>
-                                            <span x-text="item.status === 'สำเร็จ' ? 'ดำเนินการเสร็จสิ้นแล้ว' : 'กำลังดำเนินการ/รอตรวจสอบ'"></span>
+                                            <span
+                                                x-text="item.status === 'สำเร็จ' ? 'ดำเนินการเสร็จสิ้นแล้ว' : 'กำลังดำเนินการ/รอตรวจสอบ'"></span>
                                         </p>
                                     </div>
                                 </div>
@@ -120,7 +129,8 @@
                                 <div class="text-left md:text-right shrink-0">
                                     <p class="text-sm text-slate-500 font-medium mb-0.5">ยอดชำระสุทธิ</p>
                                     <div class="flex items-baseline gap-1 md:justify-end">
-                                        <span class="text-3xl font-semibold text-[#57C84D]" x-text="new Intl.NumberFormat().format(item.price)"></span>
+                                        <span class="text-3xl font-semibold text-[#57C84D]"
+                                            x-text="new Intl.NumberFormat().format(item.price)"></span>
                                         <span class="text-sm text-[#4B5B4B]">บาท</span>
                                     </div>
                                 </div>
@@ -131,18 +141,29 @@
                             <div class="flex flex-wrap items-center justify-between gap-4 text-sm">
                                 <div>
                                     <p class="text-slate-400 text-xs mb-1">ข้อมูลเพิ่มเติม/เวลาที่จอง</p>
-                                    <p class="font-semibold text-slate-700" x-text="item.booking_time ? item.booking_time + ' น.' : 'ไม่ได้ระบุเวลา'"></p>
-                                    <p class="text-xs text-slate-400 mt-1" x-text="item.content ? 'หมายเหตุ: ' + item.content : ''"></p>
+                                    <p class="font-semibold text-slate-700"
+                                        x-text="item.booking_time ? item.booking_time + ' น.' : 'ไม่ได้ระบุเวลา'"></p>
+                                    <p class="text-xs text-slate-400 mt-1"
+                                        x-text="item.content ? 'หมายเหตุ: ' + item.content : ''"></p>
                                 </div>
-                                <div class="w-full sm:w-auto">
+                                <div class="w-full sm:w-auto flex flex-col sm:flex-row items-center gap-2 mt-3 sm:mt-0">
+
+                                    <a :href="'{{ $web_cfg->line ?? '#' }}'" target="_blank"
+                                        class="w-full sm:w-auto px-6 py-2.5 rounded-xl bg-[#00B900] text-white text-sm font-semibold hover:bg-[#009900] transition-all duration-300 flex items-center justify-center shadow-sm shadow-green-500/20 active:scale-95">
+                                        <i class="fa-brands fa-line text-lg mr-2"></i> ติดต่อแอดมิน
+                                    </a>
+
                                     <template x-if="item.status === 'รอตรวจสอบ'">
-                                        <button @click="confirmCancelBooking(item.id, item.product_name, '/history/cancel/' + item.id)"
-                                            class="w-full sm:w-auto sm:px-8 py-2.5 rounded-xl bg-red-50 text-red-500 text-sm font-semibold hover:bg-red-500 hover:text-white transition-all duration-300">
-                                            <i class="fa-solid fa-xmark mr-1"></i> ยกเลิกการจอง
+                                        <button
+                                            @click="confirmCancelBooking(item.id, item.product_name, '/history/cancel/' + item.id)"
+                                            class="w-full sm:w-auto px-6 py-2.5 rounded-xl bg-red-50 text-red-500 text-sm font-semibold hover:bg-red-500 hover:text-white transition-all duration-300 flex items-center justify-center active:scale-95">
+                                            <i class="fa-solid fa-xmark mr-1"></i> ยกเลิก
                                         </button>
                                     </template>
+
                                     <template x-if="item.status !== 'รอตรวจสอบ'">
-                                        <span class="text-slate-400 text-xs italic">ไม่สามารถทำรายการได้</span>
+                                        <span
+                                            class="text-slate-400 text-xs italic px-2 hidden sm:block">ไม่สามารถยกเลิกได้</span>
                                     </template>
                                 </div>
                             </div>
@@ -166,7 +187,8 @@
 
                     <template x-for="page in totalPages" :key="page">
                         <button @click="setPage(page)"
-                            :class="currentPage === page ? 'bg-[#57C84D] text-white shadow-md border-[#57C84D]' : 'border-slate-200 text-slate-600 hover:border-[#57C84D]'"
+                            :class="currentPage === page ? 'bg-[#57C84D] text-white shadow-md border-[#57C84D]' :
+                                'border-slate-200 text-slate-600 hover:border-[#57C84D]'"
                             class="w-10 h-10 flex items-center justify-center rounded-xl border font-bold transition-all"
                             x-text="page">
                         </button>
@@ -181,7 +203,7 @@
         </div>
     </section>
 
-<script src="{{ asset('assets/js/frontend/sweetalert.js') }}"></script>
-<script src="{{ asset('assets/js/frontend/history.js') }}"></script>
+    <script src="{{ asset('assets/js/frontend/sweetalert.js') }}"></script>
+    <script src="{{ asset('assets/js/frontend/history.js') }}"></script>
 
 @endsection

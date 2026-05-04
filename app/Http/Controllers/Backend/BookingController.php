@@ -46,6 +46,27 @@ class BookingController extends Controller
 
         return view('backend.booking', compact('bookings'));
     }
+    public function bulkUpdate(Request $request)
+    {
+        $request->validate([
+            'ids' => 'required|array',
+            'status' => 'required|string'
+        ]);
+
+        try {
+            Booking::whereIn('id', $request->ids)->update(['status' => $request->status]);
+
+            return response()->json([
+                'success' => true,
+                'message' => 'อัปเดตสถานะเรียบร้อยแล้ว'
+            ]);
+        } catch (\Exception $e) {
+            return response()->json([
+                'success' => false,
+                'message' => $e->getMessage()
+            ], 500);
+        }
+    }
     public function updateStatus(Request $request, $id)
     {
         try {

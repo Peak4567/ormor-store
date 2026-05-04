@@ -12,12 +12,21 @@ use App\Http\Controllers\Backend\UserController as BackendUserController;
 use App\Http\Controllers\Backend\SettingController as BackendSettingController;
 use App\Http\Controllers\Frontend\QueueController;
 use App\Http\Controllers\Auth\RegisterController;
+use App\Models\Backend\Setting;
 use App\Http\Controllers\Auth\LoginController;
 
 Route::get('/home', [FrontendHomeController::class, 'index'])->name('frontend.home');
 Route::get('/', [FrontendHomeController::class, 'index'])->name('frontend.home');
 Route::get('/queue', [FrontendQueueController::class, 'index'])->name('frontend.queue');
+Route::get('/maintenance', function () {
+    $web_cfg = Setting::first();
 
+    if (!$web_cfg || $web_cfg->maintenance_mode == 0) {
+        return redirect('/');
+    }
+
+    return view('maintenance', compact('web_cfg'));
+})->name('maintenance');
 
 Route::get('/policy', function () {
     return view('policy');
@@ -61,6 +70,7 @@ Route::middleware(['auth', 'is_admin'])->prefix('backend')->group(function () {
     Route::get('/booking', [BackendBookingController::class, 'index'])->name('backend.booking');
     Route::post('/booking/update-status/{id}', [BackendBookingController::class, 'updateStatus']);
     Route::delete('/booking/{id}', [BackendBookingController::class, 'destroy'])->name('backend.booking.destroy');
+    Route::post('/booking/bulk-update', [BackendBookingController::class, 'bulkUpdate'])->name('backend.booking.bulk_update');
 
     Route::get('/users', [BackendUserController::class, 'index'])->name('backend.users');
     Route::delete('/users/destroy/{id}', [BackendUserController::class, 'destroy'])->name('backend.users.destroy');

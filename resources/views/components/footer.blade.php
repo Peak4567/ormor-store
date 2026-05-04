@@ -60,7 +60,7 @@
 
         <div class="pt-4 sm:pt-8 border-t border-white/20 flex flex-col md:flex-row justify-between items-center gap-6">
             <div class="text-xs md:text-sm text-white font-medium text-center md:text-left">
-                <p>Copyright 2026 <span class="text-lg leading-none">©</span>
+                <p>Copyright {{ date('Y') }} <span class="text-lg leading-none">©</span>
                     <a href="https://nahost.in.th" target="_blank"
                         class="hover:text-white/70 transition-colors duration-200 underline underline-offset-4">
                         NaHost 

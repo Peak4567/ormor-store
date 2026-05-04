@@ -11,24 +11,36 @@
             <div class="grid grid-cols-1 md:grid-cols-12 gap-6 items-start">
 
                 <div class="col-span-1 md:col-span-4 bg-white rounded-md border border-gray-100 p-6">
-                    <div class="mb-6">
-                        <h2 class="text-xl font-extrabold text-gray-800">ตั้งค่าเว็บไซต์</h2>
-                        <p class="text-[13px] text-gray-400 mt-1 font-medium">จัดการข้อมูลทั่วไปและช่องทางการติดต่อ</p>
+                    <div class="mb-6 flex justify-between items-start">
+                        <div>
+                            <h2 class="text-xl font-extrabold text-gray-800">ตั้งค่าเว็บไซต์</h2>
+                            <p class="text-[13px] text-gray-400 mt-1 font-medium">จัดการข้อมูลทั่วไปและช่องทางการติดต่อ</p>
+                        </div>
+                        
+                        {{-- สวิตช์ เปิด-ปิด เว็บไซต์ (โหมดปรับปรุง) --}}
+                        <div class="flex flex-col items-end">
+                            <label class="relative inline-flex items-center cursor-pointer mb-1">
+                                <input type="hidden" name="maintenance_mode" value="0">
+                                <input type="checkbox" name="maintenance_mode" value="1" class="sr-only peer" 
+                                       {{ ($setting->maintenance_mode ?? 0) == 1 ? 'checked' : '' }}>
+                                <div class="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-green-300 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-green-500"></div>
+                            </label>
+                            <span class="text-[10px] font-bold text-gray-500 peer-checked:text-green-500 uppercase tracking-wider">
+                                โหมดปรับปรุงเว็บ
+                            </span>
+                        </div>
                     </div>
 
-                    <h3 class="text-[14px] font-extrabold text-gray-800 mb-4 border-b border-gray-100 pb-2">ข้อมูลทั่วไป
-                    </h3>
+                    <h3 class="text-[14px] font-extrabold text-gray-800 mb-4 border-b border-gray-100 pb-2">ข้อมูลทั่วไป</h3>
 
                     <div class="flex items-center gap-4 mb-6">
-                        <div
-                            class="w-20 h-20 bg-gray-50/50 rounded-md flex items-center justify-center relative overflow-hidden group cursor-pointer border border-gray-100">
+                        <div class="w-20 h-20 bg-gray-50/50 rounded-md flex items-center justify-center relative overflow-hidden group cursor-pointer border border-gray-100">
 
                             <img id="preview-logo"
                                 src="{{ $setting->logo ? asset($setting->logo) : 'https://via.placeholder.com/150?text=Logo' }}"
                                 alt="Logo" class="w-full h-full object-cover">
 
-                            <div
-                                class="absolute inset-0 bg-black/40 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
+                            <div class="absolute inset-0 bg-black/40 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
                                 <i class="fa-solid fa-camera text-white text-xl"></i>
                             </div>
 
@@ -38,8 +50,7 @@
                         </div>
                         <div class="flex-1">
                             <h4 class="font-extrabold text-sm text-gray-800">โลโก้เว็บไซต์</h4>
-                            <p class="text-[11px] text-gray-400 font-medium mt-0.5 leading-tight">แนะนำขนาด 512x512px
-                                ไฟล์ PNG</p>
+                            <p class="text-[11px] text-gray-400 font-medium mt-0.5 leading-tight">แนะนำขนาด 512x512px ไฟล์ PNG</p>
                         </div>
                     </div>
 
@@ -76,15 +87,13 @@
 
                     <div class="space-y-4">
                         <div class="flex items-center gap-4">
-                            <div
-                                class="w-20 h-20 bg-gray-50/50 rounded-md flex items-center justify-center relative overflow-hidden group cursor-pointer border border-gray-100">
+                            <div class="w-20 h-20 bg-gray-50/50 rounded-md flex items-center justify-center relative overflow-hidden group cursor-pointer border border-gray-100">
 
                                 <img id="preview-popup"
                                     src="{{ $setting->popup_image ? asset($setting->popup_image) : 'https://via.placeholder.com/150?text=Popup' }}"
                                     alt="Popup Image" class="w-full h-full object-cover">
 
-                                <div
-                                    class="absolute inset-0 bg-black/40 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
+                                <div class="absolute inset-0 bg-black/40 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
                                     <i class="fa-solid fa-camera text-white text-xl"></i>
                                 </div>
 
@@ -94,8 +103,7 @@
                             </div>
                             <div class="flex-1">
                                 <h4 class="font-extrabold text-sm text-gray-800">รูปภาพประกาศ</h4>
-                                <p class="text-[11px] text-gray-400 font-medium mt-0.5 leading-tight">แนะนำแนวนอนหรือจัตุรัส
-                                </p>
+                                <p class="text-[11px] text-gray-400 font-medium mt-0.5 leading-tight">แนะนำแนวนอนหรือจัตุรัส</p>
                             </div>
                         </div>
 
@@ -113,18 +121,16 @@
                                 class="w-full px-4 py-2.5 bg-white border border-gray-100 rounded-md focus:outline-none focus:ring-2 focus:ring-green-500/20 focus:border-green-500 transition-all text-sm text-gray-600 placeholder-gray-400">{{ old('popup_desc', $setting->popup_desc ?? 'ระบบจองคิวเติม Coinsline (เหรียญไลน์) เปิดให้บริการเต็มรูปแบบแล้ว') }}</textarea>
                         </div>
                     </div>
-                    <h3 class="text-[14px] font-extrabold text-gray-800 mt-8 mb-4 border-b border-gray-100 pb-2">
-                        ช่องทางติดต่อ</h3>
+
+                    <h3 class="text-[14px] font-extrabold text-gray-800 mt-8 mb-4 border-b border-gray-100 pb-2">ช่องทางติดต่อ</h3>
 
                     <div class="flex items-center gap-4 mb-6">
-                        <div
-                            class="w-20 h-20 bg-gray-50/50 rounded-md flex items-center justify-center relative overflow-hidden group cursor-pointer border border-gray-100">
+                        <div class="w-20 h-20 bg-gray-50/50 rounded-md flex items-center justify-center relative overflow-hidden group cursor-pointer border border-gray-100">
                             <img id="preview-qr"
                                 src="{{ $setting->qr_code ? asset($setting->qr_code) : 'https://via.placeholder.com/150?text=QR' }}"
                                 alt="QR" class="w-full h-full object-cover">
 
-                            <div
-                                class="absolute inset-0 bg-black/40 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
+                            <div class="absolute inset-0 bg-black/40 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
                                 <i class="fa-solid fa-camera text-white text-xl"></i>
                             </div>
 
@@ -133,8 +139,7 @@
                         </div>
                         <div class="flex-1">
                             <h4 class="font-extrabold text-sm text-gray-800">QR เว็บไซต์</h4>
-                            <p class="text-[11px] text-gray-400 font-medium mt-0.5 leading-tight">แนะนำขนาด 512x512px
-                                ไฟล์ PNG</p>
+                            <p class="text-[11px] text-gray-400 font-medium mt-0.5 leading-tight">แนะนำขนาด 512x512px ไฟล์ PNG</p>
                         </div>
                     </div>
 
@@ -156,16 +161,14 @@
                 <div class="col-span-1 md:col-span-8 bg-white rounded-md border border-gray-100 p-6 flex flex-col">
                     <div class="mb-8">
                         <h2 class="text-xl font-extrabold text-gray-800">ขั้นตอนการใช้งาน</h2>
-                        <p class="text-[13px] text-gray-400 mt-1 font-medium">
-                            ตั้งค่าข้อมูลขั้นตอนการใช้งานที่แสดงหน้าเว็บ</p>
+                        <p class="text-[13px] text-gray-400 mt-1 font-medium">ตั้งค่าข้อมูลขั้นตอนการใช้งานที่แสดงหน้าเว็บ</p>
                     </div>
 
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-x-6 gap-y-8 flex-1">
                         @for ($i = 1; $i <= 4; $i++)
                             <div class="bg-gray-50/30 p-4 rounded-md border border-gray-50">
                                 <h3 class="text-sm font-extrabold text-gray-800 mb-4 flex items-center gap-2">
-                                    <span
-                                        class="w-6 h-6 flex items-center justify-center bg-blue-50 text-[#0054F0] rounded-md text-xs">{{ $i }}</span>
+                                    <span class="w-6 h-6 flex items-center justify-center bg-blue-50 text-[#0054F0] rounded-md text-xs">{{ $i }}</span>
                                     ขั้นตอนที่ {{ $i }}
                                 </h3>
 
@@ -201,7 +204,6 @@
                                         @endphp
 
                                         <div class="flex items-center gap-2">
-
                                             <div class="relative">
                                                 <input type="hidden" name="step_{{ $i }}_icon"
                                                     id="input_icon_{{ $i }}" value="{{ $currentIcon }}">
@@ -228,10 +230,10 @@
                                                         @foreach ($shopIcons as $class => $label)
                                                             <button type="button" title="{{ $label }}"
                                                                 onclick="
-                                        document.getElementById('input_icon_{{ $i }}').value = '{{ $class }}';
-                                        document.getElementById('display_icon_{{ $i }}').className = '{{ $class }} text-lg';
-                                        document.getElementById('icon_dropdown_{{ $i }}').classList.add('hidden');
-                                    "
+                                                                document.getElementById('input_icon_{{ $i }}').value = '{{ $class }}';
+                                                                document.getElementById('display_icon_{{ $i }}').className = '{{ $class }} text-lg';
+                                                                document.getElementById('icon_dropdown_{{ $i }}').classList.add('hidden');
+                                                            "
                                                                 class="flex items-center justify-center p-2 rounded-md border border-gray-100 text-gray-500 bg-gray-50 hover:bg-green-50 hover:text-green-600 hover:border-green-500 transition-all">
                                                                 <i class="{{ $class }} text-base"></i>
                                                             </button>

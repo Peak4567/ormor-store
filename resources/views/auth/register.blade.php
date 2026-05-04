@@ -73,6 +73,10 @@
                             <span>สมัครสมาชิกเลย</span>
                             <i class="fa-solid fa-arrow-right-long text-sm"></i>
                         </button>
+                        <a href="#"
+                            class="w-full py-4 bg-[#3e5765] hover:bg-[#3162be] text-white text-lg font-semibold rounded-2xl transition-all duration-300 shadow-lg shadow-[#3E6553]/20 flex items-center justify-center gap-3 active:scale-[0.98]">
+                            <span>สมัครตัวแทน</span>
+                        </a>
                     </form>
 
                     <p class="mt-8 text-center text-sm text-slate-400">

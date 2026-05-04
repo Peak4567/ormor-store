@@ -197,36 +197,17 @@ document.addEventListener("alpine:init", () => {
 
                     const result = await response.json();
 
-                    if (response.ok) {
-                        const swalResult = await Swal.fire({
+                  if (response.ok) {
+                        Swal.fire({
                             icon: "success",
                             title: "จองคิวสำเร็จ!",
-                            html: `รหัสการจอง: <b class="text-[#57C84D] text-xl">${result.booking_code}</b>
-               <br><br>
-               <p class="text-sm text-red-500 font-medium bg-red-50 p-2 rounded-lg border border-red-100">
-                   อย่าลืม! คัดลอกรหัสการจอง ส่งมาที่ LINE Official และรอแอดมินตอบกลับ<br>
-                   หากไม่มีรหัสการจอง จะไม่สามารถทำรายการต่อได้
-               </p>`,
-                            showDenyButton: true,
-                            confirmButtonColor: "#57C84D",
-                            denyButtonColor: "#3b82f6",
-                            confirmButtonText: "ตกลง, ฉันคัดลอกแล้ว",
-                            denyButtonText: "ไปหน้าประวัติการจอง",
-                            reverseButtons: true,
-                            customClass: {
-                                popup: "rounded-[2rem] font-[Prompt]",
-                                confirmButton:
-                                    "rounded-xl px-6 py-2.5 font-bold text-white",
-                                denyButton:
-                                    "rounded-xl px-6 py-2.5 font-bold text-white",
-                            },
-                        });
-
-                        if (swalResult.isDenied) {
+                            text: "ระบบกำลังพาท่านไปหน้าประวัติการจอง...",
+                            showConfirmButton: false,
+                            timer: 1500,
+                            customClass: { popup: "rounded-[2rem] font-[Prompt]" }
+                        }).then(() => {
                             window.location.href = "/history";
-                        } else {
-                            window.location.reload();
-                        }
+                        });
                     } else {
                         throw new Error(result.message || "ไม่สามารถจองได้");
                     }

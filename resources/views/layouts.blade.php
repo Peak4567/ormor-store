@@ -82,6 +82,8 @@
         </div>
     @endauth
     @include('components.footer')
+
+    
 </body>
 
 </html>

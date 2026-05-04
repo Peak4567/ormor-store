@@ -14,13 +14,17 @@ class UserController extends Controller
         $query = User::query();
 
         if ($request->filled('search')) {
-            $query->where('name', 'like', "%{$request->search}%")
-                ->orWhere('email', 'like', "%{$request->search}%")
-                ->orWhere('users_code', 'like', "%{$request->search}%");
+            $search = $request->search;
+            $query->where(function ($q) use ($search) {
+                $q->where('name', 'like', "%{$search}%")
+                    ->orWhere('email', 'like', "%{$search}%")
+                    ->orWhere('users_code', 'like', "%{$search}%");
+            });
         }
-
-        if ($request->filled('level')) {
-            $query->where('level', $request->level);
+        
+        $role = $request->input('role') ?? $request->input('level');
+        if (!empty($role)) {
+            $query->where('level', $role);
         }
 
         $users = $query->latest()->paginate(10);

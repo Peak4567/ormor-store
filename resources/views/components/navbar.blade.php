@@ -96,11 +96,57 @@
                                     <p class="text-white/50 text-xs font-medium">บัญชีผู้ใช้ ({{ auth()->user()->level }})
                                     </p>
                                     <p class="text-white font-semibold truncate">{{ auth()->user()->name }}</p>
+                                    <p class="text-white/50 text-xs font-medium">{{ auth()->user()->email }}</p>
+                                    </p>
+                                    @if (auth()->user()->level === 'agent')
+                                        <div class="mt-2 flex items-center justify-between">
+                                            <span class="text-[10px] text-white/40 font-mono select-all">
+                                                ID:
+                                                @php
+                                                    $user = auth()->user();
+
+                                                    if (empty($user->users_code)) {
+                                                        $user->users_code =
+                                                            'U' . str_pad(rand(1, 99999), 5, '0', STR_PAD_LEFT);
+                                                        $user->save();
+                                                    }
+
+                                                    $originalCode = $user->users_code;
+
+                                                    preg_match('/\d+/', $originalCode, $matches);
+                                                    $numericPart = isset($matches[0]) ? $matches[0] : '0';
+
+                                                    $hashString = strtoupper(
+                                                        substr(md5($numericPart . '-hash-key'), 0, 6),
+                                                    );
+
+                                                    $userCode = 'U-' . $hashString;
+                                                @endphp
+                                                {{ $userCode }}
+                                            </span>
+
+                                            <buttonw
+                                                onclick="navigator.clipboard.writeText('{{ $userCode }}'); 
+                    Swal.fire({
+                        toast: true,
+                        position: 'top-end',
+                        icon: 'success',
+                        title: 'คัดลอกรหัส {{ $userCode }} แล้ว',
+                        showConfirmButton: false,
+                        timer: 1500,
+                        customClass: { popup: 'font-[Prompt] rounded-xl' }
+                    });"
+                                                class="text-[10px] font-bold text-[#2CB05C] bg-[#2CB05C]/10 px-2 py-0.5 rounded-md border border-[#2CB05C]/20 hover:bg-[#2CB05C] hover:text-white transition-all duration-300"
+                                                title="คัดลอกรหัสผู้ใช้">
+                                                <i class="fa-regular fa-copy mr-1"></i> คัดลอก ID
+                                            </buttonw>
+                                        </div>
+                                    @endif
                                 </div>
 
                                 @if (auth()->user()->level === 'admin')
                                     <a href="{{ route('backend.home') }}"
-                                        class="text-white/80 hover:text-white hover:bg-[#57C84D]/20 px-4 py-2 rounded-2xl text-sm font-medium flex items-center gap-3 transition-all duration-200">
+                                        class="text-white/80 hover:text-white hoverwwwwwwwwwwwwwww:bg-[#57C84D]/20 px-4 py-2 rounded-2xl text-sm font-medium flex items-center gap-3 transition-all duration-200">
                                         <i class="fa-duotone fa-solid fa-gauge-high text-[#57C84D]"></i> จัดการหลังบ้าน
                                     </a>
                                     <hr class="my-1 border-white/5">

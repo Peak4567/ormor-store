@@ -4,7 +4,7 @@
 @section('content')
     <div class="container mx-auto px-4 w-full space-y-6">
 
-        {{-- ส่วน Search & Filter (ดีไซน์เดียวกับ Product) --}}
+        {{-- ส่วน Search & Filter --}}
         <form action="{{ route('backend.users') }}" method="GET">
             <div class="bg-white rounded-xl border border-gray-100 p-6">
                 <div class="flex items-center gap-4 mb-6">
@@ -31,8 +31,9 @@
                         <select name="role" onchange="this.form.submit()"
                             class="appearance-none bg-white border border-gray-100 rounded-2xl px-5 py-2.5 pr-12 text-sm text-gray-600 font-medium focus:outline-none focus:ring-2 focus:ring-gray-200 cursor-pointer min-w-[160px]">
                             <option value="">ตำแหน่งทั้งหมด</option>
-                            <option value="Admin" {{ request('role') == 'Admin' ? 'selected' : '' }}>Admin</option>
-                            <option value="User" {{ request('role') == 'User' ? 'selected' : '' }}>User</option>
+                            <option value="admin" {{ request('role') == 'admin' ? 'selected' : '' }}>แอดมิน</option>
+                            <option value="agent" {{ request('role') == 'agent' ? 'selected' : '' }}>ตัวแทน</option>
+                            <option value="member" {{ request('role') == 'member' ? 'selected' : '' }}>สมาชิก</option>
                         </select>
                         <i
                             class="fa-solid fa-chevron-down absolute right-5 top-1/2 -translate-y-1/2 text-gray-300 text-[10px] pointer-events-none"></i>
@@ -41,7 +42,7 @@
             </div>
         </form>
 
-        {{-- ส่วนตารางข้อมูล (ดีไซน์เดียวกับ Product) --}}
+        {{-- ส่วนตารางข้อมูล --}}
         <div class="bg-white rounded-xl border border-gray-100 p-6 flex flex-col min-h-[500px]">
 
             <div class="flex justify-between items-center mb-6">
@@ -94,7 +95,8 @@
                                     @endphp
 
                                     <div class="relative inline-block w-28">
-                                        <select onchange="changeUserLevel({{ $user->id }}, this.value)"
+                                        {{-- เมื่อเลือกตำแหน่ง ระบบจะอัปเดตและรีเฟรชข้อมูลให้เป็นปัจจุบันทันที --}}
+                                        <select onchange="changeUserLevel({{ $user->id }}, this.value); this.form.submit();"
                                             class="w-full appearance-none px-3 py-1.5 pr-8 rounded-lg text-[12px] border outline-none cursor-pointer transition-all text-center {{ $colorClass }}">
                                             <option value="admin" class="text-red-600 bg-white"
                                                 {{ $currentLevel === 'admin' ? 'selected' : '' }}>
@@ -105,13 +107,11 @@
                                                 ตัวแทน
                                             </option>
                                             <option value="member" class="text-gray-600 bg-white"
-                                                {{ in_array($currentLevel, ['member', '']) ? 'selected' : '' }}>
+                                                {{ in_array($currentLevel, ['member', 'user', '']) ? 'selected' : '' }}>
                                                 สมาชิก
                                             </option>
-
                                         </select>
-                                        <i
-                                            class="fa-solid fa-chevron-down absolute right-3 top-1/2 -translate-y-1/2 text-[10px] pointer-events-none opacity-60"></i>
+                                        <i class="fa-solid fa-chevron-down absolute right-3 top-1/2 -translate-y-1/2 text-[10px] pointer-events-none opacity-60"></i>
                                     </div>
                                 </td>
 
@@ -148,7 +148,7 @@
                 </table>
             </div>
 
-            {{-- ส่วน Pagination ดีไซน์ใหม่ล่าสุด --}}
+            {{-- ส่วน Pagination --}}
             <div class="mt-12 flex justify-between items-center bg-white p-5 rounded-md border border-gray-100">
                 <div class="text-[14px] text-[#2CB05C] font-extrabold">
                     แสดง {{ $users->firstItem() ?? 0 }}-{{ $users->lastItem() ?? 0 }} จาก {{ $users->total() }}

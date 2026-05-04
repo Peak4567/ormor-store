@@ -187,6 +187,7 @@
                                             </span>
                                         </div>
                                     </div>
+
                                     <div :class="view === 'list' ? 'lg:static lg:flex lg:flex-row lg:gap-2 lg:items-center' :
                                         'absolute top-0 right-0 flex flex-col items-end gap-2.5'"
                                         class="flex">
@@ -200,6 +201,17 @@
                                             <i class="fa-duotone fa-solid fa-alarm-clock text-amber-500"></i>
                                             {{ $product->displayTime }}
                                         </span>
+                                    </div>
+
+                                    <div class="mt-3 bg-red-50 border border-red-200/60 p-2.5 rounded-md">
+                                        <p class="text-xs text-red-600 font-bold">
+                                            <i class="fa-solid fa-triangle-exclamation"></i>
+                                            หมายเหตุ: เปิดจองรอบ
+                                            <span>
+                                                {{ $product->displayTime }}
+                                            </span> น.
+                                            แอดมินจะดําเนินการภายใน 1-2 ชั่วโมง
+                                        </p>
                                     </div>
 
                                     <div class="flex justify-between items-center mt-4 pt-3 border-t border-slate-100"
@@ -280,8 +292,37 @@
         </section>
 
         <section id="booking-section" class="bg-white border-2 border-slate-100 p-8 scroll-mt-24">
+            @php
+                $now = \Carbon\Carbon::now('Asia/Bangkok');
+                $currentTime = $now->format('H:i:s');
+
+                $filteredProducts = clone $products;
+
+                $filteredProducts = $filteredProducts
+                    ->map(function ($product) use ($now, $currentTime) {
+                        if ($product->timeSlots) {
+                            $validSlots = $product->timeSlots
+                                ->filter(function ($slot) use ($currentTime) {
+                                    $slotStartTime = \Carbon\Carbon::parse($slot->start_time)->format('H:i:s');
+                                    return $currentTime >= $slotStartTime;
+                                })
+                                ->values();
+
+                            $product->time_slots = $validSlots;
+                            unset($product->timeSlots);
+                            $product->setRelation('timeSlots', $validSlots);
+                        }
+                        return $product;
+                    })
+                    ->filter(function ($product) {
+                        $hasValidTime = isset($product->time_slots) && count($product->time_slots) > 0;
+                        return ($product->canBook || $product->isWaitingForTime) && $hasValidTime;
+                    })
+                    ->values();
+            @endphp
+
             <div class="max-w-screen-xl mx-auto px-4" x-data="bookingWidget(
-                @js($products),
+                @js($filteredProducts),
                 '{{ $defaultProduct->id ?? '' }}',
                 '{{ auth()->check() ? auth()->user()->level : 'member' }}'
             )"
@@ -347,7 +388,7 @@
                                             x-text="selectedProductId ? 'กรุณาเลือกเวลาที่ต้องการ' : '-- กรุณาเลือกแพ็กเกจก่อน --'">
                                         </option>
                                         <template x-if="selectedProduct">
-                                            <template x-for="slot in (selectedProduct.time_slots || selectedProduct.timeSlots)"
+                                            <template x-for="slot in (selectedProduct.time_slots || [])"
                                                 :key="slot.id">
                                                 <option
                                                     :value="formatTime(slot.start_time) + ' - ' + formatTime(slot.end_time)"
@@ -379,29 +420,25 @@
                             <div class="space-y-3">
                                 <label class="block text-lg font-semibold text-[#1E2A1E]">เลือกแพ็กเกจที่ต้องการ</label>
                                 <div class="relative group">
-                                    @php
-                                        $availableProducts = $products->filter(
-                                            fn($p) => $p->canBook || $p->isWaitingForTime,
-                                        );
-                                    @endphp
 
                                     <select x-model="selectedProductId"
-                                        :disabled="@guest true @else {{ $availableProducts->isEmpty() ? 'true' : 'false' }} @endguest"
+                                        :disabled="@guest true @else {{ $filteredProducts->isEmpty() ? 'true' : 'false' }} @endguest"
                                         :class="(
-                                            @guest true @else {{ $availableProducts->isEmpty() ? 'true' : 'false' }} @endguest) ?
+                                            @guest true @else {{ $filteredProducts->isEmpty() ? 'true' : 'false' }} @endguest
+                                        ) ?
                                         'bg-slate-100 cursor-not-allowed opacity-70' : 'bg-white cursor-pointer'"
                                         class="w-full px-5 py-4 border-2 border-slate-200 rounded-2xl text-slate-600 font-medium focus:border-[#57C84D]/50 focus:ring-0 transition-all appearance-none">
 
                                         @guest
                                             <option value="" disabled selected hidden>-- กรุณาเข้าสู่ระบบก่อน --</option>
                                         @else
-                                            @if ($availableProducts->isEmpty())
+                                            @if ($filteredProducts->isEmpty())
                                                 <option value="" disabled selected hidden>-- ขณะนี้ไม่มีสินค้าเปิดจอง --
                                                 </option>
                                             @else
                                                 <option value="" disabled selected hidden>-- กรุณาเลือกแพ็กเกจ --
                                                 </option>
-                                                @foreach ($availableProducts as $product)
+                                                @foreach ($filteredProducts as $product)
                                                     <option value="{{ $product->id }}">{{ $product->product_name }}</option>
                                                 @endforeach
                                             @endif

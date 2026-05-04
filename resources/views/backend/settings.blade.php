@@ -71,6 +71,49 @@
                     </div>
 
                     <h3 class="text-[14px] font-extrabold text-gray-800 mt-8 mb-4 border-b border-gray-100 pb-2">
+                        ตั้งค่าประกาศ/โฆษณา (Modal)
+                    </h3>
+
+                    <div class="space-y-4">
+                        <div class="flex items-center gap-4">
+                            <div
+                                class="w-20 h-20 bg-gray-50/50 rounded-md flex items-center justify-center relative overflow-hidden group cursor-pointer border border-gray-100">
+
+                                <img id="preview-popup"
+                                    src="{{ $setting->popup_image ? asset($setting->popup_image) : 'https://via.placeholder.com/150?text=Popup' }}"
+                                    alt="Popup Image" class="w-full h-full object-cover">
+
+                                <div
+                                    class="absolute inset-0 bg-black/40 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
+                                    <i class="fa-solid fa-camera text-white text-xl"></i>
+                                </div>
+
+                                <input type="file" name="popup_image" class="absolute inset-0 opacity-0 cursor-pointer"
+                                    accept="image/png, image/jpeg" onchange="previewImage(this, 'preview-popup')">
+
+                            </div>
+                            <div class="flex-1">
+                                <h4 class="font-extrabold text-sm text-gray-800">รูปภาพประกาศ</h4>
+                                <p class="text-[11px] text-gray-400 font-medium mt-0.5 leading-tight">แนะนำแนวนอนหรือจัตุรัส
+                                </p>
+                            </div>
+                        </div>
+
+                        <div>
+                            <label class="block mb-2 text-sm font-extrabold text-gray-800">หัวข้อประกาศ</label>
+                            <input type="text" name="popup_title"
+                                value="{{ old('popup_title', $setting->popup_title ?? 'ยินดีต้อนรับสู่ Ormor Topup Coins') }}"
+                                placeholder="หัวข้อประกาศ"
+                                class="w-full px-4 py-2.5 bg-white border border-gray-100 rounded-md focus:outline-none focus:ring-2 focus:ring-green-500/20 focus:border-green-500 transition-all text-sm text-gray-600 placeholder-gray-400">
+                        </div>
+
+                        <div>
+                            <label class="block mb-2 text-sm font-extrabold text-gray-800">รายละเอียดประกาศ</label>
+                            <textarea name="popup_desc" rows="3" placeholder="ข้อความรายละเอียดในประกาศ..."
+                                class="w-full px-4 py-2.5 bg-white border border-gray-100 rounded-md focus:outline-none focus:ring-2 focus:ring-green-500/20 focus:border-green-500 transition-all text-sm text-gray-600 placeholder-gray-400">{{ old('popup_desc', $setting->popup_desc ?? 'ระบบจองคิวเติม Coinsline (เหรียญไลน์) เปิดให้บริการเต็มรูปแบบแล้ว') }}</textarea>
+                        </div>
+                    </div>
+                    <h3 class="text-[14px] font-extrabold text-gray-800 mt-8 mb-4 border-b border-gray-100 pb-2">
                         ช่องทางติดต่อ</h3>
 
                     <div class="flex items-center gap-4 mb-6">
@@ -98,7 +141,8 @@
                     <div class="space-y-4">
                         <div>
                             <label class="block mb-2 text-sm font-extrabold text-gray-800">Facebook</label>
-                            <input type="text" name="facebook" value="{{ $setting->facebook }}" placeholder="Facebook"
+                            <input type="text" name="facebook" value="{{ $setting->facebook }}"
+                                placeholder="Facebook"
                                 class="w-full px-4 py-2.5 bg-white border border-gray-100 rounded-md focus:outline-none focus:ring-2 focus:ring-green-500/20 focus:border-green-500 transition-all text-sm text-gray-600 placeholder-gray-400">
                         </div>
                         <div>
@@ -184,10 +228,10 @@
                                                         @foreach ($shopIcons as $class => $label)
                                                             <button type="button" title="{{ $label }}"
                                                                 onclick="
-                                document.getElementById('input_icon_{{ $i }}').value = '{{ $class }}';
-                                document.getElementById('display_icon_{{ $i }}').className = '{{ $class }} text-lg';
-                                document.getElementById('icon_dropdown_{{ $i }}').classList.add('hidden');
-                            "
+                                        document.getElementById('input_icon_{{ $i }}').value = '{{ $class }}';
+                                        document.getElementById('display_icon_{{ $i }}').className = '{{ $class }} text-lg';
+                                        document.getElementById('icon_dropdown_{{ $i }}').classList.add('hidden');
+                                    "
                                                                 class="flex items-center justify-center p-2 rounded-md border border-gray-100 text-gray-500 bg-gray-50 hover:bg-green-50 hover:text-green-600 hover:border-green-500 transition-all">
                                                                 <i class="{{ $class }} text-base"></i>
                                                             </button>

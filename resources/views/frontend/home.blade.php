@@ -656,4 +656,66 @@
 
         </div>
     </section>
+    
+   <div x-data="{ 
+        open: true,
+        closeModal() {
+            this.open = false;
+        }
+     }" 
+     x-show="open" 
+     x-cloak
+     class="fixed inset-0 z-[99999] flex items-center justify-center p-4 bg-slate-900/60 transition-all duration-300 Prompt">
+
+    <div @click.away="closeModal()" 
+         x-show="open" 
+         x-transition:enter="transition ease-out duration-300"
+         x-transition:enter-start="opacity-0 scale-95" 
+         x-transition:enter-end="opacity-100 scale-100"
+         x-transition:leave="transition ease-in duration-200" 
+         x-transition:leave-start="opacity-100 scale-100"
+         x-transition:leave-end="opacity-0 scale-95"
+         class="relative w-full max-w-lg bg-white rounded-xl shadow-[0_20px_60px_rgba(0,0,0,0.1)] border border-slate-100 overflow-hidden flex flex-col">
+
+        <button @click="closeModal()"
+            class="absolute top-5 right-5 w-9 h-9 flex items-center justify-center rounded-full bg-slate-100 text-slate-400 hover:bg-red-100 hover:text-red-500 transition-all z-10">
+            <i class="fa-solid fa-xmark text-sm"></i>
+        </button>
+
+        <div class="relative h-48 sm:h-56 bg-green-50 overflow-hidden flex items-center justify-center">
+            <img src="{{ $web_cfg->popup_image ?? asset('assets/image/logo.png') }}" 
+                 alt="Announcement Banner"
+                 class="w-full h-full object-cover">
+
+            <div class="absolute inset-0 bg-gradient-to-t from-white via-white/20 to-transparent opacity-80"></div>
+        </div>
+
+        <div class="p-8 text-center sm:text-left flex-1">
+            <span class="inline-block px-3 py-1 bg-green-50 text-[#2CB05C] text-[11px] font-bold tracking-wider uppercase rounded-lg mb-3 border border-green-100">
+                ประกาศสำคัญ
+            </span>
+
+            <h3 class="text-2xl sm:text-3xl font-bold text-slate-800 tracking-tight mb-3">
+                {{ $web_cfg->popup_title ?? 'ยินดีต้อนรับสู่ Ormor Topup Coins' }}
+            </h3>
+
+            <p class="text-sm sm:text-base text-slate-600 leading-relaxed mb-6 font-medium">
+                {{ $web_cfg->popup_desc ?? 'ระบบจองคิวเติม Coinsline (เหรียญไลน์) เปิดให้บริการเต็มรูปแบบแล้ว พีคขอให้ทุกคนอ่านรายละเอียดและเงื่อนไขการจองคิวให้ครบถ้วนก่อนทำรายการ เพื่อความสะดวกและรวดเร็วในการให้บริการครับ' }}
+            </p>
+
+            <div class="flex flex-col sm:flex-row gap-3">
+                <button @click="closeModal()"
+                    class="flex-1 bg-[#2CB05C] hover:bg-[#24964e] text-white py-3.5 rounded-2xl font-bold active:scale-95 transition-all duration-300 text-sm">
+                    รับทราบและเริ่มใช้งาน
+                </button>
+
+                <a href="{{ $web_cfg->line ?? 'https://line.me/R/ti/p/@YOUR_LINE_ID' }}"
+                    target="_blank"
+                    class="flex-1 sm:max-w-[140px] border border-green-100 bg-green-50/50 hover:border-green-200 text-[#2CB05C] py-3.5 rounded-2xl font-bold hover:bg-green-100 active:scale-95 transition-all duration-300 flex items-center justify-center gap-2 text-sm">
+                    <i class="fa-brands fa-line text-lg"></i> ติดต่อเรา
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
 @endsection

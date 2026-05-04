@@ -16,6 +16,7 @@ class SettingController extends Controller
 
         return view('backend.settings', compact('setting'));
     }
+
     public function update(Request $request)
     {
         try {
@@ -23,16 +24,13 @@ class SettingController extends Controller
             if (!$setting) {
                 $setting = new Setting();
             }
-
             if ($request->hasFile('logo')) {
-                // 1. ลบไฟล์รูปเก่าทิ้ง (ถ้ามี)
                 if ($setting->logo && File::exists(public_path($setting->logo))) {
                     File::delete(public_path($setting->logo));
                 }
 
                 $logoFile = $request->file('logo');
                 $logoName = time() . '_logo.' . $logoFile->getClientOriginalExtension();
-
                 $logoFile->move(public_path('assets/image/upload'), $logoName);
 
                 $setting->logo = 'assets/image/upload/' . $logoName;
@@ -45,18 +43,32 @@ class SettingController extends Controller
 
                 $qrFile = $request->file('qr_code');
                 $qrName = time() . '_qr.' . $qrFile->getClientOriginalExtension();
-
                 $qrFile->move(public_path('assets/image/upload'), $qrName);
 
                 $setting->qr_code = 'assets/image/upload/' . $qrName;
             }
+
+            if ($request->hasFile('popup_image')) {
+                if ($setting->popup_image && File::exists(public_path($setting->popup_image))) {
+                    File::delete(public_path($setting->popup_image));
+                }
+
+                $popupFile = $request->file('popup_image');
+                $popupName = time() . '_popup.' . $popupFile->getClientOriginalExtension();
+                $popupFile->move(public_path('assets/image/upload'), $popupName); //  เปลี่ยนเป็นลูกศร ->
+
+                $setting->popup_image = 'assets/image/upload/' . $popupName;
+            }
+
             $setting->site_name = $request->site_name;
             $setting->description = $request->description;
             $setting->website_url = $request->website_url;
             $setting->warning_text = $request->warning_text;
             $setting->facebook = $request->facebook;
             $setting->line = $request->line;
-
+            
+            $setting->popup_title = $request->popup_title;
+            $setting->popup_desc = $request->popup_desc;
             for ($i = 1; $i <= 4; $i++) {
                 $setting->{"step_{$i}_icon"} = $request->{"step_{$i}_icon"};
                 $setting->{"step_{$i}_title"} = $request->{"step_{$i}_title"};

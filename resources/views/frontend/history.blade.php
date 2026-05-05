@@ -99,19 +99,20 @@
 
                                 <button
                                     @click="
-                                        navigator.clipboard.writeText(item.booking_code);
-                                        Swal.fire({
-                                            toast: true,
-                                            position: 'top-end',
-                                            icon: 'success',
-                                            title: 'คัดลอกรหัส ' + item.booking_code + ' แล้ว',
-                                            showConfirmButton: false,
-                                            timer: 1500,
-                                            customClass: { popup: 'font-[Prompt] rounded-xl' }
-                                        });
-                                    "
+        let copyText = `รหัสการจอง: ${item.booking_code}\nสินค้า: ${item.product_name}\nวันที่: ${item.thai_date || item.booking_date}\nเวลา: ${item.booking_time} น.\nราคา: ${new Intl.NumberFormat().format(item.price)} บาท\nรายละเอียด: ${item.content || '-'}`;
+        navigator.clipboard.writeText(copyText);
+        Swal.fire({
+            toast: true,
+            position: 'top-end',
+            icon: 'success',
+            title: 'คัดลอกข้อมูลการจองแล้ว',
+            showConfirmButton: false,
+            timer: 1500,
+            customClass: { popup: 'font-[Prompt] rounded-xl' }
+        });
+    "
                                     class="text-slate-400 hover:text-[#57C84D] hover:bg-[#57C84D]/10 transition-all duration-300 w-7 h-7 flex items-center justify-center rounded-lg"
-                                    title="คัดลอกรหัสการจอง">
+                                    title="คัดลอกข้อมูลการจอง">
                                     <i class="fa-regular fa-copy"></i>
                                 </button>
 

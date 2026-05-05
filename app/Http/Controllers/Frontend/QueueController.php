@@ -76,7 +76,21 @@ class QueueController extends Controller
             }
             $product->tabCondition = $tabCondition;
 
-            $product->displayPrice = (Auth::check() && Auth::user()->level === 'agent') ? $product->agent_price : $product->main_price;
+            $currentUsername = Auth::check() ? strtolower(trim(Auth::user()->name ?? '')) : '';
+            $isSpecialDiscount = false;
+
+            if ($currentUsername !== '' && !empty($product->discount_users) && $product->discount_amount > 0) {
+                $allowedUsers = array_map('strtolower', array_map('trim', explode(',', $product->discount_users)));
+                if (in_array($currentUsername, $allowedUsers)) {
+                    $isSpecialDiscount = true;
+                }
+            }
+
+            if ($isSpecialDiscount) {
+                $product->displayPrice = $product->discount_amount;
+            } else {
+                $product->displayPrice = (Auth::check() && Auth::user()->level === 'agent') ? $product->agent_price : $product->main_price;
+            }
 
             $firstDate = $product->saleDates ? $product->saleDates->first() : null;
             if ($firstDate) {

@@ -15,15 +15,21 @@ class RegisterController extends Controller
     {
         return view('auth.register');
     }
+
     public function register(Request $request)
     {
         $request->validate([
             'name' => ['required', 'string', 'max:255', 'unique:users'],
             'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
+            'phone' => ['required', 'string', 'max:20'],
             'password' => ['required', 'string', 'min:8', 'confirmed'],
         ], [
+            'name.required' => 'กรุณากรอกชื่อผู้ใช้งาน',
             'name.unique' => 'ชื่อผู้ใช้นี้ถูกใช้งานแล้ว',
+            'email.required' => 'กรุณากรอกอีเมล',
             'email.unique' => 'อีเมลนี้ถูกใช้งานแล้ว',
+            'phone.required' => 'กรุณากรอกเบอร์โทรศัพท์',
+            'password.required' => 'กรุณากรอกรหัสผ่าน',
             'password.confirmed' => 'รหัสผ่านยืนยันไม่ตรงกัน',
             'password.min' => 'รหัสผ่านต้องมีอย่างน้อย 8 ตัวอักษร',
         ]);
@@ -36,9 +42,11 @@ class RegisterController extends Controller
             'users_code' => $usersCode,
             'name'       => $request->name,
             'email'      => $request->email,
+            'phone'      => $request->phone,
             'password'   => Hash::make($request->password),
             'level'      => 'member',
         ]);
+
         return redirect()->route('login.page')->with('success', 'สมัครสมาชิกสำเร็จ! กรุณาเข้าสู่ระบบเพื่อใช้งานครับ');
     }
 }

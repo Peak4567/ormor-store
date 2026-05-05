@@ -1,10 +1,14 @@
 @extends('backend.layouts')
+@section('title', 'จัดการรายการจองสินค้า')
 
 @section('content')
     <link rel="stylesheet" href="{{ asset('assets/css/style.css') }}">
-    <div class="container mx-auto px-4 space-y-6">
+    
+    <div class="container mx-auto px-4 space-y-6" x-data="{ 
+        tab: new URLSearchParams(window.location.search).has('summary_page') ? 'summary' : 'all', 
+        sortOrder: 'desc' 
+    }">
 
-        {{-- ส่วนค้นหาและตัวกรอง --}}
         <form action="{{ route('backend.booking') }}" method="GET">
             <div class="bg-white rounded-md border border-gray-100 p-6">
                 <div class="flex items-center gap-4 mb-6">
@@ -42,29 +46,48 @@
         </form>
 
         <div class="bg-white rounded-md border border-gray-100 p-6 flex flex-col min-h-[500px]">
-            <div class="flex justify-between items-center mb-6">
+            
+            <div class="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-4 mb-6 border-b border-gray-100 pb-5">
                 <div>
                     <h2 class="text-xl font-extrabold text-gray-800">รายการจองสินค้า</h2>
-                    <p class="text-[13px] text-gray-400 mt-1 font-medium">จัดการรายการจองสินค้าทั้งหมดในระบบ</p>
+                    <p class="text-[13px] text-gray-400 mt-1 font-medium">จัดการรายการจองสินค้าและสรุปยอดรวม</p>
                 </div>
                 
-                <div id="bulk-action-panel" class="hidden items-center gap-3 bg-green-50 border border-green-200 px-4 py-2.5 rounded-xl transition-all duration-300">
-                    <span class="text-sm font-bold text-green-700">เลือกแล้ว <span id="selected-count" class="text-green-800 bg-green-200 px-2 py-0.5 rounded-md">0</span> รายการ</span>
-                    <div class="h-5 w-px bg-green-200 mx-1"></div>
-                    <select id="bulk-status-select" class="appearance-none bg-white border border-green-200 rounded-xl px-4 py-1.5 text-xs text-green-700 font-bold focus:outline-none focus:ring-2 focus:ring-green-500 cursor-pointer">
-                        <option value="">-- เลือกสถานะใหม่ --</option>
-                        <option value="รอตรวจสอบ">รอตรวจสอบ</option>
-                        <option value="กำลังดำเนินการ">กำลังดำเนินการ</option>
-                        <option value="สำเร็จ">สำเร็จ</option>
-                        <option value="ยกเลิก">ยกเลิก</option>
-                    </select>
-                    <button onclick="applyBulkStatusUpdate()" class="px-5 py-1.5 bg-green-500 text-white hover:bg-green-600 rounded-xl text-xs font-bold transition-colors ">
-                        <i class="fa-solid fa-check-double mr-1"></i> อัปเดตทั้งหมด
-                    </button>
+                <div class="flex flex-wrap items-center gap-3">
+                    <div class="relative" x-show="tab === 'summary'">
+                        <select x-model="sortOrder" class="appearance-none bg-gray-50/80 border border-gray-200 rounded-xl px-4 py-2 text-xs font-bold text-gray-600 focus:outline-none focus:ring-2 focus:ring-green-500 cursor-pointer pr-10">
+                            <option value="desc">เรียงจากมากไปน้อย</option>
+                            <option value="asc">เรียงจากน้อยไปมาก</option>
+                        </select>
+                        <i class="fa-solid fa-chevron-down absolute right-4 top-1/2 -translate-y-1/2 text-gray-400 text-[9px] pointer-events-none"></i>
+                    </div>
+
+                    <div class="flex p-1 bg-gray-50/80 border border-gray-100 rounded-xl">
+                        <button @click="tab = 'all'" :class="tab === 'all' ? 'bg-white text-green-600 shadow-sm' : 'text-gray-400'" class="px-4 py-2 text-xs font-bold rounded-lg transition-all">
+                            <i class="fa-solid fa-list mr-1"></i> รายการทั้งหมด
+                        </button>
+                        <button @click="tab = 'summary'" :class="tab === 'summary' ? 'bg-white text-green-600 shadow-sm' : 'text-gray-400'" class="px-4 py-2 text-xs font-bold rounded-lg transition-all">
+                            <i class="fa-solid fa-ranking-star mr-1"></i> สรุปยอดตามบุคคล
+                        </button>
+                    </div>
                 </div>
             </div>
 
-            <div class="overflow-x-auto flex-1">
+            <div id="bulk-action-panel" class="hidden items-center gap-3 bg-green-50 border border-green-200 px-4 py-2.5 rounded-xl transition-all duration-300 mb-6">
+                <span class="text-sm font-bold text-green-700">เลือกแล้ว <span id="selected-count" class="text-green-800 bg-green-200 px-2 py-0.5 rounded-md">0</span> รายการ</span>
+                <div class="h-5 w-px bg-green-200 mx-1"></div>
+                <select id="bulk-status-select" class="appearance-none bg-white border border-green-200 rounded-xl px-4 py-1.5 text-xs text-green-700 font-bold focus:outline-none focus:ring-2 focus:ring-green-500 cursor-pointer">
+                    <option value="">-- เลือกสถานะใหม่ --</option>
+                    <option value="รอตรวจสอบ">รอตรวจสอบ</option>
+                    <option value="กำลังดำเนินการ">กำลังดำเนินการ</option>
+                    <option value="สำเร็จ">สำเร็จ</option>
+                    <option value="ยกเลิก">ยกเลิก</option>
+                </select>
+                <button onclick="applyBulkStatusUpdate()" class="px-5 py-1.5 bg-green-500 text-white hover:bg-green-600 rounded-xl text-xs font-bold transition-colors">
+                    <i class="fa-solid fa-check-double mr-1"></i> อัปเดตทั้งหมด
+                </button>
+            </div>
+            <div class="overflow-x-auto flex-1" x-show="tab === 'all'" x-cloak>
                 <table class="w-full text-sm text-center whitespace-nowrap">
                     <thead class="text-gray-800 font-extrabold">
                         <tr class="bg-[#F8F9FA]">
@@ -83,7 +106,6 @@
                     <tbody class="text-gray-600 font-medium">
                         @forelse ($bookings as $booking)
                             <tr class="border-b border-gray-50/50 hover:bg-gray-50/50 transition-colors group">
-                                {{-- Checkbox เลือกทีละรายการ --}}
                                 <td class="py-5 px-4">
                                     <input type="checkbox" name="booking_ids[]" value="{{ $booking->id }}" class="booking-checkbox w-4 h-4 text-green-500 bg-white border-gray-300 rounded focus:ring-green-500 focus:ring-2 cursor-pointer transition-all">
                                 </td>
@@ -154,12 +176,75 @@
                     </tbody>
                 </table>
             </div>
-            <div class="mt-12 flex justify-between items-center bg-white p-5 rounded-md border border-gray-100">
+
+            <div class="overflow-x-auto flex-1" x-show="tab === 'summary'" style="display: none;" x-cloak>
+                <table class="w-full text-sm text-center whitespace-nowrap">
+                    <thead class="text-gray-800 font-extrabold">
+                        <tr class="bg-[#F8F9FA]">
+                            <th class="py-4 px-4 rounded-l-2xl w-16">อันดับ</th>
+                            <th class="py-4 px-4 text-left">ชื่อผู้ใช้</th>
+                            <th class="py-4 px-4 text-center">จำนวนรายการ</th>
+                            <th class="py-4 px-4 text-right pr-12">ยอดรวมทั้งหมด (เฉพาะสำเร็จ)</th>
+                        </tr>
+                    </thead>
+                    <tbody class="text-gray-600 font-medium">
+                        @php
+                            $successfulBookings = \Illuminate\Support\Facades\DB::table('bookings')
+                                ->where('status', 'สำเร็จ')
+                                ->get();
+                            
+                            $allGrouped = $successfulBookings->groupBy('username')->map(function ($group) {
+                                return [
+                                    'username' => $group->first()->username ?? '-',
+                                    'count' => $group->count(),
+                                    'total_price' => $group->sum('price')
+                                ];
+                            })->values();
+                        @endphp
+                        
+                        <template x-for="(data, index) in Object.values({{ json_encode($allGrouped) }}).sort((a, b) => sortOrder === 'desc' ? (b.total_price - a.total_price) : (a.total_price - b.total_price))" :key="data.username">
+                            <tr class="border-b border-gray-50/50 hover:bg-gray-50/50 transition-colors">
+                                <td class="py-4 px-4">
+                                    <span class="px-2 py-1 font-extrabold"
+                                        :class="{
+                                            'text-yellow-600 bg-yellow-50 border border-yellow-200 rounded-md': index === 0,
+                                            'text-gray-600 bg-gray-50 border border-gray-200 rounded-md': index === 1,
+                                            'text-orange-600 bg-orange-50 border border-orange-200 rounded-md': index === 2,
+                                            'text-gray-500': index > 2
+                                        }">
+                                        <span x-text="'#' + (index + 1)"></span>
+                                    </span>
+                                </td>
+                                <td class="py-4 px-4 text-left font-bold text-gray-800" x-text="data.username"></td>
+                                <td class="py-4 px-4 text-center">
+                                    <span class="bg-gray-100 text-gray-600 px-2.5 py-1 rounded-lg text-xs font-bold">
+                                        <span x-text="data.count"></span> รายการ
+                                    </span>
+                                </td>
+                                <td class="py-4 px-4 text-right font-extrabold text-[#2CB05C] pr-12 text-base">
+                                    <span x-text="new Intl.NumberFormat('th-TH', { minimumFractionDigits: 2, maximumFractionDigits: 2 }).format(data.total_price)"></span> บาท
+                                </td>
+                            </tr>
+                        </template>
+                        
+                        <template x-if="Object.values({{ json_encode($allGrouped) }}).length === 0">
+                            <tr>
+                                <td colspan="4" class="py-20 text-center text-gray-400">
+                                    <i class="fa-solid fa-ranking-star text-4xl text-gray-200 mb-2"></i><br>
+                                    ไม่พบข้อมูลการสรุปยอด
+                                </td>
+                            </tr>
+                        </template>
+                    </tbody>
+                </table>
+            </div>
+            
+            <div class="mt-12 flex justify-between items-center bg-white p-5 rounded-md border border-gray-100" x-show="tab === 'all'" x-cloak>
                 <div class="text-[14px] text-[#2CB05C] font-extrabold">
                     แสดง {{ $bookings->firstItem() ?? 0 }}-{{ $bookings->lastItem() ?? 0 }} จาก {{ $bookings->total() }} รายการ
                 </div>
                 <div class="custom-pagination">
-                    {{ $bookings->links('pagination::tailwind') }}
+                    {{ $bookings->appends(request()->query())->links('pagination::tailwind') }}
                 </div>
             </div>
         </div>
@@ -168,4 +253,5 @@
     @include('backend.components.sweetalert-messages')
     <script src="{{ asset('assets/js/backend/sweetalert.js') }}"></script>
     <script src="{{ asset('assets/js/backend/update-booking-status.js') }}"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
 @endsection

@@ -1,13 +1,14 @@
 document.addEventListener("alpine:init", () => {
     Alpine.data(
         "bookingWidget",
-        (initialProducts, defaultId, userRole = "member") => ({
+        (initialProducts, defaultId, userRole = "member", currentUsername = "") => ({
             bookingDate: "",
             bookingTime: "",
             note: "",
             products: initialProducts,
             selectedProductId: "",
             userRole: userRole,
+            currentUsername: currentUsername,
 
             get selectedProduct() {
                 if (!this.selectedProductId) return null;
@@ -18,9 +19,22 @@ document.addEventListener("alpine:init", () => {
 
             get displayPrice() {
                 if (!this.selectedProduct) return null;
-                return this.userRole === "agent"
-                    ? this.selectedProduct.agent_price
-                    : this.selectedProduct.main_price;
+
+                if (this.currentUsername && this.selectedProduct.discount_users && parseFloat(this.selectedProduct.discount_amount) > 0) {
+                    const allowedUsers = this.selectedProduct.discount_users
+                        .split(',')
+                        .map(u => u.trim().toLowerCase());
+
+                    if (allowedUsers.includes(this.currentUsername)) {
+                        return parseFloat(this.selectedProduct.discount_amount);
+                    }
+                }
+
+                if (this.userRole === "agent" && this.selectedProduct.agent_price) {
+                    return parseFloat(this.selectedProduct.agent_price);
+                }
+
+                return parseFloat(this.selectedProduct.main_price);
             },
 
             formatThaiDate(date) {
@@ -188,7 +202,7 @@ document.addEventListener("alpine:init", () => {
                         body: JSON.stringify({
                             product_code: this.selectedProduct.product_code,
                             product_name: this.selectedProduct.product_name,
-                            price: this.displayPrice,
+                            price: this.displayPrice, // <--- ตรงนี้ก็จะส่งราคาพิเศษไปให้หลังบ้านเลย
                             booking_date: this.bookingDate,
                             booking_time: this.bookingTime,
                             note: this.note,
@@ -197,7 +211,7 @@ document.addEventListener("alpine:init", () => {
 
                     const result = await response.json();
 
-                  if (response.ok) {
+                    if (response.ok) {
                         Swal.fire({
                             icon: "success",
                             title: "จองคิวสำเร็จ!",

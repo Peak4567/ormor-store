@@ -146,11 +146,18 @@
 
                                 @if (auth()->user()->level === 'admin')
                                     <a href="{{ route('backend.home') }}"
-                                        class="text-white/80 hover:text-white hoverwwwwwwwwwwwwwww:bg-[#57C84D]/20 px-4 py-2 rounded-2xl text-sm font-medium flex items-center gap-3 transition-all duration-200">
+                                        class="text-white/80 hover:text-white hover:bg-[#57C84D]/20 px-4 py-2 rounded-2xl text-sm font-medium flex items-center gap-3 transition-all duration-200">
                                         <i class="fa-duotone fa-solid fa-gauge-high text-[#57C84D]"></i> จัดการหลังบ้าน
                                     </a>
                                     <hr class="my-1 border-white/5">
                                 @endif
+
+                                {{-- เพิ่มเมนู ตั้งค่าโปรไฟล์ (Desktop) --}}
+                                <a href="{{ route('profile.edit') }}"
+                                    class="text-white/80 hover:text-white hover:bg-white/10 px-4 py-2 rounded-2xl text-sm font-medium flex items-center gap-3 transition-all duration-200">
+                                    <i class="fa-duotone fa-solid fa-user-gear text-[#57C84D]"></i>
+                                    ตั้งค่าโปรไฟล์
+                                </a>
 
                                 <a href="{{ route('frontend.history') }}"
                                     class="text-white/80 hover:text-white hover:bg-white/10 px-4 py-2 rounded-2xl text-sm font-medium flex items-center gap-3 transition-all duration-200">
@@ -200,6 +207,10 @@
                         <a href="{{ route('backend.home') }}"
                             class="text-[#57C84D] text-lg font-medium flex items-center gap-3 border-b border-white/10 pb-3">จัดการหลังบ้าน</a>
                     @endif
+                    
+                    <a href="{{ route('profile.edit') }}"
+                        class="text-white text-lg font-medium flex items-center gap-3 border-b border-white/10 pb-3">ตั้งค่าโปรไฟล์</a>
+
                     <a href="{{ route('frontend.history') }}"
                         class="text-white text-lg font-medium flex items-center gap-3 border-b border-white/10 pb-3">ประวัติการสั่งซื้อ</a>
                 @endauth

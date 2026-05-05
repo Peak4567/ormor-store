@@ -114,6 +114,23 @@
                     </div>
                 </div>
 
+                <div class="mb-4">
+                    <label class="block text-[13px] font-extrabold text-gray-800 mb-1.5">หมายเหตุ</label>
+                    <textarea name="note" rows="3" placeholder="ระบุหมายเหตุเพิ่มเติม (ถ้ามี)..."
+                        class="w-full border border-gray-200 rounded-xl px-4 py-2.5 focus:outline-none focus:border-green-500 text-sm"></textarea>
+                </div>
+
+                <div class="mb-4">
+                    <label class="block text-[13px] font-extrabold text-gray-800 mb-1.5">ผู้มีสิทธิ์ได้รับส่วนลด (สูงสุด 8 คน)</label>
+                    <textarea name="discount_users" rows="2" placeholder="ใส่ชื่อผู้ใช้ (คั่นด้วยเครื่องหมายจุลภาค ,) เช่น peak,riu,john..."
+                        class="w-full border border-gray-200 rounded-xl px-4 py-2.5 focus:outline-none focus:border-green-500 text-sm"></textarea>
+                </div>
+                <div class="mb-4">
+                    <label class="block text-[13px] font-extrabold text-gray-800 mb-1.5">จำนวนส่วนลดสำหรับผู้มีสิทธิ์</label>
+                    <input type="number" name="discount_amount" placeholder="0.00" step="0.01"
+                        class="w-full border border-gray-200 rounded-xl px-4 py-2.5 focus:outline-none focus:border-green-500 text-sm font-bold" />
+                </div>
+
                 <div class="flex justify-between items-center mb-6">
                     <h3 class="text-sm font-extrabold text-gray-400">ระบบสต็อก</h3>
                     <label class="relative inline-flex items-center cursor-pointer">
@@ -127,12 +144,12 @@
                 <button type="button" onclick="toggleModal()"
                     class="w-1/2 border border-[#FF5B5B] text-[#FF5B5B] hover:bg-red-50 rounded-2xl py-3 font-bold text-sm transition-colors">ยกเลิก</button>
                 <button type="submit"
-                    class="w-1/2 bg-[#12C45A] hover:bg-green-600 text-white rounded-2xl py-3 font-bold text-sm transition-colors ">เพิ่มสินค้า</button>
+                    class="w-1/2 bg-[#12C45A] hover:bg-green-600 text-white rounded-2xl py-3 font-bold text-sm transition-colors">เพิ่มสินค้า</button>
             </div>
         </form>
     </div>
 </div>
 
 <script src="{{ asset('assets/js/backend/add-agent-price.js') }}"></script>
-<script src="{{asset('assets/js/backend/add-timeslot.js')}}"></script>
-<script src="{{asset('assets/js/backend/add-product-date.js')}}"></script>
+<script src="{{ asset('assets/js/backend/add-timeslot.js') }}"></script>
+<script src="{{ asset('assets/js/backend/add-product-date.js') }}"></script>

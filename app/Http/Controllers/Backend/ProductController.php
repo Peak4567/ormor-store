@@ -45,7 +45,6 @@ class ProductController extends Controller
 
         $query = Product::with(['timeSlots', 'saleDates']);
 
-
         if ($request->filled('search')) {
             $search = $request->search;
             $query->where(function ($q) use ($search) {
@@ -69,9 +68,6 @@ class ProductController extends Controller
             $query->orderBy('created_at', 'desc');
         }
 
-        $products = $query->get();
-
-
         $products = $query->latest()->paginate(10)->appends($request->all());
 
         foreach ($products as $product) {
@@ -90,21 +86,31 @@ class ProductController extends Controller
                 ? Carbon::parse($product->created_at)->addYears(543)->locale('th')->translatedFormat('j M Y')
                 : 'ไม่ระบุ';
         }
+
         return view('backend.product', compact('products'));
     }
+
     public function store(Request $request)
     {
         $request->validate([
             'product_name' => 'required|string|max:255',
             'main_price' => 'required|numeric',
+            'discount_amount' => 'nullable|numeric'
         ]);
 
         do {
             $prefix = 'ORMOR';
-            $randomPool = Str::random(8);
+            $randomPool = \Illuminate\Support\Str::random(8);
             $productCode = $prefix . $randomPool;
             $exists = Product::where('product_code', $productCode)->exists();
         } while ($exists);
+
+        $discountUsers = null;
+        if ($request->has('discount_users')) {
+            $users = array_filter(array_map('trim', explode(',', $request->discount_users)));
+            $users = array_slice($users, 0, 8);
+            $discountUsers = implode(',', $users);
+        }
 
         $product = Product::create([
             'product_code' => $productCode,
@@ -113,6 +119,9 @@ class ProductController extends Controller
             'agent_price'  => $request->agent_price ?: null,
             'stock' => $request->stock ?: null,
             'status' => $request->status ?? 'เปิดจอง',
+            'note' => $request->note ?? null,
+            'discount_users' => $discountUsers,
+            'discount_amount' => $request->discount_amount ?: 0.00,
         ]);
 
         if ($request->has('dates')) {
@@ -144,12 +153,28 @@ class ProductController extends Controller
     {
         $product = Product::findOrFail($id);
 
+        $request->validate([
+            'product_name' => 'required|string|max:255',
+            'main_price' => 'required|numeric',
+            'discount_amount' => 'nullable|numeric'
+        ]);
+
+        $discountUsers = null;
+        if ($request->has('discount_users')) {
+            $users = array_filter(array_map('trim', explode(',', $request->discount_users)));
+            $users = array_slice($users, 0, 8);
+            $discountUsers = implode(',', $users);
+        }
+
         $product->update([
             'product_name' => $request->product_name,
             'main_price' => $request->main_price,
             'agent_price'  => $request->agent_price ?: null,
             'stock' => $request->stock ?: null,
             'status' => $request->has('status') ? 'เปิดจอง' : 'ปิดจอง',
+            'note' => $request->note ?? null,
+            'discount_users' => $discountUsers,
+            'discount_amount' => $request->discount_amount ?: 0.00,
         ]);
 
         $product->saleDates()->delete();
@@ -164,6 +189,7 @@ class ProductController extends Controller
                 }
             }
         }
+
         if ($request->has('start_times')) {
             foreach ($request->start_times as $index => $startTime) {
                 $endTime = $request->end_times[$index] ?? null;
@@ -178,6 +204,7 @@ class ProductController extends Controller
 
         return redirect()->back()->with('success', 'แก้ไขข้อมูลเรียบร้อยแล้ว');
     }
+
     public function destroy($id)
     {
         try {

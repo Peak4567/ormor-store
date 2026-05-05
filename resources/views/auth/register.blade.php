@@ -19,10 +19,10 @@
                     <form action="{{ route('register.store') }}" method="POST" class="space-y-3">
                         @csrf
 
+                        {{-- ชื่อผู้ใช้งาน --}}
                         <div class="relative group">
                             <div class="absolute inset-y-0 left-0 px-4.5 flex items-center pointer-events-none">
-                                <i
-                                    class="fa-duotone fa-solid fa-user text-[#57C84D]/50 group-focus-within:text-[#57C84D] transition-colors"></i>
+                                <i class="fa-duotone fa-solid fa-user text-[#57C84D]/50 group-focus-within:text-[#57C84D] transition-colors"></i>
                             </div>
                             <input type="text" name="name" value="{{ old('name') }}"
                                 class="w-full pl-11 pr-4 py-4 bg-slate-50 border-2 border-transparent rounded-2xl text-sm focus:bg-white focus:border-[#57C84D]/30 focus:ring-0 transition-all outline-none placeholder:text-slate-400 @error('name') border-red-500 @enderror"
@@ -32,10 +32,10 @@
                             @enderror
                         </div>
 
+                        {{-- อีเมล --}}
                         <div class="relative group">
                             <div class="absolute inset-y-0 left-0 px-4.5 flex items-center pointer-events-none">
-                                <i
-                                    class="fa-duotone fa-solid fa-envelope text-[#57C84D]/50 group-focus-within:text-[#57C84D] transition-colors"></i>
+                                <i class="fa-duotone fa-solid fa-envelope text-[#57C84D]/50 group-focus-within:text-[#57C84D] transition-colors"></i>
                             </div>
                             <input type="email" name="email" value="{{ old('email') }}"
                                 class="w-full pl-11 pr-4 py-4 bg-slate-50 border-2 border-transparent rounded-2xl text-sm focus:bg-white focus:border-[#57C84D]/30 focus:ring-0 transition-all outline-none placeholder:text-slate-400 @error('email') border-red-500 @enderror"
@@ -45,10 +45,23 @@
                             @enderror
                         </div>
 
+                        {{-- เบอร์โทรศัพท์ (เพิ่มใหม่) --}}
+                        <div class="relative group">
+                            <div class="absolute inset-y-0 left-0 px-4.5 flex items-center pointer-events-none">
+                                <i class="fa-duotone fa-solid fa-phone text-[#57C84D]/50 group-focus-within:text-[#57C84D] transition-colors"></i>
+                            </div>
+                            <input type="tel" name="phone" value="{{ old('phone') }}"
+                                class="w-full pl-11 pr-4 py-4 bg-slate-50 border-2 border-transparent rounded-2xl text-sm focus:bg-white focus:border-[#57C84D]/30 focus:ring-0 transition-all outline-none placeholder:text-slate-400 @error('phone') border-red-500 @enderror"
+                                placeholder="เบอร์โทรศัพท์" required />
+                            @error('phone')
+                                <span class="text-xs text-red-500 ml-2">{{ $message }}</span>
+                            @enderror
+                        </div>
+
+                        {{-- รหัสผ่าน --}}
                         <div class="relative group" x-data="{ showTip: false }">
                             <div class="absolute inset-y-0 left-0 px-4.5 flex items-center pointer-events-none">
-                                <i
-                                    class="fa-duotone fa-solid fa-lock text-[#57C84D]/50 group-focus-within:text-[#57C84D] transition-colors"></i>
+                                <i class="fa-duotone fa-solid fa-lock text-[#57C84D]/50 group-focus-within:text-[#57C84D] transition-colors"></i>
                             </div>
                             <input type="password" name="password" @focus="showTip = true" @blur="showTip = false"
                                 class="w-full pl-11 pr-4 py-4 bg-slate-50 border-2 border-transparent rounded-2xl text-sm focus:bg-white focus:border-[#57C84D]/30 focus:ring-0 transition-all outline-none placeholder:text-slate-400 @error('password') border-red-500 @enderror"
@@ -58,10 +71,10 @@
                             @enderror
                         </div>
 
+                        {{-- ยืนยันรหัสผ่าน --}}
                         <div class="relative group">
                             <div class="absolute inset-y-0 left-0 px-4.5 flex items-center pointer-events-none">
-                                <i
-                                    class="fa-duotone fa-solid fa-lock text-[#57C84D]/50 group-focus-within:text-[#57C84D] transition-colors"></i>
+                                <i class="fa-duotone fa-solid fa-lock text-[#57C84D]/50 group-focus-within:text-[#57C84D] transition-colors"></i>
                             </div>
                             <input type="password" name="password_confirmation"
                                 class="w-full pl-11 pr-4 py-4 bg-slate-50 border-2 border-transparent rounded-2xl text-sm focus:bg-white focus:border-[#57C84D]/30 focus:ring-0 transition-all outline-none placeholder:text-slate-400"

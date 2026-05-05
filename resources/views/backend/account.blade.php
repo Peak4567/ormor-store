@@ -85,20 +85,33 @@
                         <tbody class="text-gray-600 font-medium">
                             @forelse ($accounts as $account)
                                 <tr class="border-b border-gray-50/50">
-                                    <td class="py-5 px-4">{{ $loop->iteration }}</td>
-                                    <td class="py-5 px-4 text-left">{{ $account->thai_date }}</td>
+                                    <td class="py-5 px-4 align-top">{{ $loop->iteration }}</td>
+                                    <td class="py-5 px-4 text-left align-top">{{ $account->thai_date }}</td>
 
-                                    <td class="py-5 px-4 text-left">{{ $account->description }}</td>
-                                    <td class="py-5 px-4 text-left">
+                                    <td class="py-5 px-4 text-left align-top" x-data="{ expanded: false }">
+                                        <div class="transition-all duration-300 max-w-[200px]"
+                                            :class="expanded ? 'whitespace-normal break-words' : 'truncate'">
+                                            {{ $account->description ?? '-' }}
+                                        </div>
+
+                                        @if (!empty($account->description) && mb_strlen($account->description, 'UTF-8') > 35)
+                                            <button type="button" @click="expanded = !expanded"
+                                                class="text-[11px] text-blue-500 hover:text-blue-700 mt-1.5 font-bold focus:outline-none transition-colors">
+                                                <span x-text="expanded ? 'ย่อข้อความ' : 'ดูเพิ่มเติม...'"></span>
+                                            </button>
+                                        @endif
+                                    </td>
+
+                                    <td class="py-5 px-4 text-left align-top">
                                         <span
                                             class="{{ $account->category == 'รายรับ' ? 'text-blue-500' : 'text-red-500' }}">
                                             {{ $account->category }}
                                         </span>
                                     </td>
-                                    <td class="py-5 px-4 text-gray-800 font-bold">
+                                    <td class="py-5 px-4 text-gray-800 font-bold align-top">
                                         {{ number_format($account->category == 'รายรับ' ? $account->income : $account->expense, 2) }}
                                     </td>
-                                    <td class="py-5 px-4">
+                                    <td class="py-5 px-4 align-top">
                                         <div class="flex items-center justify-center gap-2.5">
                                             <button type="button" onclick="openEditAccountModal({{ $account->toJson() }})"
                                                 class="w-9 h-9 flex items-center justify-center bg-[#C3E8CB] text-[#4FA960] rounded-xl hover:bg-green-300 transition-colors">
@@ -109,13 +122,12 @@
                                                 class="w-9 h-9 flex items-center justify-center bg-[#FFB5B5] text-[#FF5B5B] rounded-xl hover:bg-red-300 transition-colors">
                                                 <i class="fa-solid fa-trash-can"></i>
                                             </button>
-
                                         </div>
                                     </td>
                                 </tr>
                             @empty
                                 <tr>
-                                    <td colspan="7" class="py-20 text-center">
+                                    <td colspan="6" class="py-20 text-center">
                                         <div class="flex flex-col items-center justify-center">
                                             <div
                                                 class="w-20 h-20 bg-gray-50 rounded-full flex items-center justify-center mb-4">
@@ -124,8 +136,7 @@
                                             </div>
                                             <h3 class="text-lg font-extrabold text-gray-800">ไม่พบรายการบัญชีรายรับ-รายจ่าย
                                             </h3>
-                                            <p class="text-sm text-gray-400 mt-1">ยังไม่มีการเพิ่มข้อมูลบัญชีลงในระบบ
-                                            </p>
+                                            <p class="text-sm text-gray-400 mt-1">ยังไม่มีการเพิ่มข้อมูลบัญชีลงในระบบ</p>
                                         </div>
                                     </td>
                                 </tr>

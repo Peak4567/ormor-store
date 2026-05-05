@@ -5,7 +5,9 @@ namespace App\Http\Controllers\Backend;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Backend\Booking;
+use App\Models\Backend\Account;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\DB;
 
 class BookingController extends Controller
 {
@@ -46,6 +48,7 @@ class BookingController extends Controller
 
         return view('backend.booking', compact('bookings'));
     }
+
     public function bulkUpdate(Request $request)
     {
         $request->validate([
@@ -54,11 +57,38 @@ class BookingController extends Controller
         ]);
 
         try {
-            Booking::whereIn('id', $request->ids)->update(['status' => $request->status]);
+            DB::transaction(function () use ($request) {
+                if ($request->status === 'สำเร็จ') {
+                    $bookingsToProcess = Booking::whereIn('id', $request->ids)
+                        ->where('status', '!=', 'สำเร็จ')
+                        ->get();
+
+                    foreach ($bookingsToProcess as $booking) {
+                        Account::create([
+                            'date' => now()->toDateString(),
+                            'description' => "รายรับจากรายการจองรหัส: " . $booking->booking_code . " สินค้า: " . $booking->product_name . " (" . $booking->username . ")",
+                            'category' => 'รายรับ',
+                            'income' => $booking->price,
+                            'expense' => 0.00
+                        ]);
+                    }
+                } else {
+                    $bookingsToRevert = Booking::whereIn('id', $request->ids)
+                        ->where('status', 'สำเร็จ')
+                        ->get();
+
+                    foreach ($bookingsToRevert as $booking) {
+                        $descriptionMatch = "รายรับจากรายการจองรหัส: " . $booking->booking_code . " สินค้า: " . $booking->product_name . " (" . $booking->username . ")";
+                        Account::where('description', $descriptionMatch)->delete();
+                    }
+                }
+
+                Booking::whereIn('id', $request->ids)->update(['status' => $request->status]);
+            });
 
             return response()->json([
                 'success' => true,
-                'message' => 'อัปเดตสถานะเรียบร้อยแล้ว'
+                'message' => 'อัปเดตสถานะและปรับปรุงบัญชีเรียบร้อยแล้ว'
             ]);
         } catch (\Exception $e) {
             return response()->json([
@@ -67,22 +97,44 @@ class BookingController extends Controller
             ], 500);
         }
     }
+
     public function updateStatus(Request $request, $id)
     {
         try {
-            $booking = Booking::findOrFail($id);
+            DB::transaction(function () use ($request, $id) {
+                $booking = Booking::findOrFail($id);
 
-            $booking->status = $request->status;
-            $booking->save();
+                if ($request->status === 'สำเร็จ' && $booking->status !== 'สำเร็จ') {
+                    Account::create([
+                        'date' => now()->toDateString(),
+                        'description' => "รายรับจากรายการจองรหัส: " . $booking->booking_code . " สินค้า: " . $booking->product_name . " (" . $booking->username . ")",
+                        'category' => 'รายรับ',
+                        'income' => $booking->price,
+                        'expense' => 0.00
+                    ]);
+                } elseif ($request->status !== 'สำเร็จ' && $booking->status === 'สำเร็จ') {
+                    $descriptionMatch = "รายรับจากรายการจองรหัส: " . $booking->booking_code . " สินค้า: " . $booking->product_name . " (" . $booking->username . ")";
+                    Account::where('description', $descriptionMatch)->delete();
+                }
 
-            return redirect()->back()->with('success', 'อัปเดตสถานะเรียบร้อยแล้ว');
+                $booking->status = $request->status;
+                $booking->save();
+            });
+
+            return redirect()->back()->with('success', 'อัปเดตสถานะและปรับปรุงบัญชีเรียบร้อยแล้ว');
         } catch (\Exception $e) {
-            return redirect()->back()->with('error', 'เกิดข้อผิดพลาด ไม่สามารถอัปเดตสถานะได้');
+            return redirect()->back()->with('error', 'เกิดข้อผิดพลาด ไม่สามารถอัปเดตสถานะได้: ' . $e->getMessage());
         }
     }
+
     public function destroy($id)
     {
         $booking = Booking::findOrFail($id);
+        
+        if ($booking->status === 'สำเร็จ') {
+            $descriptionMatch = "รายรับจากรายการจองรหัส: " . $booking->booking_code . " สินค้า: " . $booking->product_name . " (" . $booking->username . ")";
+            Account::where('description', $descriptionMatch)->delete();
+        }
 
         $booking->delete();
 

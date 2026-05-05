@@ -320,8 +320,7 @@
                                     <div class="mt-3 bg-red-50 border border-red-200/60 p-2.5 rounded-md">
                                         <p class="text-xs text-red-600 font-bold">
                                             <i class="fa-solid fa-triangle-exclamation"></i>
-                                            หมายเหตุ: เปิดจองรอบ <span>{{ $product->displayTime }}</span> น.
-                                            แอดมินจะดําเนินการภายใน 1-2 ชั่วโมง
+                                           {{ $product->note }}</span>
                                         </p>
                                     </div>
 

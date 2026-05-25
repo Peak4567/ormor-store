@@ -15,9 +15,6 @@
                     <p class="text-slate-500 text-sm">จัดการข้อมูลส่วนตัวและรหัสผ่านของคุณ</p>
                 </div>
             </div>
-            <div class="px-4 py-2 bg-slate-800 text-white rounded-xl text-xs font-bold uppercase tracking-widest">
-                ID: {{ $user->users_code ?? 'U00000' }}
-            </div>
         </div>
 
         <form action="{{ route('profile.update') }}" method="POST">

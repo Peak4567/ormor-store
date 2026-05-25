@@ -36,19 +36,39 @@ class BookingController extends Controller
         $bookings = $query->latest()->paginate(10)->appends($request->all());
 
         $bookings->getCollection()->transform(function ($item) {
-            $date = Carbon::parse($item->booking_date);
-
+            $date = \Carbon\Carbon::parse($item->booking_date);
             $item->thai_date = $date->copy()->addYears(543)->locale('th')->translatedFormat('j M Y');
             $item->day_name = $date->copy()->locale('th')->translatedFormat('(วันl)');
-
             $item->display_time = $item->booking_time ? $item->booking_time . ' น.' : 'ไม่ได้ระบุเวลา';
-
             return $item;
         });
 
-        return view('backend.booking', compact('bookings'));
-    }
+        $months = \Illuminate\Support\Facades\DB::table('bookings')
+            ->where('status', 'สำเร็จ')
+            ->selectRaw("DATE_FORMAT(booking_date, '%Y-%m') as month_key, DATE_FORMAT(booking_date, '%M %Y') as month_name")
+            ->distinct()
+            ->orderBy('month_key', 'desc')
+            ->pluck('month_name', 'month_key')
+            ->toArray();
 
+        $selectedMonth = $request->input('selected_month', now()->format('Y-m'));
+
+        $summaryData = \Illuminate\Support\Facades\DB::table('bookings')
+            ->where('status', 'สำเร็จ')
+            ->whereRaw("DATE_FORMAT(booking_date, '%Y-%m') = ?", [$selectedMonth])
+            ->get()
+            ->groupBy('username')
+            ->map(function ($group) {
+                return [
+                    'username' => $group->first()->username ?? '-',
+                    'count' => $group->count(),
+                    'total_price' => $group->sum('price'),
+                ];
+            })
+            ->values();
+
+        return view('backend.booking', compact('bookings', 'months', 'selectedMonth', 'summaryData'));
+    }
     public function bulkUpdate(Request $request)
     {
         $request->validate([
@@ -130,7 +150,7 @@ class BookingController extends Controller
     public function destroy($id)
     {
         $booking = Booking::findOrFail($id);
-        
+
         if ($booking->status === 'สำเร็จ') {
             $descriptionMatch = "รายรับจากรายการจองรหัส: " . $booking->booking_code . " สินค้า: " . $booking->product_name . " (" . $booking->username . ")";
             Account::where('description', $descriptionMatch)->delete();

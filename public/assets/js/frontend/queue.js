@@ -13,7 +13,7 @@ document.addEventListener("alpine:init", () => {
             get selectedProduct() {
                 if (!this.selectedProductId) return null;
                 return this.products.find(
-                    (p) => p.id == this.selectedProductId,
+                    (p) => String(p.id) === String(this.selectedProductId),
                 );
             },
 
@@ -74,6 +74,7 @@ document.addEventListener("alpine:init", () => {
             init() {
                 this.fpInstance = flatpickr(this.$refs.dateInput, {
                     dateFormat: "Y-m-d",
+                    disableMobile: true, // บังคับปิดปฏิทินมาตรฐานของมือถือ เพื่อให้ตั้งค่า enable ทำงานได้
                     onChange: (selectedDates, dateStr) => {
                         this.bookingDate = dateStr;
                     },
@@ -89,6 +90,11 @@ document.addEventListener("alpine:init", () => {
             },
 
             updateCalendar() {
+                if (!this.fpInstance) return;
+
+                // เคลียร์ค่าทั้งหมดก่อนเสมอ เพื่อป้องกันบัคจำค่าเก่าบนมือถือ
+                this.fpInstance.clear();
+
                 if (!this.selectedProduct) {
                     let allDates = [];
                     let globalMin = null;
@@ -108,8 +114,6 @@ document.addEventListener("alpine:init", () => {
                         }
                     });
 
-                    this.fpInstance.clear();
-
                     if (allDates.length > 0) {
                         let uniqueDates = [...new Set(allDates)];
                         this.fpInstance.set("enable", uniqueDates);
@@ -125,8 +129,7 @@ document.addEventListener("alpine:init", () => {
                     return;
                 }
 
-                this.fpInstance.clear();
-                if (this.selectedProduct.availableDatesArray) {
+                if (this.selectedProduct.availableDatesArray && this.selectedProduct.availableDatesArray.length > 0) {
                     this.fpInstance.set("minDate", null);
                     this.fpInstance.set("maxDate", null);
                     this.fpInstance.set(
@@ -143,6 +146,8 @@ document.addEventListener("alpine:init", () => {
                         "maxDate",
                         this.selectedProduct.available_end || null,
                     );
+                } else {
+                    this.fpInstance.set("enable", []);
                 }
             },
 
@@ -202,7 +207,7 @@ document.addEventListener("alpine:init", () => {
                         body: JSON.stringify({
                             product_code: this.selectedProduct.product_code,
                             product_name: this.selectedProduct.product_name,
-                            price: this.displayPrice, // <--- ตรงนี้ก็จะส่งราคาพิเศษไปให้หลังบ้านเลย
+                            price: this.displayPrice, 
                             booking_date: this.bookingDate,
                             booking_time: this.bookingTime,
                             note: this.note,

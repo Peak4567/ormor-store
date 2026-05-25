@@ -28,21 +28,20 @@
                     @endif
                 </div>
 
-                <div class="flex items-center gap-4">
-                    <span class="font-extrabold text-gray-800 text-sm">ตัวกรอง</span>
-                    <div class="relative">
-                        <select name="status" onchange="this.form.submit()"
-                            class="appearance-none bg-white border border-gray-100 rounded-2xl px-5 py-2.5 pr-12 text-sm text-gray-600 font-medium focus:outline-none focus:ring-2 focus:ring-gray-200 cursor-pointer min-w-[200px]">
-                            <option value="">สถานะทั้งหมด</option>
-                            <option value="รอตรวจสอบ" {{ request('status') == 'รอตรวจสอบ' ? 'selected' : '' }}>รอตรวจสอบ
-                            </option>
-                            <option value="กำลังดำเนินการ" {{ request('status') == 'กำลังดำเนินการ' ? 'selected' : '' }}>
-                                กำลังดำเนินการ</option>
-                            <option value="สำเร็จ" {{ request('status') == 'สำเร็จ' ? 'selected' : '' }}>สำเร็จ</option>
-                            <option value="ยกเลิก" {{ request('status') == 'ยกเลิก' ? 'selected' : '' }}>ยกเลิก</option>
-                        </select>
-                        <i
-                            class="fa-solid fa-chevron-down absolute right-5 top-1/2 -translate-y-1/2 text-gray-300 text-[10px] pointer-events-none"></i>
+                <div class="flex flex-wrap items-center gap-6">
+                    <div class="flex items-center gap-4">
+                        <span class="font-extrabold text-gray-800 text-sm">ตัวกรองสถานะ</span>
+                        <div class="relative">
+                            <select name="status" onchange="this.form.submit()"
+                                class="appearance-none bg-white border border-gray-100 rounded-2xl px-5 py-2.5 pr-12 text-sm text-gray-600 font-medium focus:outline-none focus:ring-2 focus:ring-gray-200 cursor-pointer min-w-[200px]">
+                                <option value="">สถานะทั้งหมด</option>
+                                <option value="รอตรวจสอบ" {{ request('status') == 'รอตรวจสอบ' ? 'selected' : '' }}>รอตรวจสอบ</option>
+                                <option value="กำลังดำเนินการ" {{ request('status') == 'กำลังดำเนินการ' ? 'selected' : '' }}>กำลังดำเนินการ</option>
+                                <option value="สำเร็จ" {{ request('status') == 'สำเร็จ' ? 'selected' : '' }}>สำเร็จ</option>
+                                <option value="ยกเลิก" {{ request('status') == 'ยกเลิก' ? 'selected' : '' }}>ยกเลิก</option>
+                            </select>
+                            <i class="fa-solid fa-chevron-down absolute right-5 top-1/2 -translate-y-1/2 text-gray-300 text-[10px] pointer-events-none"></i>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -50,22 +49,36 @@
 
         <div class="bg-white rounded-md border border-gray-100 p-6 flex flex-col min-h-[500px]">
 
-            <div
-                class="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-4 mb-6 border-b border-gray-100 pb-5">
+            <div class="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-4 mb-6 border-b border-gray-100 pb-5">
                 <div>
                     <h2 class="text-xl font-extrabold text-gray-800">รายการจองสินค้า</h2>
                     <p class="text-[13px] text-gray-400 mt-1 font-medium">จัดการรายการจองสินค้าและสรุปยอดรวม</p>
                 </div>
 
                 <div class="flex flex-wrap items-center gap-3">
-                    <div class="relative" x-show="tab === 'summary'">
+                    <div class="flex gap-2" x-show="tab === 'summary'">
+                        <form id="monthFilterForm" method="GET" action="{{ route('backend.booking') }}" class="flex items-center gap-2">
+                            <input type="hidden" name="search" value="{{ request('search') }}">
+                            <input type="hidden" name="status" value="{{ request('status') }}">
+                            <input type="hidden" name="summary_page" value="1">
+                            
+                            <select name="selected_month" onchange="this.form.submit()"
+                                class="bg-gray-50/80 border border-gray-200 rounded-xl px-4 py-2 text-xs font-bold text-gray-600 focus:outline-none focus:ring-2 focus:ring-green-500 cursor-pointer">
+                                @forelse ($months ?? [] as $key => $name)
+                                    <option value="{{ $key }}" {{ isset($selectedMonth) && $selectedMonth == $key ? 'selected' : '' }}>
+                                        {{ $name }}
+                                    </option>
+                                @empty
+                                    <option value="">ไม่มีข้อมูล</option>
+                                @endforelse
+                            </select>
+                        </form>
+
                         <select x-model="sortOrder"
                             class="appearance-none bg-gray-50/80 border border-gray-200 rounded-xl px-4 py-2 text-xs font-bold text-gray-600 focus:outline-none focus:ring-2 focus:ring-green-500 cursor-pointer pr-10">
                             <option value="desc">เรียงจากมากไปน้อย</option>
                             <option value="asc">เรียงจากน้อยไปมาก</option>
                         </select>
-                        <i
-                            class="fa-solid fa-chevron-down absolute right-4 top-1/2 -translate-y-1/2 text-gray-400 text-[9px] pointer-events-none"></i>
                     </div>
 
                     <div class="flex p-1 bg-gray-50/80 border border-gray-100 rounded-xl">
@@ -101,6 +114,7 @@
                     <i class="fa-solid fa-check-double mr-1"></i> อัปเดตทั้งหมด
                 </button>
             </div>
+
             <div class="overflow-x-auto flex-1" x-show="tab === 'all'" x-cloak>
                 <table class="w-full text-sm text-center whitespace-nowrap">
                     <thead class="text-gray-800 font-extrabold">
@@ -143,9 +157,7 @@
                                         #{{ $booking->product_code }}
                                     </div>
                                 </td>
-                                <td class="py-5 px-4 font-bold align-top pt-6">{{ number_format($booking->price, 2) }} บาท
-                                </td>
-
+                                <td class="py-5 px-4 font-bold align-top pt-6">{{ number_format($booking->price, 2) }} บาท</td>
                                 <td class="py-5 px-4 text-left align-top" x-data="{ expanded: false }">
                                     <div class="text-sm text-gray-500 max-w-[150px] transition-all duration-300"
                                         :class="expanded ? 'whitespace-normal break-words' : 'truncate'">
@@ -158,7 +170,6 @@
                                         </button>
                                     @endif
                                 </td>
-
                                 <td class="py-5 px-4 align-top">
                                     <div class="relative inline-block text-left w-36">
                                         <select onchange="updateBookingStatus({{ $booking->id }}, this.value)"
@@ -170,8 +181,7 @@
                                             <option value="รอตรวจสอบ" class="bg-white text-yellow-600"
                                                 {{ $booking->status == 'รอตรวจสอบ' ? 'selected' : '' }}>รอตรวจสอบ</option>
                                             <option value="กำลังดำเนินการ" class="bg-white text-blue-600"
-                                                {{ $booking->status == 'กำลังดำเนินการ' ? 'selected' : '' }}>กำลังดำเนินการ
-                                            </option>
+                                                {{ $booking->status == 'กำลังดำเนินการ' ? 'selected' : '' }}>กำลังดำเนินการ</option>
                                             <option value="สำเร็จ" class="bg-white text-green-600"
                                                 {{ $booking->status == 'สำเร็จ' ? 'selected' : '' }}>สำเร็จ</option>
                                             <option value="ยกเลิก" class="bg-white text-red-600"
@@ -186,11 +196,9 @@
                                 <td class="py-5 px-4 text-gray-800 font-bold align-top">
                                     {{ $booking->thai_date }}
                                     <div class="flex items-center justify-center gap-1.5">
-                                        <span
-                                            class="text-[#2CB05C] text-[12px] tracking-tighter italic">{{ $booking->booking_time }}</span>
+                                        <span class="text-[#2CB05C] text-[12px] tracking-tighter italic">{{ $booking->booking_time }}</span>
                                     </div>
-                                    <div class="text-[11px] text-gray-400 mt-0.5 font-medium">{{ $booking->day_name }}
-                                    </div>
+                                    <div class="text-[11px] text-gray-400 mt-0.5 font-medium">{{ $booking->day_name }}</div>
                                 </td>
                                 <td class="py-5 px-4 align-top">
                                     <div class="flex items-center justify-center gap-2.5">
@@ -206,8 +214,7 @@
                             <tr>
                                 <td colspan="9" class="py-20 text-center">
                                     <div class="flex flex-col items-center justify-center">
-                                        <div
-                                            class="w-20 h-20 bg-gray-50 rounded-full flex items-center justify-center mb-4">
+                                        <div class="w-20 h-20 bg-gray-50 rounded-full flex items-center justify-center mb-4">
                                             <i class="fa-solid fa-calendar-xmark text-4xl text-gray-200"></i>
                                         </div>
                                         <h3 class="text-lg font-extrabold text-gray-800">ไม่พบรายการจอง</h3>
@@ -231,35 +238,16 @@
                         </tr>
                     </thead>
                     <tbody class="text-gray-600 font-medium">
-                        @php
-                            $successfulBookings = \Illuminate\Support\Facades\DB::table('bookings')
-                                ->where('status', 'สำเร็จ')
-                                ->get();
-
-                            $allGrouped = $successfulBookings
-                                ->groupBy('username')
-                                ->map(function ($group) {
-                                    return [
-                                        'username' => $group->first()->username ?? '-',
-                                        'count' => $group->count(),
-                                        'total_price' => $group->sum('price'),
-                                    ];
-                                })
-                                ->values();
-                        @endphp
-
                         <template
-                            x-for="(data, index) in Object.values({{ json_encode($allGrouped) }}).sort((a, b) => sortOrder === 'desc' ? (b.total_price - a.total_price) : (a.total_price - b.total_price))"
-                            :key="data.username">
+                            x-for="(data, index) in Object.values({{ json_encode($summaryData ?? []) }}).sort((a, b) => sortOrder === 'desc' ? (b.total_price - a.total_price) : (a.total_price - b.total_price))"
+                            :key="index">
                             <tr class="border-b border-gray-50/50 hover:bg-gray-50/50 transition-colors">
                                 <td class="py-4 px-4">
                                     <span class="px-2 py-1 font-extrabold"
                                         :class="{
-                                            'text-yellow-600 bg-yellow-50 border border-yellow-200 rounded-md': index ===
-                                                0,
+                                            'text-yellow-600 bg-yellow-50 border border-yellow-200 rounded-md': index === 0,
                                             'text-gray-600 bg-gray-50 border border-gray-200 rounded-md': index === 1,
-                                            'text-orange-600 bg-orange-50 border border-orange-200 rounded-md': index ===
-                                                2,
+                                            'text-orange-600 bg-orange-50 border border-orange-200 rounded-md': index === 2,
                                             'text-gray-500': index > 2
                                         }">
                                         <span x-text="'#' + (index + 1)"></span>
@@ -279,11 +267,11 @@
                             </tr>
                         </template>
 
-                        <template x-if="Object.values({{ json_encode($allGrouped) }}).length === 0">
+                        <template x-if="(summaryData ?? []).length === 0">
                             <tr>
                                 <td colspan="4" class="py-20 text-center text-gray-400">
                                     <i class="fa-solid fa-ranking-star text-4xl text-gray-200 mb-2"></i><br>
-                                    ไม่พบข้อมูลการสรุปยอด
+                                    ไม่พบข้อมูลการสรุปยอดสำหรับเดือนที่เลือก
                                 </td>
                             </tr>
                         </template>
@@ -294,13 +282,14 @@
             <div class="mt-12 flex justify-between items-center bg-white p-5 rounded-md border border-gray-100"
                 x-show="tab === 'all'" x-cloak>
                 <div class="text-[14px] text-[#2CB05C] font-extrabold">
-                    แสดง {{ $bookings->firstItem() ?? 0 }}-{{ $bookings->lastItem() ?? 0 }} จาก {{ $bookings->total() }}
+                    แสดง {{ $bookings->firstItem() ?? 0 }}-{{ $bookings->lastItem() ?? 0 }} จาก {{ $bookings->total() ?? 0 }}
                     รายการ
                 </div>
                 <div class="custom-pagination">
                     {{ $bookings->appends(request()->query())->links('pagination::tailwind') }}
                 </div>
             </div>
+
         </div>
     </div>
 

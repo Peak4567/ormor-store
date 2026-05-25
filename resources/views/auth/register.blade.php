@@ -22,7 +22,8 @@
                         {{-- ชื่อผู้ใช้งาน --}}
                         <div class="relative group">
                             <div class="absolute inset-y-0 left-0 px-4.5 flex items-center pointer-events-none">
-                                <i class="fa-duotone fa-solid fa-user text-[#57C84D]/50 group-focus-within:text-[#57C84D] transition-colors"></i>
+                                <i
+                                    class="fa-duotone fa-solid fa-user text-[#57C84D]/50 group-focus-within:text-[#57C84D] transition-colors"></i>
                             </div>
                             <input type="text" name="name" value="{{ old('name') }}"
                                 class="w-full pl-11 pr-4 py-4 bg-slate-50 border-2 border-transparent rounded-2xl text-sm focus:bg-white focus:border-[#57C84D]/30 focus:ring-0 transition-all outline-none placeholder:text-slate-400 @error('name') border-red-500 @enderror"
@@ -35,7 +36,8 @@
                         {{-- อีเมล --}}
                         <div class="relative group">
                             <div class="absolute inset-y-0 left-0 px-4.5 flex items-center pointer-events-none">
-                                <i class="fa-duotone fa-solid fa-envelope text-[#57C84D]/50 group-focus-within:text-[#57C84D] transition-colors"></i>
+                                <i
+                                    class="fa-duotone fa-solid fa-envelope text-[#57C84D]/50 group-focus-within:text-[#57C84D] transition-colors"></i>
                             </div>
                             <input type="email" name="email" value="{{ old('email') }}"
                                 class="w-full pl-11 pr-4 py-4 bg-slate-50 border-2 border-transparent rounded-2xl text-sm focus:bg-white focus:border-[#57C84D]/30 focus:ring-0 transition-all outline-none placeholder:text-slate-400 @error('email') border-red-500 @enderror"
@@ -48,7 +50,8 @@
                         {{-- เบอร์โทรศัพท์ (เพิ่มใหม่) --}}
                         <div class="relative group">
                             <div class="absolute inset-y-0 left-0 px-4.5 flex items-center pointer-events-none">
-                                <i class="fa-duotone fa-solid fa-phone text-[#57C84D]/50 group-focus-within:text-[#57C84D] transition-colors"></i>
+                                <i
+                                    class="fa-duotone fa-solid fa-phone text-[#57C84D]/50 group-focus-within:text-[#57C84D] transition-colors"></i>
                             </div>
                             <input type="tel" name="phone" value="{{ old('phone') }}"
                                 class="w-full pl-11 pr-4 py-4 bg-slate-50 border-2 border-transparent rounded-2xl text-sm focus:bg-white focus:border-[#57C84D]/30 focus:ring-0 transition-all outline-none placeholder:text-slate-400 @error('phone') border-red-500 @enderror"
@@ -61,7 +64,8 @@
                         {{-- รหัสผ่าน --}}
                         <div class="relative group" x-data="{ showTip: false }">
                             <div class="absolute inset-y-0 left-0 px-4.5 flex items-center pointer-events-none">
-                                <i class="fa-duotone fa-solid fa-lock text-[#57C84D]/50 group-focus-within:text-[#57C84D] transition-colors"></i>
+                                <i
+                                    class="fa-duotone fa-solid fa-lock text-[#57C84D]/50 group-focus-within:text-[#57C84D] transition-colors"></i>
                             </div>
                             <input type="password" name="password" @focus="showTip = true" @blur="showTip = false"
                                 class="w-full pl-11 pr-4 py-4 bg-slate-50 border-2 border-transparent rounded-2xl text-sm focus:bg-white focus:border-[#57C84D]/30 focus:ring-0 transition-all outline-none placeholder:text-slate-400 @error('password') border-red-500 @enderror"
@@ -74,7 +78,8 @@
                         {{-- ยืนยันรหัสผ่าน --}}
                         <div class="relative group">
                             <div class="absolute inset-y-0 left-0 px-4.5 flex items-center pointer-events-none">
-                                <i class="fa-duotone fa-solid fa-lock text-[#57C84D]/50 group-focus-within:text-[#57C84D] transition-colors"></i>
+                                <i
+                                    class="fa-duotone fa-solid fa-lock text-[#57C84D]/50 group-focus-within:text-[#57C84D] transition-colors"></i>
                             </div>
                             <input type="password" name="password_confirmation"
                                 class="w-full pl-11 pr-4 py-4 bg-slate-50 border-2 border-transparent rounded-2xl text-sm focus:bg-white focus:border-[#57C84D]/30 focus:ring-0 transition-all outline-none placeholder:text-slate-400"
@@ -86,15 +91,16 @@
                             <span>สมัครสมาชิกเลย</span>
                             <i class="fa-solid fa-arrow-right-long text-sm"></i>
                         </button>
-                        <a href="#"
-                            class="w-full py-4 bg-[#3e5765] hover:bg-[#3162be] text-white text-lg font-semibold rounded-2xl transition-all duration-300 shadow-lg shadow-[#3E6553]/20 flex items-center justify-center gap-3 active:scale-[0.98]">
-                            <span>สมัครตัวแทน</span>
+                        <a href="https://docs.google.com/forms/d/e/1FAIpQLSfxBbn6FAZ5R7UOKaDOzbLNk7WiNa5VzIU193jnmAuQjMVuBw/viewform"
+                            class="w-full py-3 bg-[#3e5765] hover:bg-[#3162be] text-white rounded-2xl transition-all duration-300 shadow-lg shadow-[#3E6553]/20 flex flex-col items-center justify-center active:scale-[0.98]">
+                            <span class="text-lg font-semibold">สมัครตัวแทน</span>
+                            <span class="text-[12px] text-white/70 font-normal mt-0.5">สมัครสมาชิกเพื่อรับรหัสตัวแทน</span>
                         </a>
                     </form>
 
                     <p class="mt-8 text-center text-sm text-slate-400">
                         มีบัญชีแล้วใช่ไหม? <a href="{{ route('login.page') }}"
-                            class="font-bold text-[#57C84D] hover:underline">เข้าสู่ระบบ</a>
+                            class="font-bold text-[#e5fae3] hover:underline">เข้าสู่ระบบ</a>
                     </p>
                 </div>
             </div>
@@ -125,8 +131,8 @@
                     <div>
                         <p class="font-semibold text-[#2a1e24] text-lg"><span class="text-[#b12576]">ตัวแทน</span><span>-
                                 สมัครสมาชิกโดยใช้ (ชื่อผู้ใช้งาน )ในกลุ่มโอเพนแชทที่คุณตั้งไว้ได้เลย</span> <br><br>
-                            <span class="text-[#25b14f]">ลูกค้าทั่วไป</span> - สมัครสมาชิกได้ตามปกติ และถ้าสนใจเป็นตัวแทน
-                            กรุณากดเข้ากลุ่มไลน์(เมนู)เพื่อรับรหัสตัวแทน และใช้ราคาพิเศษที่ถูกลงกว่าเดิม
+                            <span class="text-[#25b14f]">ลูกค้าทั่วไป</span> - สมัครสมาชิกได้ตามปกติ และถ้าสนใจเป็นตัวแทน กรุณากดปุ่ม "สมัครตัวแทน" เพื่อรับรหัสตัวแทน และใช้ราคาพิเศษที่ถูกลงกว่าเดิม
+
                         </p>
                     </div>
                 </div>

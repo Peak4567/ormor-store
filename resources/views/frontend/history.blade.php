@@ -218,7 +218,7 @@
                                 </div>
                                 <div class="w-full sm:w-auto flex flex-col sm:flex-row items-center gap-2 mt-3 sm:mt-0">
 
-                                    <a :href="'{{ $web_cfg->line ?? '#' }}'" target="_blank"
+                                    <a href="https://line.me/R/ti/p/@831sccwr?ts=05051221&oat_content=url"
                                         class="w-full sm:w-auto px-6 py-2.5 rounded-xl bg-[#00B900] text-white text-sm font-semibold hover:bg-[#009900] transition-all duration-300 flex items-center justify-center shadow-sm shadow-green-500/20 active:scale-95">
                                         <i class="fa-brands fa-line text-lg mr-2"></i> ติดต่อแอดมิน
                                     </a>

@@ -111,35 +111,26 @@
                                                         $user->save();
                                                     }
 
-                                                    $originalCode = $user->users_code;
-
-                                                    preg_match('/\d+/', $originalCode, $matches);
-                                                    $numericPart = isset($matches[0]) ? $matches[0] : '0';
-
-                                                    $hashString = strtoupper(
-                                                        substr(md5($numericPart . '-hash-key'), 0, 6),
-                                                    );
-
-                                                    $userCode = 'U-' . $hashString;
+                                                    $userCode = $user->users_code;
                                                 @endphp
                                                 {{ $userCode }}
                                             </span>
 
-                                            <buttonw
+                                            <button
                                                 onclick="navigator.clipboard.writeText('{{ $userCode }}'); 
-                    Swal.fire({
-                        toast: true,
-                        position: 'top-end',
-                        icon: 'success',
-                        title: 'คัดลอกรหัส {{ $userCode }} แล้ว',
-                        showConfirmButton: false,
-                        timer: 1500,
-                        customClass: { popup: 'font-[Prompt] rounded-xl' }
-                    });"
+            Swal.fire({
+                toast: true,
+                position: 'top-end',
+                icon: 'success',
+                title: 'คัดลอกรหัส {{ $userCode }} แล้ว',
+                showConfirmButton: false,
+                timer: 1500,
+                customClass: { popup: 'font-[Prompt] rounded-xl' }
+            });"
                                                 class="text-[10px] font-bold text-[#2CB05C] bg-[#2CB05C]/10 px-2 py-0.5 rounded-md border border-[#2CB05C]/20 hover:bg-[#2CB05C] hover:text-white transition-all duration-300"
                                                 title="คัดลอกรหัสผู้ใช้">
                                                 <i class="fa-regular fa-copy mr-1"></i> คัดลอก ID
-                                            </buttonw>
+                                            </button>
                                         </div>
                                     @endif
                                 </div>
@@ -152,7 +143,6 @@
                                     <hr class="my-1 border-white/5">
                                 @endif
 
-                                {{-- เพิ่มเมนู ตั้งค่าโปรไฟล์ (Desktop) --}}
                                 <a href="{{ route('profile.edit') }}"
                                     class="text-white/80 hover:text-white hover:bg-white/10 px-4 py-2 rounded-2xl text-sm font-medium flex items-center gap-3 transition-all duration-200">
                                     <i class="fa-duotone fa-solid fa-user-gear text-[#57C84D]"></i>
@@ -207,7 +197,7 @@
                         <a href="{{ route('backend.home') }}"
                             class="text-[#57C84D] text-lg font-medium flex items-center gap-3 border-b border-white/10 pb-3">จัดการหลังบ้าน</a>
                     @endif
-                    
+
                     <a href="{{ route('profile.edit') }}"
                         class="text-white text-lg font-medium flex items-center gap-3 border-b border-white/10 pb-3">ตั้งค่าโปรไฟล์</a>
 

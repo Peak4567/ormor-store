@@ -19,6 +19,11 @@
     {{-- Sweet Alert 2 --}}
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
+    {{-- Alpine --}}
+    <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+
+
+
     <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -36,7 +41,9 @@
         @yield('content')
         @include('backend.components.footer')
     </main>
-    
+    {{-- Chart --}}
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="{{asset('assets/js/backend/graph.js')}}"></script>
 </body>
 
 </html>

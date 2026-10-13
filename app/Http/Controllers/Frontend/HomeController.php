@@ -4,8 +4,11 @@ namespace App\Http\Controllers\Frontend;
 
 use App\Http\Controllers\Controller;
 use App\Models\Backend\Product;
+use App\Models\Backend\Booking;
+use App\Models\Backend\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Carbon\Carbon;
 
 class HomeController extends Controller
 {
@@ -24,7 +27,7 @@ class HomeController extends Controller
         $currentTime = $now->format('H:i:s');
         $thaiMonths = ['', 'ม.ค.', 'ก.พ.', 'มี.ค.', 'เม.ย.', 'พ.ค.', 'มิ.ย.', 'ก.ค.', 'ส.ค.', 'ก.ย.', 'ต.ค.', 'พ.ย.', 'ธ.ค.'];
 
-        $products->map(function ($product) use ($todayDate, $currentTime, $thaiMonths) {
+        $products->transform(function ($product) use ($todayDate, $currentTime, $thaiMonths) {
 
             $product->isOpenToday = $product->saleDates ? $product->saleDates->contains('date', $todayDate) : false;
             $product->isOpenTime = false;
@@ -75,15 +78,15 @@ class HomeController extends Controller
 
             $firstDate = $product->saleDates ? $product->saleDates->first() : null;
             if ($firstDate) {
-                $parsedDate = \Carbon\Carbon::parse($firstDate->date);
+                $parsedDate = Carbon::parse($firstDate->date);
                 $product->displayDate = $parsedDate->day . ' ' . $thaiMonths[$parsedDate->month] . ' ' . (($parsedDate->year + 543) % 100);
             } else {
                 $product->displayDate = 'ยังไม่กำหนด';
             }
 
             if ($targetSlot) {
-                $startTime = \Carbon\Carbon::parse($targetSlot->start_time)->format('H.i');
-                $endTime = \Carbon\Carbon::parse($targetSlot->end_time)->format('H.i');
+                $startTime = Carbon::parse($targetSlot->start_time)->format('H.i');
+                $endTime = Carbon::parse($targetSlot->end_time)->format('H.i');
                 $product->displayTime = $startTime . ' - ' . $endTime;
             } else {
                 $product->displayTime = '-';
@@ -92,6 +95,13 @@ class HomeController extends Controller
             return $product;
         });
 
-        return view('frontend.home', compact('products'));
+        $stats = [
+            'totalSuccessBookings' => Booking::where('status', 'สำเร็จ')->count(),
+            'currentQueue'         => Booking::whereIn('status', ['รอตรวจสอบ', 'กำลังดำเนินการ'])->count(),
+            'totalStock'           => Product::sum('stock'),
+            'totalUsers'           => User::count(),
+        ];
+
+        return view('frontend.home', array_merge(['products' => $products], $stats));
     }
 }

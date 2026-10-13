@@ -76,7 +76,21 @@ class QueueController extends Controller
             }
             $product->tabCondition = $tabCondition;
 
-            $product->displayPrice = (Auth::check() && Auth::user()->level === 'agent') ? $product->agent_price : $product->main_price;
+            $currentUsername = Auth::check() ? strtolower(trim(Auth::user()->name ?? '')) : '';
+            $isSpecialDiscount = false;
+
+            if ($currentUsername !== '' && !empty($product->discount_users) && $product->discount_amount > 0) {
+                $allowedUsers = array_map('strtolower', array_map('trim', explode(',', $product->discount_users)));
+                if (in_array($currentUsername, $allowedUsers)) {
+                    $isSpecialDiscount = true;
+                }
+            }
+
+            if ($isSpecialDiscount) {
+                $product->displayPrice = $product->discount_amount;
+            } else {
+                $product->displayPrice = (Auth::check() && Auth::user()->level === 'agent') ? $product->agent_price : $product->main_price;
+            }
 
             $firstDate = $product->saleDates ? $product->saleDates->first() : null;
             if ($firstDate) {
@@ -111,7 +125,6 @@ class QueueController extends Controller
         ]);
 
         try {
-            // 1. ค้นหาสินค้าจาก product_code เพื่อเช็คสต็อกก่อน
             $product = Product::where('product_code', $request->product_code)->first();
 
             if (!$product) {
@@ -121,7 +134,6 @@ class QueueController extends Controller
                 ], 404);
             }
 
-            // 2. ตรวจสอบว่าสินค้ามีสต็อกเหลือพอไหม
             if ($product->stock <= 0) {
                 return response()->json([
                     'status' => 'error',
@@ -132,7 +144,18 @@ class QueueController extends Controller
             return DB::transaction(function () use ($request, $product) {
 
                 $booking = new Booking();
-                $booking->booking_code = 'BKG-' . date('Ymd') . '-' . rand(1000, 9999);
+                
+                $prefix = 'M-';
+                if (Auth::check()) {
+                    if (Auth::user()->level === 'agent') {
+                        $prefix = 'A-';
+                    } elseif (Auth::user()->level === 'admin') {
+                        $prefix = 'ADM-';
+                    }
+                }
+
+                $booking->booking_code = $prefix . date('Ymd') . '-' . rand(1000, 9999);
+                
                 $booking->product_code = $request->product_code;
                 $booking->product_name = $request->product_name;
 

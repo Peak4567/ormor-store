@@ -96,6 +96,43 @@
                                     <p class="text-white/50 text-xs font-medium">บัญชีผู้ใช้ ({{ auth()->user()->level }})
                                     </p>
                                     <p class="text-white font-semibold truncate">{{ auth()->user()->name }}</p>
+                                    <p class="text-white/50 text-xs font-medium">{{ auth()->user()->email }}</p>
+                                    </p>
+                                    @if (auth()->user()->level === 'agent')
+                                        <div class="mt-2 flex items-center justify-between">
+                                            <span class="text-[10px] text-white/40 font-mono select-all">
+                                                ID:
+                                                @php
+                                                    $user = auth()->user();
+
+                                                    if (empty($user->users_code)) {
+                                                        $user->users_code =
+                                                            'U' . str_pad(rand(1, 99999), 5, '0', STR_PAD_LEFT);
+                                                        $user->save();
+                                                    }
+
+                                                    $userCode = $user->users_code;
+                                                @endphp
+                                                {{ $userCode }}
+                                            </span>
+
+                                            <button
+                                                onclick="navigator.clipboard.writeText('{{ $userCode }}'); 
+            Swal.fire({
+                toast: true,
+                position: 'top-end',
+                icon: 'success',
+                title: 'คัดลอกรหัส {{ $userCode }} แล้ว',
+                showConfirmButton: false,
+                timer: 1500,
+                customClass: { popup: 'font-[Prompt] rounded-xl' }
+            });"
+                                                class="text-[10px] font-bold text-[#2CB05C] bg-[#2CB05C]/10 px-2 py-0.5 rounded-md border border-[#2CB05C]/20 hover:bg-[#2CB05C] hover:text-white transition-all duration-300"
+                                                title="คัดลอกรหัสผู้ใช้">
+                                                <i class="fa-regular fa-copy mr-1"></i> คัดลอก ID
+                                            </button>
+                                        </div>
+                                    @endif
                                 </div>
 
                                 @if (auth()->user()->level === 'admin')
@@ -105,6 +142,12 @@
                                     </a>
                                     <hr class="my-1 border-white/5">
                                 @endif
+
+                                <a href="{{ route('profile.edit') }}"
+                                    class="text-white/80 hover:text-white hover:bg-white/10 px-4 py-2 rounded-2xl text-sm font-medium flex items-center gap-3 transition-all duration-200">
+                                    <i class="fa-duotone fa-solid fa-user-gear text-[#57C84D]"></i>
+                                    ตั้งค่าโปรไฟล์
+                                </a>
 
                                 <a href="{{ route('frontend.history') }}"
                                     class="text-white/80 hover:text-white hover:bg-white/10 px-4 py-2 rounded-2xl text-sm font-medium flex items-center gap-3 transition-all duration-200">
@@ -154,6 +197,10 @@
                         <a href="{{ route('backend.home') }}"
                             class="text-[#57C84D] text-lg font-medium flex items-center gap-3 border-b border-white/10 pb-3">จัดการหลังบ้าน</a>
                     @endif
+
+                    <a href="{{ route('profile.edit') }}"
+                        class="text-white text-lg font-medium flex items-center gap-3 border-b border-white/10 pb-3">ตั้งค่าโปรไฟล์</a>
+
                     <a href="{{ route('frontend.history') }}"
                         class="text-white text-lg font-medium flex items-center gap-3 border-b border-white/10 pb-3">ประวัติการสั่งซื้อ</a>
                 @endauth

@@ -59,6 +59,11 @@
                             <span>เข้าสู่ระบบ</span>
                             <i class="fa-solid fa-right-to-bracket text-sm"></i>
                         </button>
+                         <a href="https://docs.google.com/forms/d/e/1FAIpQLSfxBbn6FAZ5R7UOKaDOzbLNk7WiNa5VzIU193jnmAuQjMVuBw/viewform"
+                            class="w-full py-3 bg-[#3e5765] hover:bg-[#3162be] text-white rounded-2xl transition-all duration-300 shadow-lg shadow-[#3E6553]/20 flex flex-col items-center justify-center active:scale-[0.98]">
+                            <span class="text-lg font-semibold">สมัครตัวแทน</span>
+                            <span class="text-[12px] text-white/70 font-normal mt-0.5">สมัครสมาชิกเพื่อรับรหัสตัวแทน</span>
+                        </a>
                     </form>
 
                     <p class="mt-8 text-center text-sm text-slate-400">
@@ -87,12 +92,14 @@
 
                     <h3
                         class="bg-gradient-to-tr from-[#2F8F3A] via-[#57C84D] to-[#7ED957] bg-clip-text text-transparent text-2xl md:text-3xl font-bold leading-tight italic mb-6">
-                        "ระบบจัดการที่ช่วยให้การจองเหรียญของคุณเป็นเรื่องง่าย และรวดเร็วที่สุด"
+                        "ระบบจัดการที่ช่วยให้การจองเหรียญไลน์ของคุณเป็นเรื่องง่าย และรวดเร็วที่สุด"
                     </h3>
 
                     <div>
-                        <p class="font-semibold text-[#1E2A1E] text-lg">จิราวุฒิ - Ormor Topup Coins</p>
-                        <p class="text-sm text-[#57C84D] font-bold uppercase tracking-wider">Founder</p>
+                        <p class="font-semibold text-[#2a1e24] text-lg"><span class="text-[#b12576]">ตัวแทน</span><span>-
+                                สมัครสมาชิกโดยใช้ (ชื่อผู้ใช้งาน )ในกลุ่มโอเพนแชทที่คุณตั้งไว้ได้เลย</span> <br><br>
+                            <span class="text-[#25b14f]">ลูกค้าทั่วไป</span> - สมัครสมาชิกได้ตามปกติ และถ้าสนใจเป็นตัวแทน กรุณากดปุ่ม "สมัครตัวแทน" เพื่อรับรหัสตัวแทน และใช้ราคาพิเศษที่ถูกลงกว่าเดิม
+                        </p>
                     </div>
                 </div>
             </div>

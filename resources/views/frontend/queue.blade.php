@@ -4,34 +4,71 @@
 
 @section('content')
 
-    <section class="max-w-screen-lg mx-auto mt-32 py-12 px-4 space-y-10">
+    <section class="max-w-screen-lg mx-auto py-12 px-4 space-y-10">
+
+        <style>
+            @keyframes scroll-left {
+                0% {
+                    transform: translateX(0);
+                }
+
+                100% {
+                    transform: translateX(-100%);
+                }
+            }
+
+            .animate-marquee {
+                display: inline-block;
+                white-space: nowrap;
+                padding-left: 100%;
+                animation: scroll-left 20s linear infinite;
+            }
+
+            .marquee-wrapper:hover .animate-marquee {
+                animation-play-state: paused;
+            }
+        </style>
+
         <div
-            class="group relative flex items-center justify-between p-5 rounded-2xl bg-white border border-rose-100 shadow-[0_8px_30px_rgb(0,0,0,0.02)] transition-all duration-500 hover:shadow-[0_20px_40px_rgb(225,29,72,0.05)]">
+            class="group relative p-5 rounded-2xl bg-white border border-rose-100 shadow-[0_8px_30px_rgb(0,0,0,0.02)] transition-all duration-500 hover:shadow-[0_20px_40px_rgb(225,29,72,0.05)] mt-30">
+
             <div class="absolute left-0 top-4 bottom-4 w-[3px] bg-rose-400 rounded-r-full opacity-80"></div>
-            <div class="flex items-center gap-4">
-                <div class="flex-shrink-0">
-                    <div class="bg-red-50 text-red-500 p-2.5 rounded-xl">
-                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none"
-                            xmlns="http://www.w3.org/2000/svg">
-                            <path
-                                d="M4 13.9999L5.57465 20.2985C5.61893 20.4756 5.64107 20.5642 5.66727 20.6415C5.92317 21.397 6.60352 21.9282 7.39852 21.9933C7.4799 21.9999 7.5712 21.9999 7.75379 21.9999C7.98244 21.9999 8.09677 21.9999 8.19308 21.9906C9.145 21.8982 9.89834 21.1449 9.99066 20.193C10 20.0967 10 19.9823 10 19.7537V5.49991M18.5 13.4999C20.433 13.4999 22 11.9329 22 9.99991C22 8.06691 20.433 6.49991 18.5 6.49991M10.25 5.49991H6.5C4.01472 5.49991 2 7.51463 2 9.99991C2 12.4852 4.01472 14.4999 6.5 14.4999H10.25C12.0164 14.4999 14.1772 15.4468 15.8443 16.3556C16.8168 16.8857 17.3031 17.1508 17.6216 17.1118C17.9169 17.0756 18.1402 16.943 18.3133 16.701C18.5 16.4401 18.5 15.9179 18.5 14.8736V5.1262C18.5 4.08191 18.5 3.55976 18.3133 3.2988C18.1402 3.05681 17.9169 2.92421 17.6216 2.88804C17.3031 2.84903 16.8168 3.11411 15.8443 3.64427C14.1772 4.55302 12.0164 5.49991 10.25 5.49991Z"
-                                stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
-                        </svg>
+
+            <div class="flex items-center justify-between gap-4">
+
+                <div class="flex items-center gap-4 flex-1 overflow-hidden">
+                    <div class="flex-shrink-0">
+                        <div class="bg-red-50 text-red-500 p-2.5 rounded-xl z-10 relative">
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none"
+                                xmlns="http://www.w3.org/2000/svg">
+                                <path
+                                    d="M4 13.9999L5.57465 20.2985C5.61893 20.4756 5.64107 20.5642 5.66727 20.6415C5.92317 21.397 6.60352 21.9282 7.39852 21.9933C7.4799 21.9999 7.5712 21.9999 7.75379 21.9999C7.98244 21.9999 8.09677 21.9999 8.19308 21.9906C9.145 21.8982 9.89834 21.1449 9.99066 20.193C10 20.0967 10 19.9823 10 19.7537V5.49991M18.5 13.4999C20.433 13.4999 22 11.9329 22 9.99991C22 8.06691 20.433 6.49991 18.5 6.49991M10.25 5.49991H6.5C4.01472 5.49991 2 7.51463 2 9.99991C2 12.4852 4.01472 14.4999 6.5 14.4999H10.25C12.0164 14.4999 14.1772 15.4468 15.8443 16.3556C16.8168 16.8857 17.3031 17.1508 17.6216 17.1118C17.9169 17.0756 18.1402 16.943 18.3133 16.701C18.5 16.4401 18.5 15.9179 18.5 14.8736V5.1262C18.5 4.08191 18.5 3.55976 18.3133 3.2988C18.1402 3.05681 17.9169 2.92421 17.6216 2.88804C17.3031 2.84903 16.8168 3.11411 15.8443 3.64427C14.1772 4.55302 12.0164 5.49991 10.25 5.49991Z"
+                                    stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+                            </svg>
+                        </div>
                     </div>
+
+                    @if (!empty($web_cfg->warning_text))
+                        <div class="flex items-center flex-1 overflow-hidden marquee-wrapper">
+                            <span class="text-red-500 font-bold text-base whitespace-nowrap z-10 bg-white pr-2">คำเตือน
+                                :</span>
+
+                            <div class="flex-1 overflow-hidden relative">
+                                <p class="text-slate-600 font-medium text-base animate-marquee">
+                                    {{ $web_cfg->warning_text }}
+                                </p>
+                            </div>
+                        </div>
+                    @endif
                 </div>
-                <div class="flex flex-col sm:flex-row sm:items-center gap-1 sm:gap-2">
-                    <span class="text-red-500 font-medium text-base">คำเตือน</span>
-                    <p class="text-slate-600 font-medium text-base sm:text-base">
-                        หากกดจองแล้วไม่รับสินค้า <span class="decoration-2 underline decoration-red-400">มีค่าปรับ 10
-                            เท่า</span>
-                    </p>
+
+                <div class="hidden md:block pr-2 flex-shrink-0 z-10 bg-white pl-2">
+                    <svg class="w-4 h-4 text-slate-300 group-hover:text-rose-400 group-hover:translate-x-1 transition-all"
+                        fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7" />
+                    </svg>
                 </div>
-            </div>
-            <div class="hidden md:block pr-2">
-                <svg class="w-4 h-4 text-slate-300 group-hover:text-rose-400 group-hover:translate-x-1 transition-all"
-                    fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                    <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7" />
-                </svg>
+
             </div>
         </div>
     </section>
@@ -45,10 +82,32 @@
         note: '',
         bookingDate: '2026-04-04',
         bookingTime: '',
-        allPackages: {{ $products->map(fn($p) => ['id' => $p->id, 'name' => $p->product_name, 'price' => $p->displayPrice])->toJson() }},
+        allPackages: {{ $products->map(function ($p) {
+                $currentUsername = auth()->check() ? strtolower(trim(auth()->user()->name ?? '')) : '';
+                $users = array_map('trim', explode(',', $p->discount_users ?? ''));
+                $users = array_map('strtolower', $users);
+        
+                if ($currentUsername !== '' && in_array($currentUsername, $users) && $p->discount_amount > 0) {
+                    $price = $p->discount_amount;
+                } else {
+                    $price = $p->displayPrice ?? $p->main_price;
+                }
+        
+                return [
+                    'id' => $p->id,
+                    'name' => $p->product_name,
+                    'price' => $price,
+                    'main_price' => $p->main_price,
+                ];
+            })->toJson() }},
     
         get selectedPackageData() {
             return this.allPackages.find(p => String(p.id) === String(this.selectedPackageId)) || null;
+        },
+    
+        get displayPrice() {
+            if (!this.selectedPackageData) return null;
+            return parseFloat(this.selectedPackageData.price);
         },
     
         formatThaiDate(dateStr) {
@@ -59,10 +118,20 @@
             return `วัน${days[date.getDay()]}ที่ ${date.getDate()} ${months[date.getMonth()]} พ.ศ. ${date.getFullYear() + 543}`;
         },
     
+        formatTime(timeStr) {
+            if (!timeStr) return '';
+            return timeStr.substring(0, 5);
+        },
+    
+        get selectedProduct() {
+            if (!this.selectedPackageId) return null;
+            return this.allPackages.find(p => String(p.id) === String(this.selectedPackageId));
+        },
+    
         confirmBooking() {
             if (!this.selectedPackageId) return alert('กรุณาเลือกแพ็กเกจที่ต้องการจองครับ');
             if (!this.bookingTime) return alert('กรุณาเลือกเวลาที่สะดวกด้วยครับ');
-            alert('กำลังดำเนินการจอง... แพ็กเกจ: ' + this.selectedPackageData.name);
+            alert('กำลังดำเนินการจอง... แพ็กเกจ: ' + this.selectedPackageData.name + ' ราคา: ' + this.displayPrice + ' บาท');
             // โค้ดส่งข้อมูลหรือ Submit ฟอร์ม...
         }
     }" x-init="setTimeout(() => show = true, 50)" x-cloak>
@@ -147,13 +216,54 @@
                             @endif
                         </div>
 
+                        @php
+                            $currentUsername = auth()->check() ? strtolower(trim(auth()->user()->name ?? '')) : '';
+
+                            $userList = array_map(
+                                'strtolower',
+                                array_map('trim', explode(',', $product->discount_users ?? '')),
+                            );
+
+                            $hasSpecialDiscount =
+                                $currentUsername !== '' &&
+                                in_array($currentUsername, $userList) &&
+                                $product->discount_amount > 0;
+
+                            $displayPrice = $product->displayPrice ?? $product->main_price;
+                            $hasAgentDiscount = !$hasSpecialDiscount && $displayPrice < $product->main_price;
+
+                            if ($hasSpecialDiscount) {
+                                $finalPrice = $product->discount_amount;
+                                $showOriginal = true;
+                                $badgeColor = 'bg-red-500';
+                                $badgeText = 'ราคาพิเศษส่วนตัว';
+                            } elseif ($hasAgentDiscount) {
+                                $finalPrice = $displayPrice;
+                                $showOriginal = true;
+                                $badgeColor = 'bg-blue-500';
+                                $badgeText = 'ราคาตัวแทน';
+                            } else {
+                                $finalPrice = $product->main_price;
+                                $showOriginal = false;
+                            }
+                        @endphp
+
                         <div :class="view === 'list' ? 'lg:flex lg:items-center lg:gap-10 lg:flex-1' : ''">
                             <div :class="view === 'list' ? 'lg:mb-0 lg:min-w-[200px]' : 'mb-6'" class="mb-6 pr-32">
-                                <p class="text-sm font-medium text-[#57C84D]">แพ็กเเกจลำดับที่ {{ $loop->iteration }}</p>
+                                <p class="text-sm font-medium text-[#57C84D]">แพ็กเกจลำดับที่ {{ $loop->iteration }}</p>
                                 <div class="text-xl font-medium inline-block mt-1">
-                                    <h3 class="text-[#1E2A1E]">
-                                        <i class="fa-duotone fa-solid fa-coin-front text-amber-500"></i>
-                                        {{ $product->product_name }}
+                                    <h3 class="text-[#1E2A1E] flex items-center flex-wrap gap-2">
+                                        <span>
+                                            <i class="fa-duotone fa-solid fa-coin-front text-amber-500"></i>
+                                            {{ $product->product_name }}
+                                        </span>
+                                        @if ($hasSpecialDiscount)
+                                            <span
+                                                class="text-[10px] font-bold text-white bg-red-500 px-2 py-0.5 rounded-md relative -top-0.5">ราคาพิเศษส่วนตัว</span>
+                                        @elseif($hasAgentDiscount)
+                                            <span
+                                                class="text-[10px] font-bold text-white bg-blue-500 px-2 py-0.5 rounded-md relative -top-0.5">ราคาตัวแทน</span>
+                                        @endif
                                     </h3>
                                 </div>
                             </div>
@@ -164,8 +274,13 @@
                                 class="mb-8">
                                 <div class="flex items-baseline gap-1.5">
                                     <span
-                                        class="text-3xl font-semibold text-[#57C84D]">{{ number_format($product->displayPrice, 0) }}</span>
+                                        class="text-3xl font-semibold text-[#57C84D]">{{ number_format($finalPrice, 0) }}</span>
                                     <span class="text-sm text-[#4B5B4B]">บาท</span>
+
+                                    @if ($showOriginal)
+                                        <span class="text-xs text-slate-400 line-through ml-2">ปกติ
+                                            {{ number_format($product->main_price, 0) }} ฿</span>
+                                    @endif
                                 </div>
 
                                 <div :class="view === 'list' ? 'lg:mt-0 lg:flex lg:items-center lg:gap-8 lg:flex-1' :
@@ -186,6 +301,7 @@
                                             </span>
                                         </div>
                                     </div>
+
                                     <div :class="view === 'list' ? 'lg:static lg:flex lg:flex-row lg:gap-2 lg:items-center' :
                                         'absolute top-0 right-0 flex flex-col items-end gap-2.5'"
                                         class="flex">
@@ -199,6 +315,13 @@
                                             <i class="fa-duotone fa-solid fa-alarm-clock text-amber-500"></i>
                                             {{ $product->displayTime }}
                                         </span>
+                                    </div>
+
+                                    <div class="mt-3 bg-red-50 border border-red-200/60 p-2.5 rounded-md">
+                                        <p class="text-xs text-red-600 font-bold">
+                                            <i class="fa-solid fa-triangle-exclamation"></i>
+                                           {{ $product->note }}</span>
+                                        </p>
                                     </div>
 
                                     <div class="flex justify-between items-center mt-4 pt-3 border-t border-slate-100"
@@ -224,6 +347,7 @@
                                 </div>
                             </div>
                         </div>
+
                         <div class="mt-2">
                             @auth
                                 @if ($product->canBook)
@@ -259,8 +383,9 @@
                 @if (!$hasRecommended && $products->isNotEmpty())
                     <div x-show="show && tab === 'recommended'" x-cloak
                         class="col-span-full py-16 text-center bg-white border border-dashed border-slate-300 rounded-2xl">
-                        <div class="inline-flex items-center justify-center w-20 h-20 rounded-full bg-gray-50 mb-4"><i
-                                class="fa-solid fa-star text-4xl text-gray-400"></i></div>
+                        <div class="inline-flex items-center justify-center w-20 h-20 rounded-full bg-gray-50 mb-4">
+                            <i class="fa-solid fa-star text-4xl text-gray-400"></i>
+                        </div>
                         <h3 class="text-xl font-bold text-slate-700">ยังไม่มีสินค้าแนะนำ</h3>
                         <p class="text-slate-500">ขณะนี้ยังไม่มีแพ็กเกจที่มียอดการจองในระบบ</p>
                     </div>
@@ -269,8 +394,9 @@
                 @if (!$hasSoon && $products->isNotEmpty())
                     <div x-show="show && tab === 'soon'" x-cloak
                         class="col-span-full py-16 text-center bg-white border border-dashed border-slate-300 rounded-[2rem]">
-                        <div class="inline-flex items-center justify-center w-20 h-20 rounded-full bg-gray-50 mb-4"><i
-                                class="fa-duotone fa-solid fa-cart-arrow-down text-3xl text-gray-400"></i></div>
+                        <div class="inline-flex items-center justify-center w-20 h-20 rounded-full bg-gray-50 mb-4">
+                            <i class="fa-duotone fa-solid fa-cart-arrow-down text-3xl text-gray-400"></i>
+                        </div>
                         <h3 class="text-xl font-bold text-slate-700 mb-2">ไม่มีจองคิวเร็วๆ นี้</h3>
                         <p class="text-slate-500">ขณะนี้ยังไม่มีแพ็กเกจที่รอคิวเปิดจองในวันนี้</p>
                     </div>
@@ -279,7 +405,39 @@
         </section>
 
         <section id="booking-section" class="bg-white border-2 border-slate-100 p-8 scroll-mt-24">
-            <div class="max-w-screen-xl mx-auto px-4" x-data="bookingWidget(@js($products), '{{ $defaultProduct->id ?? '' }}')"
+            @php
+                $now = \Carbon\Carbon::now('Asia/Bangkok');
+                $currentTime = $now->format('H:i:s');
+                $filteredProducts = clone $products;
+
+                $filteredProducts = $filteredProducts
+                    ->map(function ($product) use ($now, $currentTime) {
+                        if ($product->timeSlots) {
+                            $validSlots = $product->timeSlots
+                                ->filter(function ($slot) use ($currentTime) {
+                                    $slotStartTime = \Carbon\Carbon::parse($slot->start_time)->format('H:i:s');
+                                    return $currentTime >= $slotStartTime;
+                                })
+                                ->values();
+                            $product->time_slots = $validSlots;
+                            unset($product->timeSlots);
+                            $product->setRelation('timeSlots', $validSlots);
+                        }
+                        return $product;
+                    })
+                    ->filter(function ($product) {
+                        $hasValidTime = isset($product->time_slots) && count($product->time_slots) > 0;
+                        return ($product->canBook || $product->canBook || $product->isWaitingForTime) && $hasValidTime;
+                    })
+                    ->values();
+            @endphp
+
+            <div class="max-w-screen-xl mx-auto px-4" x-data="bookingWidget(
+                @js($filteredProducts),
+                '{{ $defaultProduct->id ?? '' }}',
+                '{{ auth()->check() ? auth()->user()->level : 'member' }}',
+                '{{ auth()->check() ? strtolower(trim(auth()->user()->name)) : '' }}'
+            )"
                 @select-product-for-booking.window="selectedProductId = $event.detail.id">
 
                 <div class="text-center sm:text-left my-8">
@@ -341,9 +499,8 @@
                                         <option value=""
                                             x-text="selectedProductId ? 'กรุณาเลือกเวลาที่ต้องการ' : '-- กรุณาเลือกแพ็กเกจก่อน --'">
                                         </option>
-                                        <template
-                                            x-if="selectedProduct && (selectedProduct.time_slots || selectedProduct.timeSlots)">
-                                            <template x-for="slot in (selectedProduct.time_slots || selectedProduct.timeSlots)"
+                                        <template x-if="selectedProduct">
+                                            <template x-for="slot in (selectedProduct.time_slots || [])"
                                                 :key="slot.id">
                                                 <option
                                                     :value="formatTime(slot.start_time) + ' - ' + formatTime(slot.end_time)"
@@ -371,21 +528,32 @@
                         <p class="text-base font-medium text-slate-500 mb-8 leading-relaxed">
                             กรุณาเลือกจองคิวสินค้าที่ต้องการ และตรวจสอบรายละเอียดก่อนยืนยันการจอง
                         </p>
+
                         <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                             <div class="space-y-3">
                                 <label class="block text-lg font-semibold text-[#1E2A1E]">เลือกแพ็กเกจที่ต้องการ</label>
                                 <div class="relative group">
-                                    <select x-model="selectedProductId" :disabled="@guest true @else false @endguest"
-                                        :class="@guest true @else false @endguest ?
-                                            'bg-slate-100 cursor-not-allowed opacity-70' : 'bg-white cursor-pointer'"
+                                    <select x-model="selectedProductId"
+                                        :disabled="@guest true @else {{ $filteredProducts->isEmpty() ? 'true' : 'false' }} @endguest"
+                                        :class="(
+                                            @guest true @else {{ $filteredProducts->isEmpty() ? 'true' : 'false' }} @endguest
+                                        ) ?
+                                        'bg-slate-100 cursor-not-allowed opacity-70' : 'bg-white cursor-pointer'"
                                         class="w-full px-5 py-4 border-2 border-slate-200 rounded-2xl text-slate-600 font-medium focus:border-[#57C84D]/50 focus:ring-0 transition-all appearance-none">
+
                                         @guest
-                                            <option value="">-- กรุณาเข้าสู่ระบบก่อน --</option>
+                                            <option value="" disabled selected hidden>-- กรุณาเข้าสู่ระบบก่อน --</option>
                                         @else
-                                            <option value="">-- กรุณาเลือกแพ็กเกจ --</option>
-                                            @foreach ($products as $product)
-                                                <option value="{{ $product->id }}">{{ $product->product_name }}</option>
-                                            @endforeach
+                                            @if ($filteredProducts->isEmpty())
+                                                <option value="" disabled selected hidden>-- ขณะนี้ไม่มีสินค้าเปิดจอง --
+                                                </option>
+                                            @else
+                                                <option value="" disabled selected hidden>-- กรุณาเลือกแพ็กเกจ --
+                                                </option>
+                                                @foreach ($filteredProducts as $product)
+                                                    <option value="{{ $product->id }}">{{ $product->product_name }}</option>
+                                                @endforeach
+                                            @endif
                                         @endguest
                                     </select>
                                     <div
@@ -394,13 +562,34 @@
                                     </div>
                                 </div>
                             </div>
+
                             <div class="space-y-3">
                                 <label class="block text-lg font-semibold text-[#1E2A1E]">ราคา</label>
-                                <input type="text" readonly
-                                    :placeholder="@guest 'กรุณาเข้าสู่ระบบก่อน' @else 'ราคาจะแสดงอัตโนมัติ' @endguest"
-                                    :value="selectedProduct ? new Intl.NumberFormat().format(selectedProduct.main_price) +
-                                        ' บาท' : ''"
-                                    class="w-full px-5 py-4 bg-slate-50 border-2 border-slate-200/50 rounded-2xl text-slate-500 font-medium focus:outline-none cursor-default">
+                                <div class="relative">
+                                    <input type="text" readonly
+                                        @guest placeholder="กรุณาเข้าสู่ระบบก่อน" 
+            @else 
+                placeholder="ราคาจะแสดงอัตโนมัติ" @endguest
+                                        :value="selectedProduct && displayPrice !== null ? new Intl.NumberFormat().format(
+                                            displayPrice) + ' บาท' : ''"
+                                        :class="(selectedProduct && displayPrice < parseFloat(selectedProduct.main_price)) ?
+                                        'text-[#57C84D] font-bold border-[#57C84D]/30 bg-[#57C84D]/5' :
+                                        'text-slate-500 bg-slate-50 border-slate-200/50'"
+                                        class="w-full px-5 py-4 border-2 rounded-2xl focus:outline-none cursor-default transition-colors">
+
+                                    <div x-show="selectedProduct && displayPrice !== null && parseFloat(displayPrice) < parseFloat(selectedProduct.main_price)"
+                                        class="absolute right-4 top-1/2 -translate-y-1/2 flex items-center gap-2 pointer-events-none"
+                                        style="display: none;">
+
+                                        <span class="text-[11px] sm:text-xs text-slate-400 line-through"
+                                            x-text="'ปกติ ' + new Intl.NumberFormat().format(selectedProduct.main_price) + ' ฿'"></span>
+
+                                        <span
+                                            class="bg-red-500 text-white text-[10px] font-bold px-2 py-1 rounded-md shadow-sm">
+                                            ราคาลดพิเศษ
+                                        </span>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -423,7 +612,6 @@
                                     x-text="(selectedProductId && bookingDate && bookingTime) ? 'จองคิวสินค้าเลย!' : 'กรุณากรอกข้อมูลให้ครบถ้วน'"></span>
                             </button>
                         @endauth
-
                         @guest
                             <a href="{{ route('login.page') }}"
                                 class="w-full py-4 rounded-xl bg-slate-500 text-white text-base font-medium transition-all duration-300 flex items-center justify-center gap-2 hover:bg-slate-600 shadow-md">
@@ -433,7 +621,19 @@
                         @endguest
                     </div>
                 </div>
+
+
+
+
+
             </div>
+
+
+
+
+
+
+
         </section>
     </div>
 
@@ -505,6 +705,7 @@
             </div>
         </div>
     </section>
+
     <script src="{{ asset('assets/js/frontend/queue.js') }}"></script>
     <script src="{{ asset('assets/js/frontend/sweetalert.js') }}"></script>
 @endsection

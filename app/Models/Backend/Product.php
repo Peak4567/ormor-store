@@ -15,6 +15,9 @@ class Product extends Model
         'status',
         'date',
         'time',
+        'note',
+        'discount_users',
+        'discount_amount',
     ];
     public function timeSlots()
     {

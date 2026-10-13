@@ -14,13 +14,17 @@ class UserController extends Controller
         $query = User::query();
 
         if ($request->filled('search')) {
-            $query->where('name', 'like', "%{$request->search}%")
-                ->orWhere('email', 'like', "%{$request->search}%")
-                ->orWhere('users_code', 'like', "%{$request->search}%");
+            $search = $request->search;
+            $query->where(function ($q) use ($search) {
+                $q->where('name', 'like', "%{$search}%")
+                    ->orWhere('email', 'like', "%{$search}%")
+                    ->orWhere('users_code', 'like', "%{$search}%");
+            });
         }
 
-        if ($request->filled('level')) {
-            $query->where('level', $request->level);
+        $role = $request->input('role') ?? $request->input('level');
+        if (!empty($role)) {
+            $query->where('level', $role);
         }
 
         $users = $query->latest()->paginate(10);
@@ -43,5 +47,29 @@ class UserController extends Controller
     {
         User::findOrFail($id)->delete();
         return redirect()->back()->with('success', 'ลบสมาชิกเรียบร้อยแล้ว');
+    }
+    public function update(Request $request, $id)
+    {
+        $request->validate([
+            'name'      => ['required', 'string', 'max:255'],
+            'email'     => ['required', 'string', 'email', 'max:255', 'unique:users,email,' . $id],
+            'phone'     => ['nullable', 'string', 'max:20'],
+            'shop_name' => ['nullable', 'string', 'max:255'],
+            'line_id'   => ['nullable', 'string', 'max:255'],
+        ], [
+            'email.unique' => 'อีเมลนี้ถูกใช้งานโดยสมาชิกท่านอื่นแล้ว'
+        ]);
+
+        $user = User::findOrFail($id);
+
+        $user->name      = $request->name;
+        $user->email     = $request->email;
+        $user->phone     = $request->phone;
+        $user->shop_name = $request->shop_name;
+        $user->line_id   = $request->line_id;
+
+        $user->save();
+
+        return redirect()->back()->with('success', 'อัปเดตข้อมูลของ ' . $user->name . ' เรียบร้อยแล้วครับ');
     }
 }

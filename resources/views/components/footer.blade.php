@@ -55,13 +55,20 @@
 
         <div class="pt-4 sm:pt-8 border-t border-white/20 flex flex-col md:flex-row justify-between items-center gap-6">
             <div class="text-xs md:text-sm text-white font-medium text-center md:text-left">
-                <p>Copyright 2026 <span class="text-lg leading-none">©</span> NaHost (Navigate Innovations Co., Ltd.)
-                    All rights reserved.</p>
+                <p>Copyright 2026 <span class="text-lg leading-none">©</span>
+                    <a href="https://nahost.in.th/" target="_blank"
+                        class="hover:text-white/70 transition-colors duration-200 underline-2 underline-offset-4">
+                        NaHost 
+                    </a>
+                    (Navigate Innovations Co., Ltd.) All rights reserved.
+                </p>
             </div>
 
             <div class="flex items-center gap-6 text-xs md:text-sm font-medium">
-                <a href="{{ route('privacy_policy.page') }}" class="hover:text-white/70 transition-colors">Privacy Policy</a>
-                <a href="{{ route('terms_conditions.page') }}" class="hover:text-white/70 transition-colors">Terms & Conditions</a>
+                <a href="{{ route('privacy_policy.page') }}" class="hover:text-white/70 transition-colors">Privacy
+                    Policy</a>
+                <a href="{{ route('terms_conditions.page') }}" class="hover:text-white/70 transition-colors">Terms &
+                    Conditions</a>
             </div>
         </div>
     </div>
